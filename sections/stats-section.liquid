@@ -1,0 +1,152 @@
+{% comment %}
+  SECCIÓN: ESTADÍSTICAS/LOGROS
+  Números que destacan a la empresa
+{% endcomment %}
+
+<section class="stats-section" style="
+  background: linear-gradient(180deg, #0a0a0a 0%, #000000 100%);
+  padding: 80px 24px;
+  position: relative;
+">
+  <div class="container" style="max-width: 1200px; margin: 0 auto; text-align: center;">
+    
+    {% if section.settings.heading != blank %}
+      <h2 style="
+        font-size: clamp(1.8rem, 3vw, 2.5rem);
+        color: #ffffff;
+        margin: 0 0 60px 0;
+        font-weight: 700;
+      ">{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    <div class="stats-grid" style="
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+    ">
+      {% for block in section.blocks %}
+        <div class="stat-item" style="
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid #1a1a1a;
+          border-radius: 12px;
+          padding: 40px 24px;
+          transition: all 0.3s ease;
+        " {{ block.shopify_attributes }}>
+          
+          <div class="stat-number" style="
+            font-size: clamp(2.5rem, 4vw, 4rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff 0%, #9b9b9b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+          ">
+            {{ block.settings.number }}
+          </div>
+
+          <div class="stat-label" style="
+            color: #9b9b9b;
+            font-size: 1rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+          ">
+            {{ block.settings.label }}
+          </div>
+
+          {% if block.settings.description != blank %}
+            <p style="
+              color: #666666;
+              font-size: 0.9rem;
+              margin: 16px 0 0 0;
+              line-height: 1.5;
+            ">{{ block.settings.description }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .stat-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.08);
+    border-color: #333333;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Estadísticas",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título de la sección",
+      "default": "Nuestros Logros"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Estadística",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Número",
+          "default": "1000+"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Etiqueta",
+          "default": "Clientes felices"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Descripción (opcional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Estadísticas",
+      "blocks": [
+        {
+          "type": "stat",
+          "settings": {
+            "number": "5+",
+            "label": "Años de experiencia"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "number": "1000+",
+            "label": "Clientes satisfechos"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "number": "100%",
+            "label": "Garantía de calidad"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "number": "24/7",
+            "label": "Soporte disponible"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

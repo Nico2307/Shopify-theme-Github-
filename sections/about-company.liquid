@@ -1,0 +1,227 @@
+{% comment %}
+  SECCIÓN: SOBRE LA EMPRESA
+  Información de la empresa con imagen y contenido
+{% endcomment %}
+
+<section class="about-section" style="
+  background: #000000;
+  padding: 100px 24px;
+  position: relative;
+">
+  <div class="container" style="max-width: 1200px; margin: 0 auto;">
+    
+    <div class="about-grid" style="
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 60px;
+      align-items: center;
+    ">
+      
+      {%- comment -%} Contenido de texto {%- endcomment -%}
+      <div class="about-content">
+        <h2 style="
+          font-size: clamp(2rem, 4vw, 3rem);
+          color: #ffffff;
+          margin: 0 0 24px 0;
+          font-weight: 700;
+          letter-spacing: -0.02em;
+        ">
+          {{ section.settings.heading | default: "Sobre Nosotros" }}
+        </h2>
+
+        <div class="about-text" style="
+          color: #9b9b9b;
+          font-size: 1.1rem;
+          line-height: 1.8;
+          margin-bottom: 32px;
+        ">
+          {{ section.settings.content }}
+        </div>
+
+        {%- comment -%} Características destacadas {%- endcomment -%}
+        {% if section.blocks.size > 0 %}
+          <div class="features-list" style="margin-top: 40px;">
+            {% for block in section.blocks %}
+              <div class="feature-item" style="
+                display: flex;
+                align-items: start;
+                gap: 16px;
+                margin-bottom: 24px;
+              " {{ block.shopify_attributes }}>
+                <div style="
+                  width: 40px;
+                  height: 40px;
+                  border-radius: 50%;
+                  background: rgba(255, 255, 255, 0.1);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  flex-shrink: 0;
+                ">
+                  <span style="color: #ffffff; font-size: 20px;">{{ block.settings.icon | default: "✓" }}</span>
+                </div>
+                <div>
+                  <h3 style="
+                    color: #ffffff;
+                    font-size: 1.1rem;
+                    margin: 0 0 8px 0;
+                    font-weight: 600;
+                  ">{{ block.settings.title }}</h3>
+                  <p style="
+                    color: #9b9b9b;
+                    margin: 0;
+                    line-height: 1.6;
+                  ">{{ block.settings.description }}</p>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {% if section.settings.button_label != blank %}
+          <a 
+            href="{{ section.settings.button_link | default: '/pages/about' }}"
+            style="
+              background: #ffffff;
+              color: #000000;
+              border: 2px solid #ffffff;
+              border-radius: 8px;
+              padding: 14px 32px;
+              font-weight: 600;
+              font-size: 15px;
+              text-decoration: none;
+              display: inline-block;
+              transition: all 0.3s ease;
+              margin-top: 24px;
+            "
+          >
+            {{ section.settings.button_label }}
+          </a>
+        {% endif %}
+      </div>
+
+      {%- comment -%} Imagen {%- endcomment -%}
+      <div class="about-image">
+        {% if section.settings.image != blank %}
+          <img 
+            src="{{ section.settings.image | image_url: width: 800 }}"
+            alt="{{ section.settings.heading }}"
+            style="
+              width: 100%;
+              height: auto;
+              border-radius: 12px;
+              box-shadow: 0 12px 32px rgba(255, 255, 255, 0.1);
+            "
+            loading="lazy"
+          >
+        {% else %}
+          <div style="
+            width: 100%;
+            aspect-ratio: 4/3;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #222222;
+          ">
+            <span style="color: #666666; font-size: 1.2rem;">Agrega una imagen</span>
+          </div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sobre la Empresa",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Título",
+      "default": "Sobre Nosotros"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Contenido",
+      "default": "<p>Somos una empresa dedicada a ofrecer productos de la más alta calidad. Nuestra misión es proporcionar experiencias excepcionales a nuestros clientes.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Imagen"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Texto del botón"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Enlace del botón"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Característica",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icono (emoji)",
+          "default": "✓"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título",
+          "default": "Calidad garantizada"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Descripción",
+          "default": "Todos nuestros productos pasan por rigurosos controles de calidad"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sobre la Empresa",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "🎯",
+            "title": "Misión clara",
+            "description": "Enfocados en la excelencia"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "⭐",
+            "title": "Calidad superior",
+            "description": "Solo lo mejor para ti"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "🚀",
+            "title": "Innovación constante",
+            "description": "Siempre a la vanguardia"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
