@@ -1,28 +1,78 @@
 /* ========================================
-   TRIDOT CUSTOM DESIGN OVERRIDES
+   TRIDOT CUSTOM DESIGN OVERRIDES V2
    Diseño minimalista oscuro para TriDot
+   MÁXIMA PRIORIDAD - SOBRESCRIBE TODO
    ======================================== */
 
-/* Variables personalizadas TriDot */
-:root {
-  --color-background: #000000;
-  --color-foreground: #ffffff;
-  --color-foreground-rgb: 255, 255, 255;
-  --color-primary: #ffffff;
-  --color-primary-hover: #e0e0e0;
-  --color-secondary: #9b9b9b;
-  --color-surface: #0a0a0a;
-  --color-border: #1a1a1a;
+/* FORZAR variables de Shopify al tema oscuro */
+:root,
+html,
+body {
+  --color-background: #000000 !important;
+  --color-foreground: #ffffff !important;
+  --color-base-text: #ffffff !important;
+  --color-base-background-1: #000000 !important;
+  --color-base-background-2: #0a0a0a !important;
+  --gradient-base-background-1: #000000 !important;
+  --gradient-base-background-2: #0a0a0a !important;
+  --color-base-solid-button-labels: #000000 !important;
+  --color-base-outline-button-labels: #ffffff !important;
+  --color-base-accent-1: #ffffff !important;
+  --color-base-accent-2: #e0e0e0 !important;
+  --page-width: 1200px !important;
 }
 
-/* Fondo oscuro general */
+/* FONDO NEGRO ABSOLUTO en todos los contenedores */
+html {
+  background: #000000 !important;
+}
+
+body,
+body *,
+main,
+main *,
+#shopify-section-header,
+.shopify-section,
+.page-width,
+.container,
+section,
+.gradient,
+[class*="background"],
+[class*="color-"],
+.color-scheme-1,
+.color-scheme-2,
+.color-background-1,
+.color-background-2 {
+  background: #000000 !important;
+  background-color: #000000 !important;
+}
+
 body {
   background: linear-gradient(180deg, #000000 0%, #0a0a0a 100%) !important;
-  color: var(--color-foreground) !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  color: #ffffff !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  -webkit-font-smoothing: antialiased !important;
+  min-height: 100vh !important;
 }
+
+/* TEXTO BLANCO en todos los elementos de texto */
+h1, h2, h3, h4, h5, h6,
+p, span, div, a, li,
+.h1, .h2, .h3, .h4, .h5, .h6,
+[class*="heading"],
+[class*="title"],
+[class*="text"] {
+  color: #ffffff !important;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+a:hover {
+  color: #e0e0e0 !important;
+}
+
 
 /* Header personalizado */
 .header,
@@ -231,7 +281,6 @@ h1,
   -webkit-text-fill-color: transparent !important;
   background-clip: text !important;
   animation: gradient-shift 8s ease infinite !important;
-  text-fill-color: transparent !important;
 }
 
 h2,
