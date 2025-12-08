@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Especificaciones</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #1a1a1a; color: #fff; }
+        button { padding: 10px 20px; margin: 10px 5px; cursor: pointer; background: #3b82f6; color: white; border: none; border-radius: 8px; }
+        pre { background: #2a2a2a; padding: 20px; margin-top: 20px; border-radius: 8px; overflow-x: auto; }
+        .error { color: #ef4444; }
+        .success { color: #22c55e; }
+        .warning { color: #fbbf24; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Verificar Especificaciones en LocalStorage</h1>
+    <button onclick="checkSpecs()">Ver Productos con Especificaciones</button>
+    <button onclick="addTestProduct()">Agregar Producto de Prueba con Specs</button>
+    <button onclick="clearStorage()">Limpiar LocalStorage</button>
+    <pre id="output"></pre>
+
+    <script src="js/data-sync.js"></script>
+    <script>
+        function checkSpecs() {
+            const products = JSON.parse(localStorage.getItem('yunguen_products') || '[]');
+            const output = document.getElementById('output');
+            
+            let result = `Total de productos: ${products.length}\n\n`;
+            
+            if (products.length === 0) {
+                result += '<span class="warning">⚠️ No hay productos en localStorage</span>\n';
+            }
+            
+            products.forEach((product, index) => {
+                result += `\n${'='.repeat(60)}\n`;
+                result += `Producto ${index + 1}: ${product.name}\n`;
+                result += `  - ID: ${product.id}\n`;
+                result += `  - Categoría: ${product.category}\n`;
+                
+                if (product.specifications) {
+                    result += `  - <span class="success">✅ Tiene specifications: SÍ</span>\n`;
+                    result += `  - Cantidad de specs: ${product.specifications.length}\n`;
+                    result += `  - Especificaciones:\n`;
+                    product.specifications.forEach((spec, i) => {
+                        result += `    ${i + 1}. ${spec.label}: ${spec.value}\n`;
+                    });
+                } else {
+                    result += `  - <span class="error">❌ Tiene specifications: NO</span>\n`;
+                }
+            });
+            
+            output.innerHTML = result;
+        }
+
+        function addTestProduct() {
+            const testProduct = {
+                name: "Producto de Prueba con Especificaciones",
+                category: "electronica",
+                description: "Este es un producto de prueba para verificar especificaciones",
+                price: 99.99,
+                stock: 10,
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect fill='%233b82f6' width='200' height='200'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' fill='white' font-size='20'%3ETEST%3C/text%3E%3C/svg%3E",
+                specifications: [
+                    { label: "Marca", value: "Test Brand" },
+                    { label: "Modelo", value: "TB-001" },
+                    { label: "Color", value: "Azul" },
+                    { label: "Peso", value: "500g" }
+                ]
+            };
+            
+            if (window.dataSync) {
+                const added = window.dataSync.addProduct(testProduct);
+                document.getElementById('output').innerHTML = `<span class="success">✅ Producto de prueba agregado:\n\n${JSON.stringify(added, null, 2)}</span>`;
+                setTimeout(() => checkSpecs(), 500);
+            } else {
+                document.getElementById('output').innerHTML = '<span class="error">❌ dataSync no está disponible</span>';
+            }
+        }
+
+        function clearStorage() {
+            if (confirm('¿Seguro que quieres eliminar todos los productos?')) {
+                localStorage.removeItem('yunguen_products');
+                document.getElementById('output').innerHTML = '<span class="warning">⚠️ LocalStorage limpiado</span>';
+            }
+        }
+
+        // Auto-check on load
+        window.addEventListener('load', () => {
+            checkSpecs();
+        });
+    </script>
+</body>
+</html>

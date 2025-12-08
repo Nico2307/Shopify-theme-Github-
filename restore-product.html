@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurar Producto - YunGuen</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            color: #fff;
+            margin-bottom: 16px;
+            font-size: 2rem;
+        }
+        
+        p {
+            color: #9b9b9b;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+        
+        .success {
+            color: #10b981;
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .loading {
+            color: #3b82f6;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="loading">⚙️</div>
+        <h1>Restaurando Producto...</h1>
+        <p id="status">Agregando los auriculares a la base de datos...</p>
+    </div>
+
+    <script>
+        // Producto a restaurar
+        const product = {
+            id: Date.now(),
+            name: 'Auriculares inteligentes MEIYIXING A9 Pro con cancelación de ruido',
+            category: 'electronica',
+            description: `Auriculares premium MEIYIXING A9 Pro con tecnología de cancelación de ruido activa (ANC), 
+sonido envolvente de alta fidelidad y hasta 100 horas de autonomía. 
+Incluye estuche de carga inalámbrica con pantalla LED que muestra el nivel de batería de cada auricular.
+
+Características destacadas:
+• Cancelación activa de ruido (ANC)
+• Modo ambiente para escuchar tu entorno
+• Sonido Hi-Fi con graves profundos
+• Resistencia al agua y sudor
+• Controles táctiles intuitivos
+• Micrófono integrado de alta calidad
+• Conexión Bluetooth 5.3 estable
+• Compatible con iOS y Android`,
+            shortDescription: 'Auriculares premium con cancelación de ruido activa, 100h de batería y sonido Hi-Fi',
+            price: 109000,
+            originalPrice: null,
+            stock: 50,
+            sku: 'AUR-MEIYIXING-A9PRO',
+            available: true,
+            freeShipping: true,
+            image: 'https://via.placeholder.com/400x400/ffffff/000000?text=MEIYIXING+A9+Pro',
+            additionalImages: [],
+            videoUrl: null,
+            sold: 0,
+            variants: {
+                colors: [
+                    { name: 'Negro', hex: '#000000', isHot: true },
+                    { name: 'Blanco', hex: '#FFFFFF', isHot: false },
+                    { name: 'Beige', hex: '#C8B895', isHot: true },
+                    { name: 'Azul Marino', hex: '#1B3A52', isHot: false },
+                    { name: 'Verde Oscuro', hex: '#2C5F4A', isHot: false }
+                ],
+                sizes: []
+            },
+            specifications: {
+                marca: 'MEIYIXING',
+                modelo: 'A9 Pro',
+                garantia: '12',
+                voltaje: 'Batería',
+                conectividad: 'Bluetooth 5.3'
+            }
+        };
+
+        setTimeout(() => {
+            // Obtener productos actuales
+            let products = JSON.parse(localStorage.getItem('yunguen_products') || '[]');
+            
+            // Verificar si ya existe un producto similar
+            const existingIndex = products.findIndex(p => p.name.includes('MEIYIXING'));
+            
+            if (existingIndex !== -1) {
+                // Actualizar producto existente
+                products[existingIndex] = product;
+                document.querySelector('.loading').textContent = '🔄';
+                document.getElementById('status').textContent = 'Producto actualizado exitosamente';
+            } else {
+                // Agregar nuevo producto
+                products.push(product);
+                document.querySelector('.loading').textContent = '✅';
+                document.getElementById('status').textContent = 'Producto agregado exitosamente';
+            }
+            
+            // Guardar en localStorage
+            localStorage.setItem('yunguen_products', JSON.stringify(products));
+            
+            document.querySelector('h1').textContent = '¡Listo!';
+            
+            setTimeout(() => {
+                document.querySelector('p').textContent = 'Redirigiendo a la tienda...';
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
+            }, 1500);
+        }, 1000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - YunGuen</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="tridot-dots">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+                <h1>YunGuen Admin</h1>
+                <p>Panel de Administración</p>
+            </div>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="adminUser">Usuario</label>
+                    <input type="text" id="adminUser" placeholder="Ingresa tu usuario" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="adminPass">Contraseña</label>
+                    <input type="password" id="adminPass" placeholder="Ingresa tu contraseña" required>
+                </div>
+                
+                <button type="submit" class="button">Iniciar Sesión</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" class="admin-dashboard" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <div class="tridot-dots">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+                <h2>YunGuen</h2>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-section="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-section="products">
+                    <span class="nav-icon">📦</span>
+                    <span>Productos</span>
+                </a>
+                <a href="#" class="nav-item" data-section="orders">
+                    <span class="nav-icon">🛒</span>
+                    <span>Pedidos</span>
+                </a>
+                <a href="#" class="nav-item" data-section="analytics">
+                    <span class="nav-icon">📈</span>
+                    <span>Analíticas</span>
+                </a>
+                <a href="#" class="nav-item" data-section="visitors">
+                    <span class="nav-icon">👥</span>
+                    <span>Visitantes</span>
+                </a>
+                <a href="#" class="nav-item" data-section="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Configuración</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="button button-secondary">Cerrar Sesión</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Header -->
+            <header class="admin-header">
+                <h1 id="sectionTitle">Dashboard</h1>
+                <div class="admin-user">
+                    <span>👤 Administrador</span>
+                </div>
+            </header>
+
+            <!-- Dashboard Section -->
+            <section id="dashboardSection" class="admin-section active">
+                <!-- Stats Cards -->
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-info">
+                            <h3>Ventas Hoy</h3>
+                            <p class="stat-value" id="salesToday">$0</p>
+                            <span class="stat-change positive">+12%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">📦</div>
+                        <div class="stat-info">
+                            <h3>Pedidos Pendientes</h3>
+                            <p class="stat-value" id="pendingOrders">0</p>
+                            <span class="stat-change">Sin cambios</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-info">
+                            <h3>Visitantes Online</h3>
+                            <p class="stat-value" id="onlineVisitors">0</p>
+                            <span class="stat-change positive">+5</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-info">
+                            <h3>Visitas Totales</h3>
+                            <p class="stat-value" id="totalVisits">0</p>
+                            <span class="stat-change positive">+25%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="charts-container">
+                    <div class="chart-card">
+                        <h3>Ventas Mensuales</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="salesChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <h3>Productos Más Vendidos</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="productsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Orders -->
+                <div class="recent-orders">
+                    <h3>Pedidos Recientes</h3>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Producto</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentOrdersTable">
+                            <!-- Se llenará dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Products Section -->
+            <section id="productsSection" class="admin-section">
+                <div class="section-header">
+                    <h2>Gestión de Productos</h2>
+                    <button id="addProductBtn" class="button">+ Agregar Producto</button>
+                </div>
+                
+                <div class="products-grid-admin">
+                    <div id="productsList">
+                        <!-- Se llenará dinámicamente -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Orders Section -->
+            <section id="ordersSection" class="admin-section">
+                <h2>Gestión de Pedidos</h2>
+                
+                <div class="filters">
+                    <select id="orderStatusFilter" class="filter-select">
+                        <option value="all">Todos los pedidos</option>
+                        <option value="pending">Pendientes</option>
+                        <option value="processing">En proceso</option>
+                        <option value="shipped">Enviados</option>
+                        <option value="delivered">Entregados</option>
+                    </select>
+                </div>
+                
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Email</th>
+                            <th>Productos</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTable">
+                        <!-- Se llenará dinámicamente -->
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="analyticsSection" class="admin-section">
+                <h2>Análisis y Estadísticas</h2>
+                
+                <div class="analytics-container">
+                    <div class="chart-card full-width">
+                        <h3>Tráfico de Visitantes (Últimos 30 días)</h3>
+                        <div class="chart-wrapper" style="height: 300px;">
+                            <canvas id="trafficChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <h3>Fuentes de Tráfico</h3>
+                        <div class="chart-wrapper" style="height: 300px;">
+                            <canvas id="sourceChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <h3>Dispositivos</h3>
+                        <div class="chart-wrapper" style="height: 300px;">
+                            <canvas id="deviceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Visitors Section -->
+            <section id="visitorsSection" class="admin-section">
+                <h2>Visitantes y Actividad en Tiempo Real</h2>
+                
+                <div class="visitors-stats">
+                    <div class="visitor-card">
+                        <h3>En Línea Ahora</h3>
+                        <p class="big-number" id="currentOnline">0</p>
+                    </div>
+                    
+                    <div class="visitor-card">
+                        <h3>Hoy</h3>
+                        <p class="big-number" id="visitorsToday">0</p>
+                    </div>
+                    
+                    <div class="visitor-card">
+                        <h3>Esta Semana</h3>
+                        <p class="big-number" id="visitorsWeek">0</p>
+                    </div>
+                    
+                    <div class="visitor-card">
+                        <h3>Este Mes</h3>
+                        <p class="big-number" id="visitorsMonth">0</p>
+                    </div>
+                </div>
+                
+                <div class="activity-log">
+                    <h3>Actividad Reciente</h3>
+                    <div id="activityList">
+                        <!-- Se llenará dinámicamente -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settingsSection" class="admin-section">
+                <h2>Configuración</h2>
+                
+                <div class="settings-container">
+                    <div class="settings-card">
+                        <h3>Información del Sitio</h3>
+                        <form id="siteSettingsForm">
+                            <div class="form-group">
+                                <label>Nombre del Sitio</label>
+                                <input type="text" value="YunGuen" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Email de Contacto</label>
+                                <input type="email" value="soporte@yunguen.com" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Teléfono</label>
+                                <input type="tel" value="+123 456 7890" class="form-control">
+                            </div>
+                            <button type="submit" class="button">Guardar Cambios</button>
+                        </form>
+                    </div>
+                    
+                    <div class="settings-card">
+                        <h3>Notificaciones</h3>
+                        <div class="toggle-group">
+                            <label class="toggle-label">
+                                <input type="checkbox" checked>
+                                <span>Nuevos pedidos</span>
+                            </label>
+                            <label class="toggle-label">
+                                <input type="checkbox" checked>
+                                <span>Comentarios de clientes</span>
+                            </label>
+                            <label class="toggle-label">
+                                <input type="checkbox">
+                                <span>Actualizaciones del sistema</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div id="addProductModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Agregar Nuevo Producto</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="addProductForm">
+                <div class="form-group">
+                    <label>Nombre del Producto</label>
+                    <input type="text" name="productName" required class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea name="productDescription" rows="3" class="form-control" id="productDescription"></textarea>
+                    <small style="color: #9b9b9b; display: block; margin-top: 4px;">
+                        💡 Tip: Puedes subir una imagen con texto y se extraerá automáticamente
+                    </small>
+                </div>
+                
+                <!-- Nueva sección para subir imagen y extraer texto -->
+                <div class="form-group">
+                    <label>📷 Subir Imagen con Descripción (Opcional)</label>
+                    <div class="image-upload-container">
+                        <input type="file" id="productImageUpload" accept="image/*" class="form-control" style="display: none;">
+                        <button type="button" onclick="document.getElementById('productImageUpload').click()" class="button button-secondary" style="width: 100%; margin-bottom: 10px;">
+                            📤 Seleccionar Imagen
+                        </button>
+                        <div id="imagePreviewContainer" style="display: none; margin-bottom: 10px;">
+                            <img id="imagePreview" style="max-width: 100%; max-height: 300px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                            <button type="button" onclick="processImageText()" class="button" style="width: 100%; margin-top: 10px;">
+                                🔍 Extraer y Formatear Texto
+                            </button>
+                            <div id="ocrProgress" style="display: none; text-align: center; padding: 20px;">
+                                <div class="spinner"></div>
+                                <p style="color: #3B82F6; margin-top: 10px;">Procesando imagen...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Precio</label>
+                        <input type="number" name="productPrice" step="0.01" required class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Stock</label>
+                        <input type="number" name="productStock" required class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>URL de Imagen del Producto</label>
+                    <input type="url" name="productImage" placeholder="https://..." class="form-control">
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="button button-secondary modal-cancel">Cancelar</button>
+                    <button type="submit" class="button">Agregar Producto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

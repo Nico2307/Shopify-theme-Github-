@@ -1,0 +1,304 @@
+/* ========================================
+   TRIDOT CUSTOM DESIGN
+   Estilos personalizados para el diseño TriDot
+   ======================================== */
+
+/* Variables de tema personalizado */
+:root {
+  --tridot-glow: rgba(255, 255, 255, 0.5);
+  --tridot-shadow: rgba(0, 0, 0, 0.8);
+  --tridot-gradient-start: #ffffff;
+  --tridot-gradient-end: #e0e0e0;
+}
+
+/* Efectos de vidrio esmerilado */
+.glass-effect {
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Tarjetas con efecto de elevación */
+.elevated-card {
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease;
+}
+
+.elevated-card:hover {
+  box-shadow: 
+    0 20px 25px rgba(0, 0, 0, 0.15),
+    0 10px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Texto con efecto de brillo */
+.glowing-text {
+  text-shadow: 
+    0 0 10px rgba(255, 255, 255, 0.5),
+    0 0 20px rgba(255, 255, 255, 0.3),
+    0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+/* Líneas divisoras decorativas */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  margin: 40px 0;
+}
+
+/* Grid con efecto de hover colectivo */
+.interactive-grid {
+  display: grid;
+  gap: 24px;
+}
+
+.interactive-grid > * {
+  transition: all 0.3s ease;
+}
+
+.interactive-grid:hover > *:not(:hover) {
+  opacity: 0.6;
+  filter: blur(2px);
+}
+
+/* Botón con efecto de onda */
+.ripple-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.ripple-button:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* Gradiente animado de fondo */
+.gradient-background {
+  background: linear-gradient(
+    -45deg,
+    #000000,
+    #0a0a0a,
+    #1a1a1a,
+    #0a0a0a
+  );
+  background-size: 400% 400%;
+  animation: gradient-shift 15s ease infinite;
+}
+
+/* Borde con gradiente animado */
+.gradient-border {
+  position: relative;
+  border-radius: 12px;
+  padding: 2px;
+  background: linear-gradient(
+    45deg,
+    #ffffff,
+    #9b9b9b,
+    #ffffff
+  );
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+.gradient-border > * {
+  background: #000000;
+  border-radius: 10px;
+}
+
+/* Efecto de partículas de fondo */
+.particle-background {
+  position: relative;
+  overflow: hidden;
+}
+
+.particle-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.3;
+}
+
+/* Sombras personalizadas */
+.shadow-soft {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-medium {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.shadow-hard {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.shadow-glow {
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+/* Efectos de texto */
+.text-outline {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+  text-stroke: 1px rgba(255, 255, 255, 0.3);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #ffffff, #9b9b9b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Indicador de carga */
+.loading-indicator {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: rotate-slow 1s linear infinite;
+}
+
+/* Tooltips personalizados */
+.tooltip {
+  position: relative;
+  cursor: help;
+}
+
+.tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 12px;
+  background: #1a1a1a;
+  color: #ffffff;
+  border-radius: 6px;
+  font-size: 14px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  margin-bottom: 8px;
+}
+
+.tooltip:hover::after {
+  opacity: 1;
+}
+
+/* Badges y etiquetas */
+.badge-outline {
+  border: 2px solid currentColor;
+  background: transparent;
+}
+
+.badge-rounded {
+  border-radius: 999px;
+}
+
+/* Overlays oscuros */
+.overlay-dark {
+  position: relative;
+}
+
+.overlay-dark::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.overlay-dark > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Grid de masonry */
+.masonry-grid {
+  column-count: 3;
+  column-gap: 24px;
+}
+
+.masonry-grid > * {
+  break-inside: avoid;
+  margin-bottom: 24px;
+}
+
+@media screen and (max-width: 768px) {
+  .masonry-grid {
+    column-count: 1;
+  }
+}
+
+/* Utilidades de espaciado */
+.spacing-xs { margin: 8px; }
+.spacing-sm { margin: 16px; }
+.spacing-md { margin: 24px; }
+.spacing-lg { margin: 40px; }
+.spacing-xl { margin: 60px; }
+
+.padding-xs { padding: 8px; }
+.padding-sm { padding: 16px; }
+.padding-md { padding: 24px; }
+.padding-lg { padding: 40px; }
+.padding-xl { padding: 60px; }
+
+/* Utilidades de display */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.grid-auto {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+}
+
+/* Efectos de scroll */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}

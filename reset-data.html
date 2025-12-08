@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resetear Datos - YunGuen</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            color: #fff;
+            margin-bottom: 16px;
+            font-size: 2rem;
+        }
+        
+        p {
+            color: #9b9b9b;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.6);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+            margin-top: 16px;
+        }
+        
+        .btn-secondary:hover {
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+        }
+        
+        .message {
+            margin-top: 24px;
+            padding: 16px;
+            border-radius: 12px;
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #22c55e;
+            font-weight: 600;
+            display: none;
+        }
+        
+        .message.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Resetear Datos</h1>
+        <p>
+            Haz clic en el botón de abajo para borrar los datos antiguos y cargar los nuevos productos con descuentos.
+            <br><br>
+            Esto eliminará todos los productos actuales y cargará versiones nuevas con precios de descuento.
+        </p>
+        
+        <button class="btn" onclick="resetData()">
+            🗑️ Borrar Datos y Recargar
+        </button>
+        
+        <br>
+        
+        <button class="btn btn-secondary" onclick="goToStore()">
+            🏪 Ir a la Tienda
+        </button>
+        
+        <div class="message" id="message"></div>
+    </div>
+    
+    <script>
+        // Auto-ejecutar al cargar la página
+        window.addEventListener('load', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('auto') === 'true') {
+                resetData();
+            }
+        });
+        
+        function resetData() {
+            const btn = document.querySelector('.btn');
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = '⏳ Borrando datos...';
+            }
+            
+            // Borrar todos los datos de localStorage
+            localStorage.removeItem('yunguen_products');
+            localStorage.removeItem('yunguen_cart');
+            
+            setTimeout(() => {
+                const message = document.getElementById('message');
+                message.textContent = '✅ ¡Datos borrados! Redirigiendo a la tienda...';
+                message.classList.add('show');
+                
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            }, 500);
+        }
+        
+        function goToStore() {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

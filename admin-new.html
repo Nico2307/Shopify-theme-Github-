@@ -1,0 +1,2435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - YunGuen</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-screen">
+        <a href="index.html" class="btn-visit-store-top">
+            <div class="store-logo-animated">
+                <div class="tridot-dots-small">
+                    <div class="tridot-dot"></div>
+                    <div class="tridot-dot"></div>
+                    <div class="tridot-dot"></div>
+                </div>
+            </div>
+            <span>🛍️ Ir a la Tienda</span>
+        </a>
+        <div class="login-container">
+            <div class="login-header">
+                <div class="tridot-dots">
+                    <div class="tridot-dot"></div>
+                    <div class="tridot-dot"></div>
+                    <div class="tridot-dot"></div>
+                </div>
+                <h1>Panel Administrativo</h1>
+                <p>YunGuen - Iniciar Sesión</p>
+            </div>
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username">Usuario</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn-primary btn-full">Iniciar Sesión</button>
+            </form>
+            <!-- Actualizado: Credenciales removidas por seguridad -->
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminPanel" class="admin-dashboard" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <div class="logo-with-dots">
+                    <div class="tridot-dots">
+                        <div class="tridot-dot"></div>
+                        <div class="tridot-dot"></div>
+                        <div class="tridot-dot"></div>
+                    </div>
+                    <h2>YunGuen</h2>
+                </div>
+                <p>Panel Admin</p>
+                <a href="index.html" class="btn-visit-store">
+                    <span class="store-icon">🛍️</span>
+                    <span>Ir a la Tienda</span>
+                </a>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-section="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-section="products">
+                    <span class="nav-icon">📦</span>
+                    <span class="nav-text">Productos</span>
+                </a>
+                <a href="#" class="nav-item" data-section="orders">
+                    <span class="nav-icon">🛒</span>
+                    <span class="nav-text">Pedidos</span>
+                </a>
+                <a href="#" class="nav-item" data-section="users">
+                    <span class="nav-icon">👤</span>
+                    <span class="nav-text">Usuarios</span>
+                </a>
+                <a href="#" class="nav-item" data-section="analytics">
+                    <span class="nav-icon">📈</span>
+                    <span class="nav-text">Analytics</span>
+                </a>
+                <a href="#" class="nav-item" data-section="visitors">
+                    <span class="nav-icon">👥</span>
+                    <span class="nav-text">Visitantes</span>
+                </a>
+                <a href="#" class="nav-item" data-section="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-text">Configuración</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn-secondary btn-full">Cerrar Sesión</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1 id="sectionTitle">Dashboard</h1>
+                <div class="admin-header-actions">
+                    <span class="admin-time" id="currentTime"></span>
+                    <div class="admin-user">
+                        <span>Admin</span>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="admin-content">
+
+            <!-- Dashboard Section -->
+            <section id="dashboardSection" class="admin-section active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Ventas Hoy</h3>
+                        <p class="stat-value" id="salesToday">$0</p>
+                        <span class="stat-change positive">↑ 12%</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Pedidos Pendientes</h3>
+                        <p class="stat-value" id="pendingOrders">0</p>
+                        <span class="stat-change">5 nuevos</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Visitantes en Línea</h3>
+                        <p class="stat-value" id="onlineVisitors">0</p>
+                        <span class="stat-change positive">↑ 8%</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Visitas Totales</h3>
+                        <p class="stat-value" id="totalVisits">0</p>
+                        <span class="stat-change">Hoy</span>
+                    </div>
+                </div>
+
+                <div class="charts-row">
+                    <div class="chart-container">
+                        <h3>Ventas - Últimos 7 días</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="salesChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Productos Más Vendidos</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="productsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-orders">
+                    <h3>Pedidos Recientes</h3>
+                    <table id="recentOrdersTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Producto</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentOrdersBody">
+                            <!-- Dynamic content -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Products Section -->
+            <section id="productsSection" class="admin-section">
+                <div class="section-actions">
+                    <button class="btn-primary" id="quickAddBtn" style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); margin-right: 12px;">⚡ Importar Rápido</button>
+                    <button class="btn-primary" id="addProductBtn">+ Agregar Producto</button>
+                </div>
+                
+                <div class="products-grid" id="productsGrid">
+                    <!-- Dynamic content -->
+                </div>
+
+                <!-- Quick Add Modal -->
+                <div id="quickAddModal" class="modal" style="display: none;">
+                    <div class="modal-content" style="max-width: 600px;">
+                        <span class="close-modal" onclick="closeQuickAddModal()">&times;</span>
+                        <h2 style="margin-bottom: 24px;">⚡ Importar Producto Rápido</h2>
+                        
+                        <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+                            <h3 style="color: #22c55e; margin: 0 0 12px;">📋 Cómo usar:</h3>
+                            <ol style="color: #9b9b9b; margin: 0; padding-left: 20px;">
+                                <li>Pega la URL del producto (SHEIN, Amazon, MercadoLibre, etc.)</li>
+                                <li>Pega las URLs de las imágenes (una por línea)</li>
+                                <li>Agrega el precio de venta y precio de compra</li>
+                                <li>Haz clic en Importar</li>
+                            </ol>
+                        </div>
+
+                        <form id="quickAddForm" onsubmit="handleQuickAdd(event)">
+                            <div class="form-group">
+                                <label for="quickUrl">🔗 URL del Producto *</label>
+                                <input type="url" id="quickUrl" placeholder="https://www.shein.com/..." required
+                                       style="padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; width: 100%;">
+                                <small style="color: #9b9b9b; display: block; margin-top: 8px;">
+                                    Copia y pega el enlace del producto
+                                </small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="quickImages">🖼️ URLs de Imágenes *</label>
+                                <textarea id="quickImages" placeholder="https://imagen1.jpg&#10;https://imagen2.jpg&#10;https://imagen3.jpg" rows="4" required
+                                          style="padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; width: 100%; font-family: inherit; resize: vertical;"></textarea>
+                                <small style="color: #9b9b9b; display: block; margin-top: 8px;">
+                                    Pega las URLs de las imágenes, una por línea (mínimo 1)
+                                </small>
+                            </div>
+
+                            <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                <div class="form-group">
+                                    <label for="quickPrice">💰 Precio de Venta *</label>
+                                    <input type="number" id="quickPrice" placeholder="100000" required min="0"
+                                           style="padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; width: 100%;">
+                                </div>
+                                <div class="form-group">
+                                    <label for="quickSupplierPrice">💵 Precio de Compra</label>
+                                    <input type="number" id="quickSupplierPrice" placeholder="45000" min="0"
+                                           style="padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; width: 100%;">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="quickStock">📦 Stock Inicial</label>
+                                <input type="number" id="quickStock" placeholder="25" value="20" min="0"
+                                       style="padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; width: 100%;">
+                            </div>
+
+                            <div id="quickAddProgress" style="display: none; text-align: center; padding: 20px;">
+                                <div class="spinner" style="border: 3px solid rgba(34, 197, 94, 0.1); border-top: 3px solid #22c55e; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+                                <p style="color: #22c55e; margin-top: 10px; font-weight: 600;">Importando producto...</p>
+                            </div>
+
+                            <div style="display: flex; gap: 12px; margin-top: 24px;">
+                                <button type="submit" class="btn-primary" style="flex: 1; background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);">
+                                    ⚡ Importar Producto
+                                </button>
+                                <button type="button" onclick="closeQuickAddModal()" class="btn-secondary" style="flex: 1;">
+                                    Cancelar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Add Product Modal -->
+                <div id="addProductModal" class="modal">
+                    <div class="modal-content modal-large">
+                        <span class="close-modal">&times;</span>
+                        <h2>Agregar Nuevo Producto</h2>
+                        
+                        <!-- Asistente IA Toggle -->
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; padding: 20px; margin-bottom: 24px; position: relative; overflow: hidden;">
+                            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.3; background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.05) 35px, rgba(255,255,255,.05) 70px);"></div>
+                            <div style="position: relative; z-index: 1;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div style="width: 48px; height: 48px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                                            🤖
+                                        </div>
+                                        <div>
+                                            <h3 style="margin: 0; color: #ffffff; font-size: 1.2rem;">Asistente IA</h3>
+                                            <p style="margin: 0; color: rgba(255,255,255,0.8); font-size: 0.9rem;">Autocompleta los campos del producto con inteligencia artificial</p>
+                                        </div>
+                                    </div>
+                                    <label class="toggle-switch" style="margin: 0;">
+                                        <input type="checkbox" id="aiAssistantToggle" onchange="toggleAIAssistant(this.checked)">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modo IA Simplificado -->
+                        <div id="aiSimpleMode" style="display: none;">
+                            <!-- Tabs para elegir modo de importación -->
+                            <div style="display: flex; gap: 12px; margin-bottom: 24px; border-bottom: 2px solid rgba(255,255,255,0.1);">
+                                <button type="button" class="import-tab active" data-tab="manual" onclick="switchImportTab('manual')" style="padding: 12px 24px; background: transparent; border: none; color: #667eea; font-weight: 600; cursor: pointer; border-bottom: 3px solid #667eea; transition: all 0.3s;">
+                                    📝 Entrada Manual
+                                </button>
+                                <button type="button" class="import-tab" data-tab="url" onclick="switchImportTab('url')" style="padding: 12px 24px; background: transparent; border: none; color: #9b9b9b; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.3s;">
+                                    🌐 Importar desde URL
+                                </button>
+                            </div>
+
+                            <!-- Modo Manual (Original) -->
+                            <div id="manualImportMode" class="form-section" style="background: rgba(102, 126, 234, 0.05); border: 2px solid rgba(102, 126, 234, 0.2); border-radius: 12px; padding: 24px;">
+                                <h3 style="color: #667eea; margin-bottom: 20px;">🚀 Modo Asistente IA - Rápido y Fácil</h3>
+                                
+                                <div class="form-group">
+                                    <label for="aiProductImages">🖼️ Imágenes del Producto *</label>
+                                    <div class="image-upload-zone" style="background: rgba(255,255,255,0.03); border: 2px dashed rgba(102, 126, 234, 0.3); border-radius: 12px; padding: 30px; text-align: center; cursor: pointer;" onclick="document.getElementById('aiProductImages').click()">
+                                        <input type="file" id="aiProductImages" accept="image/*" multiple style="display: none;" onchange="handleAIImageUpload(event)">
+                                        <div style="font-size: 48px; margin-bottom: 12px;">📸</div>
+                                        <p style="color: #9b9b9b; margin: 0;">Haz clic o arrastra imágenes aquí</p>
+                                        <small style="color: #666; display: block; margin-top: 8px;">Soporta múltiples imágenes (JPG, PNG, WebP, AVIF)</small>
+                                    </div>
+                                    <div id="aiImagePreviews" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; margin-top: 16px;"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="aiProductInfo">💬 Información Breve del Producto *</label>
+                                    <textarea id="aiProductInfo" rows="4" placeholder="Ejemplo: Pantalón cargo negro para hombre, talla M a XL, material algodón, marca SHEIN, precio proveedor $45.000" required style="padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; width: 100%; font-family: inherit; resize: vertical;"></textarea>
+                                    <small style="color: #9b9b9b; display: block; margin-top: 8px;">
+                                        Describe brevemente: tipo de producto, características principales, tallas/colores, material, precio del proveedor
+                                    </small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="aiProductVideo">🎥 Video del Producto (Opcional)</label>
+                                    <input type="text" id="aiProductVideo" placeholder="https://www.youtube.com/watch?v=... o https://vimeo.com/..." style="padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; width: 100%;">
+                                    <small style="color: #9b9b9b; display: block; margin-top: 8px;">
+                                        📹 Pega el enlace de YouTube o Vimeo del producto para mostrar video en la ficha
+                                    </small>
+                                </div>
+
+                                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                    <div class="form-group">
+                                        <label for="aiProductPrice">💰 Precio de Venta (COP) *</label>
+                                        <input type="number" id="aiProductPrice" placeholder="100000" required min="0" style="padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; width: 100%;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="aiProductStock">📦 Stock Inicial *</label>
+                                        <input type="number" id="aiProductStock" placeholder="25" value="20" required min="0" style="padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; width: 100%;">
+                                    </div>
+                                </div>
+
+                                <div id="aiProcessing" style="display: none; text-align: center; padding: 40px; background: rgba(102, 126, 234, 0.1); border-radius: 12px; margin-top: 20px;">
+                                    <div class="ai-loader" style="border: 4px solid rgba(102, 126, 234, 0.1); border-top: 4px solid #667eea; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+                                    <h4 style="color: #667eea; margin-bottom: 12px;">🤖 Asistente IA Trabajando...</h4>
+                                    <p style="color: #9b9b9b; margin: 0;" id="aiProcessingStatus">Analizando imágenes y generando descripción completa...</p>
+                                </div>
+
+                                <div style="display: flex; gap: 12px; margin-top: 24px;">
+                                    <button type="button" onclick="generateProductWithAI()" class="btn-primary" style="flex: 1; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); font-size: 1.1rem; padding: 14px;">
+                                        ✨ Generar Producto con IA
+                                    </button>
+                                    <button type="button" onclick="toggleAIAssistant(false)" class="btn-secondary">
+                                        Modo Manual
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Modo Importación desde URL -->
+                            <div id="urlImportMode" class="form-section" style="display: none; background: rgba(16, 185, 129, 0.05); border: 2px solid rgba(16, 185, 129, 0.2); border-radius: 12px; padding: 24px;">
+                                <h3 style="color: #10b981; margin-bottom: 20px;">🌐 Importación Rápida con Asistencia IA</h3>
+                                <p style="color: #9b9b9b; margin-bottom: 20px;">Ingresa la URL del producto y algunos datos básicos. La IA completará automáticamente el resto.</p>
+
+                                <div class="form-group">
+                                    <label for="urlProductLink">🔗 URL del Producto *</label>
+                                    <input type="url" id="urlProductLink" placeholder="https://www.mercadolibre.com.co/producto..." style="padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; width: 100%; font-size: 1rem;">
+                                    <small style="color: #9b9b9b; display: block; margin-top: 8px;">
+                                        La URL se guardará como referencia del proveedor
+                                    </small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="quickProductName">📝 Nombre del Producto *</label>
+                                    <input type="text" id="quickProductName" placeholder="Ejemplo: Pantalón Cargo Negro Hombre" style="padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; width: 100%;">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="quickProductImages">🖼️ Imágenes del Producto *</label>
+                                    <div class="image-upload-zone" style="background: rgba(255,255,255,0.03); border: 2px dashed rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 30px; text-align: center; cursor: pointer;" onclick="document.getElementById('quickProductImages').click()">
+                                        <input type="file" id="quickProductImages" accept="image/*" multiple style="display: none;" onchange="handleQuickImageUpload(event)">
+                                        <div style="font-size: 48px; margin-bottom: 12px;">📸</div>
+                                        <p style="color: #9b9b9b; margin: 0;">Haz clic o arrastra imágenes aquí</p>
+                                        <small style="color: #666; display: block; margin-top: 8px;">JPG, PNG, WebP, AVIF</small>
+                                    </div>
+                                    <div id="quickImagePreviews" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; margin-top: 16px;"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="quickProductInfo">💬 Información Breve (Opcional)</label>
+                                    <textarea id="quickProductInfo" rows="3" placeholder="Características principales: material, colores disponibles, tallas, etc." style="padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; width: 100%; font-family: inherit; resize: vertical;"></textarea>
+                                </div>
+
+                                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                    <div class="form-group">
+                                        <label for="quickSupplierPrice">💵 Precio del Proveedor *</label>
+                                        <input type="number" id="quickSupplierPrice" placeholder="45000" min="0" required style="padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; width: 100%;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="quickSellingPrice">💰 Precio de Venta *</label>
+                                        <input type="number" id="quickSellingPrice" placeholder="63000" min="0" required style="padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; width: 100%;">
+                                        <small style="color: #9b9b9b; display: block; margin-top: 4px;" id="quickMarginInfo">Margen: -</small>
+                                    </div>
+                                </div>
+
+                                <div id="quickProcessing" style="display: none; text-align: center; padding: 40px; background: rgba(16, 185, 129, 0.1); border-radius: 12px; margin-top: 20px;">
+                                    <div class="url-loader" style="border: 4px solid rgba(16, 185, 129, 0.1); border-top: 4px solid #10b981; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+                                    <h4 style="color: #10b981; margin-bottom: 12px;">🤖 IA Generando Producto...</h4>
+                                    <p style="color: #9b9b9b; margin: 0;" id="quickProcessingStatus">Creando descripción y especificaciones...</p>
+                                </div>
+
+                                <div style="background: rgba(59, 130, 246, 0.1); border-left: 4px solid #3b82f6; padding: 16px; border-radius: 8px; margin: 20px 0;">
+                                    <h4 style="color: #3b82f6; margin: 0 0 8px 0; display: flex; align-items: center; gap: 8px;">
+                                        <span>⚡</span> Lo que la IA generará automáticamente:
+                                    </h4>
+                                    <ul style="color: #9b9b9b; margin: 0; padding-left: 20px; font-size: 0.9rem;">
+                                        <li>Descripción profesional de 300+ palabras</li>
+                                        <li>15+ especificaciones técnicas</li>
+                                        <li>Categoría y etiquetas SEO</li>
+                                        <li>Análisis financiero completo</li>
+                                        <li>12 secciones de información adicional</li>
+                                        <li>Variantes (colores, tallas) si aplica</li>
+                                    </ul>
+                                </div>
+
+                                <div style="display: flex; gap: 12px; margin-top: 24px;">
+                                    <button type="button" onclick="quickImportProduct()" class="btn-primary" style="flex: 1; background: linear-gradient(135deg, #10b981 0%, #059669 100%); font-size: 1.1rem; padding: 14px;">
+                                        ⚡ Crear Producto con IA
+                                    </button>
+                                    <button type="button" onclick="toggleAIAssistant(false)" class="btn-secondary">
+                                        Cancelar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modo Manual (Formulario Original) -->
+                        <form id="addProductForm" style="display: block;">
+                            <div class="form-sections">
+                                <!-- Información Básica -->
+                                <div class="form-section">
+                                    <h3>📝 Información Básica</h3>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="productName">Nombre del Producto *</label>
+                                            <input type="text" id="productName" placeholder="Ej: Camiseta Premium" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="productCategory">Categoría *</label>
+                                            <select id="productCategory" onchange="showCategoryFields(this.value)" required>
+                                                <option value="">Seleccionar categoría</option>
+                                                <option value="ropa">👕 Ropa</option>
+                                                <option value="electronica">💻 Electrónica</option>
+                                                <option value="hogar">🏠 Hogar</option>
+                                                <option value="deportes">⚽ Deportes</option>
+                                                <option value="belleza">💄 Belleza</option>
+                                                <option value="libros">📚 Libros</option>
+                                                <option value="juguetes">🧸 Juguetes</option>
+                                                <option value="alimentos">🍔 Alimentos</option>
+                                                <option value="tecnologia">📱 Tecnología</option>
+                                                <option value="otros">📦 Otros</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="productDescription">Descripción *</label>
+                                        <textarea id="productDescription" placeholder="Describe el producto en detalle..." required rows="12" style="min-height: 250px; resize: vertical;"></textarea>
+                                        <small style="color: #9b9b9b; display: block; margin-top: 8px;">
+                                            💡 Tip: Puedes subir una imagen con texto y se extraerá automáticamente
+                                        </small>
+                                    </div>
+                                    
+                                    <!-- Nueva sección para subir imagen y extraer texto -->
+                                    <div class="form-group">
+                                        <label>📷 Subir Imagen con Descripción (Opcional)</label>
+                                        <div class="image-upload-container" style="background: rgba(59, 130, 246, 0.05); border: 2px dashed rgba(59, 130, 246, 0.3); border-radius: 12px; padding: 20px; text-align: center;">
+                                            <input type="file" id="productImageUploadOCR" accept="image/*" style="display: none;">
+                                            <button type="button" onclick="document.getElementById('productImageUploadOCR').click()" class="btn-secondary" style="width: 100%; margin-bottom: 10px;">
+                                                📤 Seleccionar Imagen
+                                            </button>
+                                            <div id="imagePreviewContainerOCR" style="display: none; margin-bottom: 10px;">
+                                                <img id="imagePreviewOCR" style="max-width: 100%; max-height: 300px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px;">
+                                                <button type="button" onclick="processImageTextNew()" class="btn-primary" style="width: 100%; margin-top: 10px;">
+                                                    🔍 Extraer y Formatear Texto
+                                                </button>
+                                                <div id="ocrProgressNew" style="display: none; text-align: center; padding: 20px;">
+                                                    <div class="spinner" style="border: 3px solid rgba(59, 130, 246, 0.1); border-top: 3px solid #3B82F6; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+                                                    <p style="color: #3B82F6; margin-top: 10px; font-weight: 600;">Procesando imagen...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="productShortDesc">Descripción Corta</label>
+                                        <input type="text" id="productShortDesc" placeholder="Descripción breve para la tarjeta del producto">
+                                    </div>
+                                </div>
+
+                                <!-- Campos Específicos de Categoría -->
+                                <div class="form-section" id="categorySpecificFields" style="display: none;">
+                                    <h3>📋 Campos Específicos de Categoría</h3>
+                                    <div id="categoryFieldsContainer"></div>
+                                </div>
+
+                                <!-- Precios e Inventario -->
+                                <div class="form-section">
+                                    <h3>💰 Precios e Inventario</h3>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="productPrice">Precio *</label>
+                                            <input type="number" id="productPrice" placeholder="299" step="0.01" min="0" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="productComparePrice">Precio Anterior</label>
+                                            <input type="number" id="productComparePrice" placeholder="399" step="0.01" min="0">
+                                            <small>Muestra el descuento si es mayor al precio actual</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="productStock">Cantidad en Stock *</label>
+                                            <input type="number" id="productStock" placeholder="50" min="0" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="productSKU">SKU (Código)</label>
+                                            <input type="text" id="productSKU" placeholder="PRD-001">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group-inline">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="productAvailable" checked>
+                                            <span>✓ Producto Disponible para Venta</span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="form-group-inline">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="productFreeShipping">
+                                            <span>🚚 Envío Gratis</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Información Privada del Producto (Solo Admin) -->
+                                <div class="form-section" style="background: rgba(239, 68, 68, 0.05); border: 2px solid rgba(239, 68, 68, 0.2); border-radius: 12px; padding: 20px;">
+                                    <h3 style="color: #ef4444;">🔒 Información Privada (Solo visible para ti)</h3>
+                                    <p style="color: #9b9b9b; font-size: 0.9rem; margin-bottom: 16px;">
+                                        Esta información NO será visible para los clientes. Solo la verás en el panel de administración.
+                                    </p>
+                                    
+                                    <div class="form-group">
+                                        <label for="productSupplierUrl" style="color: #ef4444;">🔗 URL del Proveedor</label>
+                                        <input type="url" id="productSupplierUrl" placeholder="https://ejemplo.com/producto" 
+                                               style="background: rgba(0,0,0,0.3); border-color: rgba(239, 68, 68, 0.3);">
+                                        <small style="color: #9b9b9b; display: block; margin-top: 8px;">
+                                            URL donde encontraste el producto para realizar el pedido
+                                        </small>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="productSupplierName" style="color: #ef4444;">🏪 Nombre del Proveedor</label>
+                                        <input type="text" id="productSupplierName" placeholder="Ej: Alibaba, MercadoLibre, Amazon"
+                                               style="background: rgba(0,0,0,0.3); border-color: rgba(239, 68, 68, 0.3);">
+                                    </div>
+                                    
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="productSupplierPrice" style="color: #ef4444;">💵 Precio del Proveedor</label>
+                                            <input type="number" id="productSupplierPrice" placeholder="Precio de compra" step="0.01" min="0"
+                                                   style="background: rgba(0,0,0,0.3); border-color: rgba(239, 68, 68, 0.3);">
+                                            <small style="color: #9b9b9b;">Precio al que compras el producto</small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="color: #4caf50;">📊 Ganancia Estimada</label>
+                                            <input type="text" id="productProfit" readonly placeholder="$0" 
+                                                   style="background: rgba(76, 175, 80, 0.1); border-color: rgba(76, 175, 80, 0.3); color: #4caf50; font-weight: 600;">
+                                            <small style="color: #9b9b9b;">Se calcula automáticamente</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="productNotes" style="color: #ef4444;">📝 Notas Privadas</label>
+                                        <textarea id="productNotes" placeholder="Notas, instrucciones de compra, etc..." rows="3"
+                                                  style="background: rgba(0,0,0,0.3); border-color: rgba(239, 68, 68, 0.3);"></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Imágenes y Videos -->
+                                <div class="form-section">
+                                    <h3>🖼️ Imágenes y Videos</h3>
+                                    
+                                    <div class="image-upload-section">
+                                        <div class="upload-tabs">
+                                            <button type="button" class="tab-btn active" onclick="switchUploadMode('upload')">📁 Subir Archivos</button>
+                                            <button type="button" class="tab-btn" onclick="switchUploadMode('url')">🔗 URL</button>
+                                        </div>
+
+                                        <!-- Upload Mode -->
+                                        <div id="uploadMode" class="upload-mode active">
+                                            <div class="form-group">
+                                                <label>Imagen Principal *</label>
+                                                <div class="image-drop-zone" id="mainImageDropZone">
+                                                    <input type="file" id="mainImageFile" accept="image/*" style="display: none;" onchange="handleFileSelect(event, 'main')">
+                                                    <div class="drop-zone-content">
+                                                        <div class="upload-icon">📸</div>
+                                                        <p class="drop-text">Arrastra una imagen aquí</p>
+                                                        <p class="drop-subtext">o</p>
+                                                        <button type="button" class="btn-browse" onclick="document.getElementById('mainImageFile').click()">
+                                                            Examinar Archivos
+                                                        </button>
+                                                        <small>JPG, PNG, GIF, WebP, AVIF (Máx. 5MB)</small>
+                                                    </div>
+                                                    <div class="image-preview" id="mainImagePreview" style="display: none;">
+                                                        <img src="" alt="Preview">
+                                                        <button type="button" class="btn-remove-image" onclick="removeImage('main')">✕</button>
+                                                        <div class="image-name"></div>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" id="productImage" required>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Imágenes Adicionales</label>
+                                                <div class="image-drop-zone" id="additionalImagesDropZone">
+                                                    <input type="file" id="additionalImagesFile" accept="image/*" multiple style="display: none;" onchange="handleFileSelect(event, 'additional')">
+                                                    <div class="drop-zone-content">
+                                                        <div class="upload-icon">🖼️</div>
+                                                        <p class="drop-text">Arrastra imágenes adicionales aquí</p>
+                                                        <p class="drop-subtext">o</p>
+                                                        <button type="button" class="btn-browse" onclick="document.getElementById('additionalImagesFile').click()">
+                                                            Examinar Archivos
+                                                        </button>
+                                                        <small>Puedes seleccionar múltiples imágenes</small>
+                                                    </div>
+                                                </div>
+                                                <div id="additionalImagesPreview" class="additional-images-grid"></div>
+                                            </div>
+                                        </div>
+
+                                        <!-- URL Mode -->
+                                        <div id="urlMode" class="upload-mode">
+                                            <div class="form-group">
+                                                <label for="productImageURL">Imagen Principal (URL) *</label>
+                                                <input type="url" id="productImageURL" placeholder="https://ejemplo.com/imagen.jpg">
+                                                <small>URL de la imagen principal del producto</small>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label>Imágenes Adicionales (URLs)</label>
+                                                <div id="additionalImagesContainer">
+                                                    <input type="url" class="additional-image" placeholder="https://ejemplo.com/imagen2.jpg">
+                                                    <input type="url" class="additional-image" placeholder="https://ejemplo.com/imagen3.jpg">
+                                                    <input type="url" class="additional-image" placeholder="https://ejemplo.com/imagen4.jpg">
+                                                </div>
+                                                <button type="button" class="btn-secondary btn-small" onclick="addImageField()">+ Agregar más imágenes</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Video Upload Section -->
+                                    <div class="video-upload-section">
+                                        <h4>🎥 Video del Producto</h4>
+                                        <div class="upload-tabs">
+                                            <button type="button" class="tab-btn-video active" onclick="switchVideoMode('upload')">📁 Subir Video</button>
+                                            <button type="button" class="tab-btn-video" onclick="switchVideoMode('url')">🔗 URL/YouTube</button>
+                                        </div>
+
+                                        <!-- Video Upload Mode -->
+                                        <div id="videoUploadMode" class="upload-mode active">
+                                            <div class="form-group">
+                                                <div class="video-drop-zone" id="videoDropZone">
+                                                    <input type="file" id="videoFile" accept="video/*" style="display: none;" onchange="handleVideoSelect(event)">
+                                                    <div class="drop-zone-content">
+                                                        <div class="upload-icon">🎬</div>
+                                                        <p class="drop-text">Arrastra un video aquí</p>
+                                                        <p class="drop-subtext">o</p>
+                                                        <button type="button" class="btn-browse" onclick="document.getElementById('videoFile').click()">
+                                                            Examinar Archivos
+                                                        </button>
+                                                        <small>MP4, WebM, AVI, MOV (Máx. 50MB)</small>
+                                                    </div>
+                                                    <div class="video-preview" id="videoPreview" style="display: none;">
+                                                        <video controls></video>
+                                                        <button type="button" class="btn-remove-image" onclick="removeVideo()">✕</button>
+                                                        <div class="video-info">
+                                                            <div class="video-name"></div>
+                                                            <div class="video-size"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" id="productVideoData">
+                                            </div>
+                                        </div>
+
+                                        <!-- Video URL Mode -->
+                                        <div id="videoUrlMode" class="upload-mode">
+                                            <div class="form-group">
+                                                <label for="productVideo">URL del Video</label>
+                                                <input type="url" id="productVideo" placeholder="https://www.youtube.com/watch?v=... o https://vimeo.com/...">
+                                                <small>YouTube, Vimeo o enlace directo al video</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Variantes (Colores y Tallas) -->
+                                <div class="form-section">
+                                    <h3>🎨 Variantes del Producto (Opcional)</h3>
+                                    
+                                    <!-- Colores -->
+                                    <div class="form-group">
+                                        <label>Colores Disponibles</label>
+                                        <div id="colorsContainer" style="margin-bottom: 12px;">
+                                            <!-- Los colores se agregarán dinámicamente aquí -->
+                                        </div>
+                                        <button type="button" class="btn-secondary" onclick="addColorVariant()" style="width: auto; padding: 8px 16px; font-size: 0.9rem;">
+                                            + Agregar Color
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Tallas -->
+                                    <div class="form-group">
+                                        <label>Tallas Disponibles</label>
+                                        <div id="sizesContainer" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
+                                            <!-- Las tallas se agregarán dinámicamente aquí -->
+                                        </div>
+                                        <div style="display: flex; gap: 8px;">
+                                            <input type="text" id="newSizeInput" placeholder="Ej: M, L, XL, 30 (S)" style="flex: 1; max-width: 200px;">
+                                            <button type="button" class="btn-secondary" onclick="addSizeVariant()" style="width: auto; padding: 8px 16px; font-size: 0.9rem;">
+                                                + Agregar Talla
+                                            </button>
+                                        </div>
+                                        <small style="color: #9b9b9b; margin-top: 8px; display: block;">
+                                            Ejemplo: 30 (S), 32 (M), 34 (L), etc.
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <!-- Tabla de Especificaciones Técnicas -->
+                                <div class="form-section">
+                                    <h3>📊 Especificaciones Técnicas (Opcional)</h3>
+                                    <div class="form-group-inline">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="enableSpecsTable" onchange="toggleSpecsTable()">
+                                            <span>✓ Agregar Tabla de Especificaciones</span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div id="specsTableContainer" style="display: none; margin-top: 20px;">
+                                        <!-- Opción de subir imagen con OCR -->
+                                        <div class="form-group" style="margin-bottom: 20px;">
+                                            <label>📷 Extraer Especificaciones desde Imagen</label>
+                                            <div class="image-upload-container" style="background: rgba(59, 130, 246, 0.05); border: 2px dashed rgba(59, 130, 246, 0.3); border-radius: 12px; padding: 20px; text-align: center;">
+                                                <input type="file" id="specsImageUpload" accept="image/*" style="display: none;">
+                                                <button type="button" onclick="document.getElementById('specsImageUpload').click()" class="btn-secondary" style="width: 100%; margin-bottom: 10px;">
+                                                    📤 Subir Imagen con Especificaciones
+                                                </button>
+                                                <div id="specsImagePreviewContainer" style="display: none; margin-bottom: 10px;">
+                                                    <img id="specsImagePreview" style="max-width: 100%; max-height: 300px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px;">
+                                                    <button type="button" onclick="extractSpecsFromImage()" class="btn-primary" style="width: 100%; margin-top: 10px;">
+                                                        🔍 Extraer Especificaciones
+                                                    </button>
+                                                    <div id="specsOcrProgress" style="display: none; text-align: center; padding: 20px;">
+                                                        <div class="spinner" style="border: 3px solid rgba(59, 130, 246, 0.1); border-top: 3px solid #3B82F6; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+                                                        <p style="color: #3B82F6; margin-top: 10px; font-weight: 600;">Extrayendo especificaciones...</p>
+                                                    </div>
+                                                </div>
+                                                <small style="color: #9b9b9b; display: block; margin-top: 8px;">
+                                                    💡 Sube una imagen con una tabla de especificaciones y se extraerá automáticamente
+                                                </small>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="specs-table-builder">
+                                            <div id="specsRowsContainer">
+                                                <!-- Filas dinámicas se agregarán aquí -->
+                                            </div>
+                                            <button type="button" class="btn-secondary btn-small" onclick="addSpecRow()" style="margin-top: 10px;">
+                                                + Agregar Especificación
+                                            </button>
+                                        </div>
+                                        
+                                        <div class="specs-preview" style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                                            <h4 style="margin-bottom: 15px; color: #3b82f6;">Vista Previa:</h4>
+                                            <table id="specsPreviewTable" class="specs-preview-table" style="width: 100%; border-collapse: collapse;">
+                                                <tbody id="specsPreviewBody">
+                                                    <tr>
+                                                        <td style="padding: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.02); font-weight: 600;">Característica</td>
+                                                        <td style="padding: 12px; border: 1px solid rgba(255,255,255,0.1);">Detalle</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Variantes y Colores -->
+                                <div class="form-section">
+                                    <h3>🎨 Variantes y Opciones</h3>
+                                    
+                                    <div class="form-group">
+                                        <label>Colores Disponibles</label>
+                                        <div class="color-selector-grid">
+                                            <label class="color-option">
+                                                <input type="checkbox" name="colors" value="negro">
+                                                <span class="color-box" style="background: #000000;"></span>
+                                                <span>Negro</span>
+                                            </label>
+                                            <label class="color-option">
+                                                <input type="checkbox" name="colors" value="blanco">
+                                                <span class="color-box" style="background: #FFFFFF; border: 1px solid #3a3a3a;"></span>
+                                                <span>Blanco</span>
+                                            </label>
+                                            <label class="color-option">
+                                                <input type="checkbox" name="colors" value="rojo">
+                                                <span class="color-box" style="background: #EF4444;"></span>
+                                                <span>Rojo</span>
+                                            </label>
+                                            <label class="color-option">
+                                                <input type="checkbox" name="colors" value="azul">
+                                                <span class="color-box" style="background: #3B82F6;"></span>
+                                                <span>Azul</span>
+                                            </label>
+                                            <label class="color-option">
+                                                <input type="checkbox" name="colors" value="verde">
+                                                <span class="color-box" style="background: #22C55E;"></span>
+                                                <span>Verde</span>
+                                            </label>
+                                            <label class="color-option">
+                                                <input type="checkbox" name="colors" value="amarillo">
+                                                <span class="color-box" style="background: #FBBF24;"></span>
+                                                <span>Amarillo</span>
+                                            </label>
+                                            <label class="color-option">
+                                                <input type="checkbox" name="colors" value="rosa">
+                                                <span class="color-box" style="background: #EC4899;"></span>
+                                                <span>Rosa</span>
+                                            </label>
+                                            <label class="color-option">
+                                                <input type="checkbox" name="colors" value="gris">
+                                                <span class="color-box" style="background: #6B7280;"></span>
+                                                <span>Gris</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="productSizes">Tallas Disponibles</label>
+                                        <div class="sizes-selector">
+                                            <label class="size-option">
+                                                <input type="checkbox" name="sizes" value="xs">
+                                                <span>XS</span>
+                                            </label>
+                                            <label class="size-option">
+                                                <input type="checkbox" name="sizes" value="s">
+                                                <span>S</span>
+                                            </label>
+                                            <label class="size-option">
+                                                <input type="checkbox" name="sizes" value="m">
+                                                <span>M</span>
+                                            </label>
+                                            <label class="size-option">
+                                                <input type="checkbox" name="sizes" value="l">
+                                                <span>L</span>
+                                            </label>
+                                            <label class="size-option">
+                                                <input type="checkbox" name="sizes" value="xl">
+                                                <span>XL</span>
+                                            </label>
+                                            <label class="size-option">
+                                                <input type="checkbox" name="sizes" value="xxl">
+                                                <span>XXL</span>
+                                            </label>
+                                        </div>
+                                        <small>Opcional: Selecciona si el producto tiene tallas</small>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="productCustomFields">Opciones Personalizadas</label>
+                                        <input type="text" id="productCustomFields" placeholder="Ej: Material: Algodón 100%, Peso: 200g">
+                                        <small>Separa con comas. Ej: Material: Algodón, Peso: 200g</small>
+                                    </div>
+                                </div>
+
+                                <!-- Características y SEO -->
+                                <div class="form-section">
+                                    <h3>⚡ Características Destacadas</h3>
+                                    
+                                    <div class="form-group">
+                                        <label>Etiquetas del Producto</label>
+                                        <div class="tags-selector">
+                                            <label class="tag-option">
+                                                <input type="checkbox" name="tags" value="nuevo">
+                                                <span>🆕 Nuevo</span>
+                                            </label>
+                                            <label class="tag-option">
+                                                <input type="checkbox" name="tags" value="oferta">
+                                                <span>🔥 Oferta</span>
+                                            </label>
+                                            <label class="tag-option">
+                                                <input type="checkbox" name="tags" value="popular">
+                                                <span>⭐ Popular</span>
+                                            </label>
+                                            <label class="tag-option">
+                                                <input type="checkbox" name="tags" value="limitado">
+                                                <span>⏰ Limitado</span>
+                                            </label>
+                                            <label class="tag-option">
+                                                <input type="checkbox" name="tags" value="envioGratis">
+                                                <span>🚚 Envío Gratis</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="productFeatures">Características (Una por línea)</label>
+                                        <textarea id="productFeatures" rows="4" placeholder="Calidad premium&#10;Garantía 1 año&#10;Envío gratis&#10;Devolución 30 días"></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Envío y Dimensiones -->
+                                <div class="form-section">
+                                    <h3>📦 Envío y Dimensiones</h3>
+                                    
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="productWeight">Peso (kg)</label>
+                                            <input type="number" id="productWeight" placeholder="0.5" step="0.01" min="0">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="productDimensions">Dimensiones (cm)</label>
+                                            <input type="text" id="productDimensions" placeholder="20x15x10">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group-inline">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="productFreeShipping">
+                                            <span>🚚 Envío Gratuito</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-actions">
+                                <button type="button" class="btn-secondary" onclick="closeAddProductModal()">Cancelar</button>
+                                <button type="submit" class="btn-primary">✓ Agregar Producto</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Orders Section -->
+            <section id="ordersSection" class="admin-section">
+                <div class="section-actions">
+                    <select id="orderStatusFilter" onchange="filterOrders()">
+                        <option value="all">Todos los Estados</option>
+                        <option value="processing">Procesando</option>
+                        <option value="shipped">Enviado</option>
+                        <option value="delivered">Entregado</option>
+                        <option value="cancelled">Cancelado</option>
+                    </select>
+                </div>
+
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>ID Pedido</th>
+                            <th>Cliente</th>
+                            <th>Email</th>
+                            <th>Productos</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTableBody">
+                        <!-- Dynamic content -->
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Users Section -->
+            <section id="usersSection" class="admin-section">
+                <div class="section-header">
+                    <h3>Gestión de Usuarios</h3>
+                    <div class="section-actions">
+                        <input type="text" id="userSearch" placeholder="🔍 Buscar usuario..." style="padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white;">
+                        <select id="userStatusFilter" style="padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white;">
+                            <option value="all">Todos los Usuarios</option>
+                            <option value="active">Activos</option>
+                            <option value="inactive">Inactivos</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="users-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                    <div class="stat-card">
+                        <h4>Total Usuarios</h4>
+                        <p class="stat-number" id="totalUsersCount">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Usuarios Activos</h4>
+                        <p class="stat-number" id="activeUsersCount">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Nuevos (Este Mes)</h4>
+                        <p class="stat-number" id="newUsersCount">0</p>
+                    </div>
+                </div>
+
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Teléfono</th>
+                            <th>Pedidos</th>
+                            <th>Total Gastado</th>
+                            <th>Registro</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <!-- Dynamic content -->
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="analyticsSection" class="admin-section">
+                <div class="analytics-grid">
+                    <div class="chart-container full-width">
+                        <h3>Tráfico - Últimos 30 días</h3>
+                        <div class="chart-wrapper analytics-chart">
+                            <canvas id="trafficChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h3>Fuentes de Tráfico</h3>
+                        <div class="chart-wrapper analytics-chart">
+                            <canvas id="sourceChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h3>Dispositivos</h3>
+                        <div class="chart-wrapper analytics-chart">
+                            <canvas id="deviceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Visitors Section -->
+            <section id="visitorsSection" class="admin-section">
+                <div class="visitors-header">
+                    <h3>Visitantes Activos Ahora: <span id="activeVisitorsCount">0</span></h3>
+                </div>
+                
+                <div class="visitors-list" id="visitorsList">
+                    <!-- Dynamic content -->
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settingsSection" class="admin-section">
+                <div class="settings-container">
+                    <h3>Configuración General</h3>
+                    
+                    <div class="settings-group">
+                        <label>Nombre de la Tienda</label>
+                        <input type="text" value="YunGuen" class="settings-input">
+                    </div>
+                    
+                    <div class="settings-group">
+                        <label>Email de Contacto</label>
+                        <input type="email" value="contacto@yunguen.com" class="settings-input">
+                    </div>
+                    
+                    <div class="settings-group">
+                        <label>Moneda</label>
+                        <select class="settings-input">
+                            <option>USD - Dólar</option>
+                            <option>EUR - Euro</option>
+                            <option>MXN - Peso Mexicano</option>
+                            <option>COP - Peso Colombiano</option>
+                        </select>
+                    </div>
+                    
+                    <div class="settings-group">
+                        <label>Notificaciones por Email</label>
+                        <input type="checkbox" checked> Recibir notificaciones de nuevos pedidos
+                    </div>
+                    
+                    <button class="btn-primary">Guardar Configuración</button>
+                </div>
+            </section>
+            </div><!-- .admin-content -->
+        </main><!-- .admin-main -->
+    </div><!-- .admin-dashboard -->
+
+    <script src="js/data-sync.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/email-service.js"></script>
+    <script src="js/ai-assistant.js"></script>
+    <script src="js/ai-assistant-enhanced.js"></script>
+    <script>
+        // Lazy load Chart.js solo cuando se necesite
+        let chartJsLoaded = false;
+        function loadChartJs() {
+            if (!chartJsLoaded) {
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+                script.onload = () => {
+                    chartJsLoaded = true;
+                    console.log('Chart.js cargado');
+                };
+                document.head.appendChild(script);
+            }
+        }
+
+        // Lazy load Tesseract.js solo cuando se use OCR
+        let tesseractLoaded = false;
+        function loadTesseract() {
+            if (!tesseractLoaded) {
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
+                script.onload = () => {
+                    tesseractLoaded = true;
+                    console.log('Tesseract.js cargado');
+                };
+                document.head.appendChild(script);
+            }
+        }
+        
+        // Variable global para contar filas de especificaciones
+        window.specRowCount = 0;
+        
+        // ==============================================
+        // ASISTENTE IA - FUNCIONES PRINCIPALES
+        // ==============================================
+        
+        let aiUploadedImages = [];
+        
+        function toggleAIAssistant(enabled) {
+            const aiMode = document.getElementById('aiSimpleMode');
+            const manualForm = document.getElementById('addProductForm');
+            const toggle = document.getElementById('aiAssistantToggle');
+            
+            if (enabled) {
+                aiMode.style.display = 'block';
+                manualForm.style.display = 'none';
+                toggle.checked = true;
+            } else {
+                aiMode.style.display = 'none';
+                manualForm.style.display = 'block';
+                toggle.checked = false;
+                // Limpiar formulario IA
+                aiUploadedImages = [];
+                document.getElementById('aiImagePreviews').innerHTML = '';
+                document.getElementById('aiProductInfo').value = '';
+                document.getElementById('aiProductPrice').value = '';
+            }
+        }
+        
+        function handleAIImageUpload(event) {
+            const files = Array.from(event.target.files);
+            const previewsContainer = document.getElementById('aiImagePreviews');
+            
+            files.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    aiUploadedImages.push(e.target.result);
+                    
+                    const imgDiv = document.createElement('div');
+                    imgDiv.style.cssText = 'position: relative; border-radius: 8px; overflow: hidden; border: 2px solid rgba(102, 126, 234, 0.3);';
+                    imgDiv.innerHTML = `
+                        <img src="${e.target.result}" style="width: 100%; height: 120px; object-fit: cover;">
+                        <button type="button" onclick="removeAIImage(${aiUploadedImages.length - 1})" 
+                                style="position: absolute; top: 4px; right: 4px; background: rgba(239, 68, 68, 0.9); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 16px; line-height: 1;">
+                            ×
+                        </button>
+                    `;
+                    previewsContainer.appendChild(imgDiv);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+        
+        function removeAIImage(index) {
+            aiUploadedImages.splice(index, 1);
+            const previewsContainer = document.getElementById('aiImagePreviews');
+            previewsContainer.children[index].remove();
+        }
+        
+        async function generateProductWithAI() {
+            const info = document.getElementById('aiProductInfo').value.trim();
+            const price = parseFloat(document.getElementById('aiProductPrice').value);
+            const stock = parseInt(document.getElementById('aiProductStock').value);
+            const videoUrl = document.getElementById('aiProductVideo').value.trim();
+            
+            if (!info || !price || aiUploadedImages.length === 0) {
+                alert('❌ Por favor completa todos los campos y sube al menos una imagen');
+                return;
+            }
+            
+            // Mostrar progreso
+            document.getElementById('aiProcessing').style.display = 'block';
+            
+            try {
+                // Simular generación con IA (en producción, aquí harías la llamada a OpenAI API)
+                await simulateAIGeneration(info, price, stock, videoUrl);
+                
+            } catch (error) {
+                console.error('Error en generación IA:', error);
+                alert('❌ Error al generar el producto. Intenta nuevamente.');
+                document.getElementById('aiProcessing').style.display = 'none';
+            }
+        }
+        
+        async function simulateAIGeneration(info, price, stock, videoUrl) {
+            // Actualizar estado
+            document.getElementById('aiProcessingStatus').textContent = 'Analizando información del producto...';
+            await sleep(500);
+            
+            // Agregar video URL a la información si existe
+            let enhancedInfo = info;
+            if (videoUrl) {
+                enhancedInfo += `\n\nVideo del producto: ${videoUrl}`;
+            }
+            
+            // Usar el asistente IA para generar el producto
+            document.getElementById('aiProcessingStatus').textContent = 'Generando datos con IA...';
+            const productData = await window.aiAssistant.generateProduct(enhancedInfo, price, aiUploadedImages);
+            
+            // Actualizar con stock del usuario
+            productData.stock = stock;
+            
+            // Si hay video URL, procesarlo y agregarlo
+            if (videoUrl) {
+                productData.videoUrl = processVideoUrl(videoUrl);
+            }
+            
+            document.getElementById('aiProcessingStatus').textContent = 'Creando producto...';
+            await sleep(500);
+            
+            // Agregar producto
+            const addedProduct = window.dataSync.addProduct(productData);
+            console.log('✅ Producto creado con IA:', addedProduct);
+            
+            // Mostrar análisis financiero
+            if (productData.financialAnalysis) {
+                showFinancialAnalysis(productData.financialAnalysis, productData.name);
+            }
+            
+            // Recargar productos
+            if (typeof loadProducts === 'function') {
+                loadProducts();
+            }
+            
+            // Cerrar modal de procesamiento
+            document.getElementById('aiProcessing').style.display = 'none';
+            
+            // Limpiar formulario
+            aiUploadedImages = [];
+            document.getElementById('aiImagePreviews').innerHTML = '';
+            document.getElementById('aiProductInfo').value = '';
+            document.getElementById('aiProductPrice').value = '';
+            document.getElementById('aiProductStock').value = '20';
+            document.getElementById('aiProductVideo').value = '';
+        }
+
+        /**
+         * Mostrar análisis financiero en modal
+         */
+        function showFinancialAnalysis(analysis, productName) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.85);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+                padding: 20px;
+                overflow-y: auto;
+            `;
+
+            const content = document.createElement('div');
+            content.style.cssText = `
+                background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%);
+                border-radius: 20px;
+                max-width: 900px;
+                width: 100%;
+                max-height: 90vh;
+                overflow-y: auto;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+                border: 1px solid rgba(255,255,255,0.1);
+            `;
+
+            content.innerHTML = `
+                <div style="padding: 40px;">
+                    <div style="text-align: center; margin-bottom: 30px;">
+                        <h2 style="color: #fff; font-size: 2rem; margin-bottom: 10px;">
+                            💰 Análisis Financiero Completo
+                        </h2>
+                        <p style="color: #9b9b9b; font-size: 1.1rem;">${productName}</p>
+                    </div>
+
+                    <!-- Resumen Visual -->
+                    <div style="background: rgba(102, 126, 234, 0.1); padding: 25px; border-radius: 12px; margin-bottom: 30px; border-left: 4px solid #667eea;">
+                        <pre style="color: #fff; font-size: 1.1rem; margin: 0; white-space: pre-wrap; font-family: 'Courier New', monospace;">${analysis.summary}</pre>
+                    </div>
+
+                    <!-- Análisis Detallado -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                        
+                        <!-- Precio Actual -->
+                        <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                            <h3 style="color: #667eea; margin: 0 0 15px 0; font-size: 1rem;">💵 PRECIO ACTUAL</h3>
+                            <p style="color: #fff; font-size: 1.8rem; margin: 5px 0; font-weight: bold;">
+                                $${analysis.currentPrice.toLocaleString()}
+                            </p>
+                            <p style="color: #9b9b9b; margin: 5px 0;">Ganancia: $${analysis.currentProfit.toLocaleString()}</p>
+                            <p style="color: #9b9b9b; margin: 5px 0;">Margen: ${analysis.currentMargin}%</p>
+                        </div>
+
+                        <!-- Precio Recomendado -->
+                        <div style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.2) 0%, rgba(102, 187, 106, 0.1) 100%); padding: 20px; border-radius: 12px; border: 1px solid rgba(76, 175, 80, 0.3);">
+                            <h3 style="color: #4caf50; margin: 0 0 15px 0; font-size: 1rem;">✨ PRECIO RECOMENDADO</h3>
+                            <p style="color: #fff; font-size: 1.8rem; margin: 5px 0; font-weight: bold;">
+                                $${analysis.recommendedPrice.toLocaleString()}
+                            </p>
+                            <p style="color: #a5d6a7; margin: 5px 0;">Ganancia: $${analysis.recommendedProfit.toLocaleString()}</p>
+                            <p style="color: #a5d6a7; margin: 5px 0;">Margen óptimo: ${analysis.recommendedMargin}%</p>
+                        </div>
+
+                        <!-- Rentabilidad -->
+                        <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                            <h3 style="color: #ffa726; margin: 0 0 15px 0; font-size: 1rem;">📊 RENTABILIDAD</h3>
+                            <p style="color: #fff; font-size: 1.1rem; margin: 10px 0;">
+                                ${analysis.isProfitable ? '✅ RENTABLE' : '❌ NO RENTABLE'}
+                            </p>
+                            <p style="color: #9b9b9b; margin: 5px 0; font-size: 0.95rem;">${analysis.profitabilityLevel}</p>
+                            <p style="color: #9b9b9b; margin: 5px 0; font-size: 0.9rem;">
+                                Markup: ${analysis.currentMarkup}%
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <!-- Desglose de Costos -->
+                    <div style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 12px; margin-bottom: 25px;">
+                        <h3 style="color: #fff; margin: 0 0 20px 0;">💸 Desglose de Costos</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                                <span style="color: #9b9b9b;">Costo Proveedor:</span>
+                                <span style="color: #fff; font-weight: bold;">$${analysis.supplierPrice.toLocaleString()}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                                <span style="color: #9b9b9b;">Envío Proveedor:</span>
+                                <span style="color: #fff; font-weight: bold;">$${analysis.costs.breakdown.shipping.toLocaleString()}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                                <span style="color: #9b9b9b;">Empaque:</span>
+                                <span style="color: #fff; font-weight: bold;">$${analysis.costs.breakdown.packaging.toLocaleString()}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                                <span style="color: #9b9b9b;">Comisión Pago:</span>
+                                <span style="color: #fff; font-weight: bold;">$${analysis.costs.breakdown.transaction.toLocaleString()}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                                <span style="color: #9b9b9b;">Plataforma:</span>
+                                <span style="color: #fff; font-weight: bold;">$${analysis.costs.breakdown.platform.toLocaleString()}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                                <span style="color: #9b9b9b;">Marketing:</span>
+                                <span style="color: #fff; font-weight: bold;">$${analysis.costs.breakdown.marketing.toLocaleString()}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                                <span style="color: #9b9b9b;">Almacenamiento:</span>
+                                <span style="color: #fff; font-weight: bold;">$${analysis.costs.breakdown.storage.toLocaleString()}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                                <span style="color: #9b9b9b;">Manejo:</span>
+                                <span style="color: #fff; font-weight: bold;">$${analysis.costs.breakdown.handling.toLocaleString()}</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 15px; padding: 15px; background: rgba(102, 126, 234, 0.1); border-radius: 8px; border-left: 3px solid #667eea;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: #fff; font-weight: bold; font-size: 1.1rem;">TOTAL COSTOS:</span>
+                                <span style="color: #667eea; font-weight: bold; font-size: 1.3rem;">$${analysis.costs.total.toLocaleString()}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recomendaciones -->
+                    ${analysis.recommendations.length > 0 ? `
+                    <div style="margin-bottom: 25px;">
+                        <h3 style="color: #fff; margin: 0 0 20px 0;">💡 Recomendaciones</h3>
+                        ${analysis.recommendations.map(rec => `
+                            <div style="background: ${rec.type === 'CRÍTICO' ? 'rgba(244, 67, 54, 0.1)' : rec.type === 'ÉXITO' ? 'rgba(76, 175, 80, 0.1)' : 'rgba(255, 152, 0, 0.1)'}; 
+                                        padding: 20px; 
+                                        border-radius: 12px; 
+                                        margin-bottom: 15px;
+                                        border-left: 4px solid ${rec.type === 'CRÍTICO' ? '#f44336' : rec.type === 'ÉXITO' ? '#4caf50' : '#ff9800'};">
+                                <div style="display: flex; align-items: start; gap: 15px;">
+                                    <span style="font-size: 2rem;">${rec.icon}</span>
+                                    <div style="flex: 1;">
+                                        <h4 style="color: #fff; margin: 0 0 8px 0; font-size: 1.1rem;">${rec.title}</h4>
+                                        <p style="color: #d0d0d0; margin: 0 0 10px 0; line-height: 1.5;">${rec.message}</p>
+                                        <p style="color: ${rec.type === 'CRÍTICO' ? '#ff5722' : rec.type === 'ÉXITO' ? '#66bb6a' : '#ffb74d'}; 
+                                                  margin: 0; 
+                                                  font-weight: 500;
+                                                  background: rgba(255,255,255,0.05);
+                                                  padding: 8px 12px;
+                                                  border-radius: 6px;
+                                                  display: inline-block;">
+                                            ➜ ${rec.action}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    ` : ''}
+
+                    <!-- Métricas Adicionales -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px;">
+                        <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 10px; text-align: center;">
+                            <p style="color: #9b9b9b; margin: 0 0 5px 0; font-size: 0.9rem;">Punto Equilibrio</p>
+                            <p style="color: #fff; margin: 0; font-size: 1.3rem; font-weight: bold;">${analysis.breakEvenUnits} unidades/mes</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 10px; text-align: center;">
+                            <p style="color: #9b9b9b; margin: 0 0 5px 0; font-size: 0.9rem;">Ingreso Potencial</p>
+                            <p style="color: #fff; margin: 0; font-size: 1.3rem; font-weight: bold;">$${analysis.potentialMonthlyRevenue.toLocaleString()}/mes</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 10px; text-align: center;">
+                            <p style="color: #9b9b9b; margin: 0 0 5px 0; font-size: 0.9rem;">Competitividad</p>
+                            <p style="color: #fff; margin: 0; font-size: 1rem; font-weight: bold;">${analysis.competitiveness}</p>
+                        </div>
+                    </div>
+
+                    <!-- Posición en el Mercado -->
+                    <div style="background: rgba(102, 126, 234, 0.08); padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+                        <h4 style="color: #667eea; margin: 0 0 10px 0;">📍 Posición en el Mercado</h4>
+                        <p style="color: #d0d0d0; margin: 0; line-height: 1.6;">${analysis.marketPosition}</p>
+                    </div>
+
+                    <!-- Botones -->
+                    <div style="display: flex; gap: 15px; justify-content: center; margin-top: 30px;">
+                        ${analysis.currentPrice !== analysis.recommendedPrice ? `
+                        <button onclick="applyRecommendedPrice(${analysis.recommendedPrice})" 
+                                style="background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%); 
+                                       color: white; 
+                                       border: none; 
+                                       padding: 14px 28px; 
+                                       border-radius: 10px; 
+                                       font-size: 1rem; 
+                                       font-weight: 600; 
+                                       cursor: pointer;
+                                       box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);">
+                            ✨ Usar Precio Recomendado ($${analysis.recommendedPrice.toLocaleString()})
+                        </button>
+                        ` : ''}
+                        <button onclick="this.closest('[style*=fixed]').remove(); document.getElementById('addProductModal').style.display='none';" 
+                                style="background: rgba(255,255,255,0.1); 
+                                       color: white; 
+                                       border: 1px solid rgba(255,255,255,0.2); 
+                                       padding: 14px 28px; 
+                                       border-radius: 10px; 
+                                       font-size: 1rem; 
+                                       font-weight: 600; 
+                                       cursor: pointer;">
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            modal.appendChild(content);
+            document.body.appendChild(modal);
+
+            // Cerrar al hacer clic fuera
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                    document.getElementById('addProductModal').style.display = 'none';
+                }
+            });
+        }
+
+        /**
+         * Aplicar precio recomendado al último producto creado
+         */
+        function applyRecommendedPrice(recommendedPrice) {
+            const products = window.dataSync.getAllProducts();
+            if (products.length > 0) {
+                const lastProduct = products[products.length - 1];
+                lastProduct.price = recommendedPrice;
+                lastProduct.originalPrice = Math.round(recommendedPrice * 1.5);
+                
+                // Recalcular análisis financiero
+                if (lastProduct.financialAnalysis) {
+                    const newAnalysis = window.aiAssistant.calculateFinancialAnalysis(
+                        lastProduct.supplierInfo.price,
+                        recommendedPrice,
+                        lastProduct.category
+                    );
+                    lastProduct.financialAnalysis = newAnalysis;
+                }
+                
+                window.dataSync.updateProduct(lastProduct.id, lastProduct);
+                
+                // Recargar
+                if (typeof loadProducts === 'function') {
+                    loadProducts();
+                }
+                
+                // Cerrar modal
+                document.querySelectorAll('[style*="position: fixed"]').forEach(el => {
+                    if (el.querySelector('[style*="Análisis Financiero"]')) {
+                        el.remove();
+                    }
+                });
+                
+                document.getElementById('addProductModal').style.display = 'none';
+                
+                alert(`✅ Precio actualizado a $${recommendedPrice.toLocaleString()}\n\nEl producto ahora tiene un margen óptimo de ganancia.`);
+            }
+        }
+        
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        /**
+         * Procesar URL de video para convertirla a formato embebido
+         */
+        function processVideoUrl(url) {
+            if (!url) return null;
+
+            // YouTube
+            let youtubeMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+            if (youtubeMatch) {
+                return `https://www.youtube.com/embed/${youtubeMatch[1]}`;
+            }
+
+            // Vimeo
+            let vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+            if (vimeoMatch) {
+                return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
+            }
+
+            // Si ya es una URL de embed, devolverla tal cual
+            if (url.includes('/embed/') || url.includes('player.vimeo')) {
+                return url;
+            }
+
+            // Si no coincide con ningún formato conocido, devolver null
+            console.warn('⚠️ URL de video no reconocida:', url);
+            return null;
+        }
+        
+        // ==============================================
+        // FIN ASISTENTE IA
+        // ==============================================
+        
+        // Calcular ganancia automáticamente
+        function calculateProfit() {
+            const price = parseFloat(document.getElementById('productPrice')?.value) || 0;
+            const supplierPrice = parseFloat(document.getElementById('productSupplierPrice')?.value) || 0;
+            const profit = price - supplierPrice;
+            
+            const profitField = document.getElementById('productProfit');
+            if (profitField) {
+                profitField.value = profit > 0 ? `$${profit.toLocaleString('es-CO')}` : '$0';
+                profitField.style.color = profit > 0 ? '#4caf50' : '#9b9b9b';
+            }
+        }
+        
+        function closeQuickAddModal() {
+            document.getElementById('quickAddModal').style.display = 'none';
+            document.getElementById('quickAddForm').reset();
+            document.getElementById('quickAddProgress').style.display = 'none';
+        }
+        
+        function handleQuickAdd(event) {
+            event.preventDefault();
+            
+            const url = document.getElementById('quickUrl').value;
+            const imagesText = document.getElementById('quickImages').value;
+            const price = parseFloat(document.getElementById('quickPrice').value);
+            const supplierPrice = parseFloat(document.getElementById('quickSupplierPrice').value) || 0;
+            const stock = parseInt(document.getElementById('quickStock').value) || 20;
+            
+            // Procesar URLs de imágenes
+            const imageUrls = imagesText
+                .split('\n')
+                .map(line => line.trim())
+                .filter(line => line.length > 0 && (line.startsWith('http://') || line.startsWith('https://')));
+            
+            if (imageUrls.length === 0) {
+                alert('❌ Por favor agrega al menos una URL de imagen válida');
+                return;
+            }
+            
+            // Mostrar progreso
+            document.getElementById('quickAddProgress').style.display = 'block';
+            
+            // Extraer información de la URL
+            let productName = 'Producto Importado';
+            let supplierName = 'Desconocido';
+            let category = 'otros';
+            
+            if (url.includes('shein.com')) {
+                supplierName = 'SHEIN';
+                category = 'ropa';
+                // Extraer nombre de la URL
+                const urlParts = url.split('/');
+                const productPart = urlParts.find(part => part.includes('-p-'));
+                if (productPart) {
+                    productName = productPart.split('-p-')[0].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                }
+            } else if (url.includes('amazon.com')) {
+                supplierName = 'Amazon';
+                const match = url.match(/\/([^\/]+)\/dp\//);
+                if (match) {
+                    productName = match[1].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                }
+            } else if (url.includes('mercadolibre.com')) {
+                supplierName = 'MercadoLibre';
+                const match = url.match(/\/([^\/]+)-/);
+                if (match) {
+                    productName = match[1].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                }
+            } else if (url.includes('aliexpress.com')) {
+                supplierName = 'AliExpress';
+                const match = url.match(/\/item\/([^\/]+)\.html/);
+                if (match) {
+                    productName = match[1].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                }
+            }
+            
+            // Crear producto con imágenes reales
+            const newProduct = {
+                name: productName,
+                category: category,
+                price: price,
+                originalPrice: Math.round(price * 1.5),
+                stock: stock,
+                available: true,
+                freeShipping: price >= 50000,
+                image: imageUrls[0], // Primera imagen como principal
+                additionalImages: imageUrls.slice(1), // Imágenes adicionales (sin la primera)
+                description: `${productName}\n\nProducto importado de ${supplierName}. \n\nCaracterísticas destacadas:\n• Alta calidad\n• Diseño moderno\n• Materiales resistentes\n• Perfecto para uso diario\n\nImportado directamente del proveedor para garantizar el mejor precio.`,
+                shortDescription: `${productName} - Calidad premium importada`,
+                variants: {
+                    colors: [],
+                    sizes: []
+                },
+                tags: ['nuevo'],
+                features: [
+                    'Producto importado',
+                    'Alta calidad',
+                    'Garantía de satisfacción'
+                ],
+                supplierInfo: {
+                    url: url,
+                    name: supplierName,
+                    price: supplierPrice,
+                    notes: `Producto importado. Verificar disponibilidad antes de ordenar.`
+                },
+                sold: 0,
+                rating: 5,
+                reviews: 0
+            };
+            
+            // Agregar producto
+            setTimeout(() => {
+                try {
+                    const addedProduct = window.dataSync.addProduct(newProduct);
+                    console.log('✅ Producto importado:', addedProduct);
+                    
+                    // Recargar productos
+                    if (typeof loadProducts === 'function') {
+                        loadProducts();
+                    }
+                    
+                    // Cerrar modal
+                    closeQuickAddModal();
+                    
+                    // Limpiar formulario
+                    document.getElementById('quickAddForm').reset();
+                    
+                    // Mostrar notificación
+                    alert(`✅ Producto importado exitosamente!\n\n📦 ${productName}\n🖼️ ${imageUrls.length} imágenes agregadas\n💰 Precio: $${price.toLocaleString('es-CO')}\n📊 Ganancia: $${(price - supplierPrice).toLocaleString('es-CO')}`);
+                    
+                } catch (error) {
+                    console.error('❌ Error al importar:', error);
+                    alert('❌ Error al importar el producto. Intenta nuevamente.');
+                    document.getElementById('quickAddProgress').style.display = 'none';
+                }
+            }, 1500);
+        }
+    </script>
+    <script src="js/admin-new.js"></script>
+    <script>
+        // Cargar pedidos en el admin panel
+        function loadAdminOrders() {
+            const orders = JSON.parse(localStorage.getItem('yunguen_orders') || '[]');
+            const tbody = document.getElementById('ordersTableBody');
+            
+            if (orders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 40px; color: #9b9b9b;">No hay pedidos registrados</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = orders.map(order => `
+                <tr>
+                    <td>${order.id}</td>
+                    <td>${order.customerName}</td>
+                    <td>${order.userEmail}</td>
+                    <td>${order.items.length} producto(s)</td>
+                    <td>$${order.total.toLocaleString('es-CO')}</td>
+                    <td>
+                        <select class="order-status-select" data-order-id="${order.id}" onchange="updateOrderStatus('${order.id}', this.value)">
+                            <option value="processing" ${order.status === 'processing' ? 'selected' : ''}>Procesando</option>
+                            <option value="shipped" ${order.status === 'shipped' ? 'selected' : ''}>Enviado</option>
+                            <option value="delivered" ${order.status === 'delivered' ? 'selected' : ''}>Entregado</option>
+                            <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Cancelado</option>
+                        </select>
+                    </td>
+                    <td>${new Date(order.date).toLocaleDateString('es-CO')}</td>
+                    <td>
+                        <button class="btn-icon" onclick="showOrderDetails('${order.id}')" title="Ver detalles">👁️</button>
+                        <button class="btn-icon" onclick="showTrackingModal('${order.id}')" title="Agregar tracking">📦</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function updateOrderStatus(orderId, newStatus) {
+            const orders = JSON.parse(localStorage.getItem('yunguen_orders') || '[]');
+            const orderIndex = orders.findIndex(o => o.id === orderId);
+            
+            if (orderIndex === -1) return;
+            
+            const oldStatus = orders[orderIndex].status;
+            orders[orderIndex].status = newStatus;
+            localStorage.setItem('yunguen_orders', JSON.stringify(orders));
+            
+            // Enviar email de notificación si cambió el estado
+            if (oldStatus !== newStatus) {
+                sendStatusUpdateEmail(orders[orderIndex], newStatus);
+            }
+            
+            alert(`Estado del pedido #${orderId} actualizado a: ${newStatus}`);
+            loadAdminOrders();
+        }
+
+        async function sendStatusUpdateEmail(order, newStatus) {
+            if (!window.EmailService) return;
+            
+            const result = await window.EmailService.sendStatusUpdate(order, newStatus);
+            if (result.success) {
+                console.log('✅ Email de actualización enviado al cliente');
+            }
+        }
+
+        function showOrderDetails(orderId) {
+            const orders = JSON.parse(localStorage.getItem('yunguen_orders') || '[]');
+            const order = orders.find(o => o.id === orderId);
+            
+            if (!order) return;
+            
+            const itemsList = order.items.map(item => 
+                `• ${item.name} x${item.quantity} - $${(item.price * item.quantity).toLocaleString('es-CO')}`
+            ).join('\n');
+            
+            alert(`DETALLES DEL PEDIDO\n\nID: ${order.id}\nCliente: ${order.customerName}\nEmail: ${order.userEmail}\nFecha: ${new Date(order.date).toLocaleString('es-CO')}\nEstado: ${order.status}\n\nPRODUCTOS:\n${itemsList}\n\nTOTAL: $${order.total.toLocaleString('es-CO')}`);
+        }
+
+        function showTrackingModal(orderId) {
+            const trackingNumber = prompt('Ingrese el número de seguimiento del envío:');
+            
+            if (trackingNumber && trackingNumber.trim()) {
+                const orders = JSON.parse(localStorage.getItem('yunguen_orders') || '[]');
+                const orderIndex = orders.findIndex(o => o.id === orderId);
+                
+                if (orderIndex !== -1) {
+                    orders[orderIndex].trackingNumber = trackingNumber.trim();
+                    orders[orderIndex].status = 'shipped'; // Cambiar a enviado automáticamente
+                    localStorage.setItem('yunguen_orders', JSON.stringify(orders));
+                    
+                    alert(`Número de seguimiento agregado: ${trackingNumber}\nEstado actualizado a: Enviado`);
+                    loadAdminOrders();
+                    
+                    // Enviar email con número de seguimiento
+                    sendStatusUpdateEmail(orders[orderIndex], 'shipped');
+                }
+            }
+        }
+
+        function filterOrders() {
+            const filter = document.getElementById('orderStatusFilter').value;
+            const orders = JSON.parse(localStorage.getItem('yunguen_orders') || '[]');
+            
+            const filteredOrders = filter === 'all' 
+                ? orders 
+                : orders.filter(o => o.status === filter);
+            
+            const tbody = document.getElementById('ordersTableBody');
+            
+            if (filteredOrders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 40px; color: #9b9b9b;">No hay pedidos con este estado</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = filteredOrders.map(order => `
+                <tr>
+                    <td>${order.id}</td>
+                    <td>${order.customerName}</td>
+                    <td>${order.userEmail}</td>
+                    <td>${order.items.length} producto(s)</td>
+                    <td>$${order.total.toLocaleString('es-CO')}</td>
+                    <td>
+                        <select class="order-status-select" data-order-id="${order.id}" onchange="updateOrderStatus('${order.id}', this.value)">
+                            <option value="processing" ${order.status === 'processing' ? 'selected' : ''}>Procesando</option>
+                            <option value="shipped" ${order.status === 'shipped' ? 'selected' : ''}>Enviado</option>
+                            <option value="delivered" ${order.status === 'delivered' ? 'selected' : ''}>Entregado</option>
+                            <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Cancelado</option>
+                        </select>
+                    </td>
+                    <td>${new Date(order.date).toLocaleDateString('es-CO')}</td>
+                    <td>
+                        <button class="btn-icon" onclick="showOrderDetails('${order.id}')" title="Ver detalles">👁️</button>
+                        <button class="btn-icon" onclick="showTrackingModal('${order.id}')" title="Agregar tracking">📦</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+    </script>
+    <script>
+        // Funciones para la tabla de especificaciones
+        let specRowCount = window.specRowCount || 0;
+
+        function toggleSpecsTable() {
+            const checkbox = document.getElementById('enableSpecsTable');
+            const container = document.getElementById('specsTableContainer');
+            container.style.display = checkbox.checked ? 'block' : 'none';
+            
+            if (checkbox.checked && specRowCount === 0) {
+                // Agregar 3 filas por defecto
+                addSpecRow();
+                addSpecRow();
+                addSpecRow();
+            }
+        }
+
+        function addSpecRow() {
+            specRowCount++;
+            window.specRowCount = specRowCount;
+            const container = document.getElementById('specsRowsContainer');
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'spec-row';
+            rowDiv.style.cssText = 'display: flex; gap: 12px; margin-bottom: 12px; align-items: center;';
+            rowDiv.innerHTML = `
+                <div style="flex: 1;">
+                    <input type="text" class="spec-label" placeholder="Ej: Rango de impedancia" 
+                           style="width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff;"
+                           oninput="updateSpecsPreview()">
+                </div>
+                <div style="flex: 1;">
+                    <input type="text" class="spec-value" placeholder="Ej: Hasta 32 Ω" 
+                           style="width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff;"
+                           oninput="updateSpecsPreview()">
+                </div>
+                <button type="button" onclick="removeSpecRow(this)" 
+                        style="padding: 10px 15px; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; color: #ef4444; cursor: pointer; transition: all 0.3s;">
+                    ✕
+                </button>
+            `;
+            container.appendChild(rowDiv);
+            updateSpecsPreview();
+        }
+
+        function removeSpecRow(button) {
+            button.parentElement.remove();
+            specRowCount = Math.max(0, specRowCount - 1);
+            window.specRowCount = specRowCount;
+            updateSpecsPreview();
+        }
+
+        function updateSpecsPreview() {
+            const previewBody = document.getElementById('specsPreviewBody');
+            const rows = document.querySelectorAll('.spec-row');
+            
+            // Limpiar preview (mantener header)
+            previewBody.innerHTML = `
+                <tr>
+                    <td style="padding: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(59, 130, 246, 0.1); font-weight: 600; color: #3b82f6;">Característica</td>
+                    <td style="padding: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(59, 130, 246, 0.1); font-weight: 600; color: #3b82f6;">Detalle</td>
+                </tr>
+            `;
+            
+            rows.forEach(row => {
+                const label = row.querySelector('.spec-label').value.trim();
+                const value = row.querySelector('.spec-value').value.trim();
+                
+                if (label || value) {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="padding: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.02); font-weight: 600;">${label || '---'}</td>
+                        <td style="padding: 12px; border: 1px solid rgba(255,255,255,0.1);">${value || '---'}</td>
+                    `;
+                    previewBody.appendChild(tr);
+                }
+            });
+        }
+
+        function getSpecsTableData() {
+            const rows = document.querySelectorAll('.spec-row');
+            const specs = [];
+            
+            rows.forEach(row => {
+                const label = row.querySelector('.spec-label').value.trim();
+                const value = row.querySelector('.spec-value').value.trim();
+                
+                if (label && value) {
+                    specs.push({ label, value });
+                }
+            });
+            
+            console.log('📊 Especificaciones recopiladas:', specs);
+            return specs;
+        }
+        
+        // Hacer función global
+        window.getSpecsTableData = getSpecsTableData;
+
+        // ============================================
+        // FUNCIONES PARA VARIANTES (COLORES Y TALLAS)
+        // ============================================
+        
+        let colorVariants = [];
+        let sizeVariants = [];
+        
+        function addColorVariant() {
+            const colorName = prompt('Nombre del color (Ej: Negro, Blanco, Rojo):');
+            if (!colorName) return;
+            
+            const colorHex = prompt('Código del color en hexadecimal (Ej: #000000, #FFFFFF):');
+            if (!colorHex) return;
+            
+            const isHot = confirm('¿Marcar este color como "HOT"?');
+            
+            const color = {
+                name: colorName,
+                hex: colorHex,
+                isHot: isHot
+            };
+            
+            colorVariants.push(color);
+            renderColorVariants();
+        }
+        
+        function renderColorVariants() {
+            const container = document.getElementById('colorsContainer');
+            container.innerHTML = colorVariants.map((color, index) => `
+                <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 8px; margin-right: 8px; margin-bottom: 8px;">
+                    <div style="width: 24px; height: 24px; border-radius: 50%; background: ${color.hex}; border: 2px solid rgba(255,255,255,0.2);"></div>
+                    <span style="color: #fff; font-size: 0.9rem;">${color.name}</span>
+                    ${color.isHot ? '<span style="background: #ef4444; color: #fff; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: 700;">HOT</span>' : ''}
+                    <button type="button" onclick="removeColor(${index})" style="background: rgba(239,68,68,0.2); color: #ef4444; border: none; width: 20px; height: 20px; border-radius: 50%; cursor: pointer; font-size: 0.8rem;">×</button>
+                </div>
+            `).join('');
+        }
+        
+        function removeColor(index) {
+            colorVariants.splice(index, 1);
+            renderColorVariants();
+        }
+        
+        function addSizeVariant() {
+            const sizeInput = document.getElementById('newSizeInput');
+            const size = sizeInput.value.trim();
+            
+            if (!size) {
+                alert('Por favor ingresa una talla');
+                return;
+            }
+            
+            if (sizeVariants.includes(size)) {
+                alert('Esta talla ya existe');
+                return;
+            }
+            
+            sizeVariants.push(size);
+            renderSizeVariants();
+            sizeInput.value = '';
+        }
+        
+        function renderSizeVariants() {
+            const container = document.getElementById('sizesContainer');
+            container.innerHTML = sizeVariants.map((size, index) => `
+                <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); padding: 6px 12px; border-radius: 6px;">
+                    <span style="color: #3b82f6; font-weight: 600; font-size: 0.9rem;">${size}</span>
+                    <button type="button" onclick="removeSize(${index})" style="background: none; color: #ef4444; border: none; cursor: pointer; font-size: 1rem; padding: 0; width: 16px; height: 16px;">×</button>
+                </div>
+            `).join('');
+        }
+        
+        function removeSize(index) {
+            sizeVariants.splice(index, 1);
+            renderSizeVariants();
+        }
+        
+        // Hacer funciones globales
+        window.addColorVariant = addColorVariant;
+        window.addSizeVariant = addSizeVariant;
+        window.removeColor = removeColor;
+        window.removeSize = removeSize;
+
+        // Funciones para OCR de especificaciones
+        document.getElementById('specsImageUpload')?.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('specsImagePreview').src = event.target.result;
+                    document.getElementById('specsImagePreviewContainer').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        async function extractSpecsFromImage() {
+            const imageElement = document.getElementById('specsImagePreview');
+            const progressDiv = document.getElementById('specsOcrProgress');
+            const extractBtn = event.target;
+            
+            if (!imageElement.src) {
+                alert('Por favor sube una imagen primero');
+                return;
+            }
+            
+            // Cargar Tesseract si no está cargado
+            loadTesseract();
+            
+            // Esperar a que Tesseract esté disponible
+            const waitForTesseract = setInterval(() => {
+                if (typeof Tesseract !== 'undefined') {
+                    clearInterval(waitForTesseract);
+                    performOCR();
+                }
+            }, 100);
+            
+            async function performOCR() {
+                try {
+                    extractBtn.style.display = 'none';
+                    progressDiv.style.display = 'block';
+                    
+                    // Usar Tesseract para OCR
+                    const result = await Tesseract.recognize(
+                        imageElement.src,
+                        'spa',
+                        {
+                            logger: m => {
+                                if (m.status === 'recognizing text') {
+                                    const percent = Math.round(m.progress * 100);
+                                    progressDiv.querySelector('p').textContent = `Extrayendo especificaciones... ${percent}%`;
+                                }
+                            }
+                        }
+                    );
+                    
+                    const text = result.data.text;
+                    console.log('Texto extraído:', text);
+                    
+                    // Procesar el texto para extraer especificaciones
+                    parseSpecificationsFromText(text);
+                    
+                    progressDiv.style.display = 'none';
+                    extractBtn.style.display = 'block';
+                    
+                    alert('✅ Especificaciones extraídas correctamente');
+                    
+                } catch (error) {
+                    console.error('Error en OCR:', error);
+                    progressDiv.style.display = 'none';
+                    extractBtn.style.display = 'block';
+                    alert('❌ Error al procesar la imagen: ' + error.message);
+                }
+            }
+        }
+
+        function parseSpecificationsFromText(text) {
+            // Limpiar el contenedor de filas existentes
+            document.getElementById('specsRowsContainer').innerHTML = '';
+            specRowCount = 0;
+            window.specRowCount = 0;
+            
+            // Patrones comunes para tablas de especificaciones
+            const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+            
+            let specs = [];
+            
+            // Intentar detectar formato de tabla (característica: valor o característica | valor)
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+                
+                // Buscar separadores comunes: :, |, --, etc.
+                let label = '';
+                let value = '';
+                
+                if (line.includes(':')) {
+                    const parts = line.split(':');
+                    label = parts[0].trim();
+                    value = parts.slice(1).join(':').trim();
+                } else if (line.includes('|')) {
+                    const parts = line.split('|');
+                    label = parts[0].trim();
+                    value = parts.slice(1).join('|').trim();
+                } else if (line.match(/^[A-Za-záéíóúñÑ\s]+\s{2,}/)) {
+                    // Detectar espacios múltiples como separador
+                    const parts = line.split(/\s{2,}/);
+                    label = parts[0].trim();
+                    value = parts.slice(1).join(' ').trim();
+                } else if (i + 1 < lines.length && lines[i].length < 50 && lines[i+1].length < 100) {
+                    // Si la línea es corta, podría ser el label, y la siguiente el valor
+                    label = lines[i];
+                    value = lines[i + 1];
+                    i++; // Saltar la siguiente línea
+                }
+                
+                // Filtrar headers comunes de tablas
+                const isHeader = label.toLowerCase().includes('característica') || 
+                                label.toLowerCase().includes('detalle') ||
+                                label.toLowerCase().includes('especificación') ||
+                                label.toLowerCase().includes('descripción');
+                
+                if (label && value && !isHeader && label.length < 100 && value.length < 200) {
+                    specs.push({ label, value });
+                }
+            }
+            
+            // Si no se encontraron especificaciones con el método anterior, intentar otro enfoque
+            if (specs.length === 0) {
+                // Buscar líneas que parezcan pares clave-valor
+                for (let i = 0; i < lines.length - 1; i += 2) {
+                    if (lines[i] && lines[i + 1]) {
+                        const label = lines[i].replace(/[:\-\|]/g, '').trim();
+                        const value = lines[i + 1].replace(/[:\-\|]/g, '').trim();
+                        
+                        if (label.length > 2 && label.length < 100 && value.length > 0 && value.length < 200) {
+                            specs.push({ label, value });
+                        }
+                    }
+                }
+            }
+            
+            // Agregar las especificaciones encontradas
+            if (specs.length > 0) {
+                specs.forEach(spec => {
+                    addSpecRow();
+                    const rows = document.querySelectorAll('.spec-row');
+                    const lastRow = rows[rows.length - 1];
+                    lastRow.querySelector('.spec-label').value = spec.label;
+                    lastRow.querySelector('.spec-value').value = spec.value;
+                });
+                
+                updateSpecsPreview();
+                console.log(`✅ Se agregaron ${specs.length} especificaciones`);
+            } else {
+                alert('⚠️ No se pudieron detectar especificaciones en la imagen. Por favor agrégalas manualmente.');
+            }
+        }
+
+        // ============================================
+        // FUNCIONES DE IMPORTACIÓN RÁPIDA
+        // ============================================
+
+        let quickImages = [];
+
+        function handleQuickImageUpload(event) {
+            const files = Array.from(event.target.files);
+            const previewContainer = document.getElementById('quickImagePreviews');
+            
+            files.forEach(file => {
+                if (validateImage(file)) {
+                    convertToBase64(file, (base64) => {
+                        quickImages.push(base64);
+                        
+                        const preview = document.createElement('div');
+                        preview.style.cssText = 'position: relative; border-radius: 8px; overflow: hidden; aspect-ratio: 1;';
+                        preview.innerHTML = `
+                            <img src="${base64}" style="width: 100%; height: 100%; object-fit: cover;">
+                            <button onclick="removeQuickImage(${quickImages.length - 1})" style="position: absolute; top: 4px; right: 4px; background: rgba(239, 68, 68, 0.9); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center;">×</button>
+                        `;
+                        previewContainer.appendChild(preview);
+                    });
+                }
+            });
+        }
+
+        function removeQuickImage(index) {
+            quickImages.splice(index, 1);
+            const previewContainer = document.getElementById('quickImagePreviews');
+            previewContainer.innerHTML = '';
+            
+            quickImages.forEach((img, idx) => {
+                const preview = document.createElement('div');
+                preview.style.cssText = 'position: relative; border-radius: 8px; overflow: hidden; aspect-ratio: 1;';
+                preview.innerHTML = `
+                    <img src="${img}" style="width: 100%; height: 100%; object-fit: cover;">
+                    <button onclick="removeQuickImage(${idx})" style="position: absolute; top: 4px; right: 4px; background: rgba(239, 68, 68, 0.9); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center;">×</button>
+                `;
+                previewContainer.appendChild(preview);
+            });
+        }
+
+        async function quickImportProduct() {
+            const url = document.getElementById('urlProductLink').value.trim();
+            const name = document.getElementById('quickProductName').value.trim();
+            const info = document.getElementById('quickProductInfo').value.trim();
+            const supplierPrice = parseFloat(document.getElementById('quickSupplierPrice').value);
+            const sellingPrice = parseFloat(document.getElementById('quickSellingPrice').value);
+
+            // Validaciones
+            if (!url) {
+                alert('⚠️ Por favor ingresa la URL del producto');
+                return;
+            }
+            if (!name) {
+                alert('⚠️ Por favor ingresa el nombre del producto');
+                return;
+            }
+            if (quickImages.length === 0) {
+                alert('⚠️ Por favor sube al menos una imagen');
+                return;
+            }
+            if (!supplierPrice || supplierPrice <= 0) {
+                alert('⚠️ Por favor ingresa el precio del proveedor');
+                return;
+            }
+            if (!sellingPrice || sellingPrice <= 0) {
+                alert('⚠️ Por favor ingresa el precio de venta');
+                return;
+            }
+
+            // Mostrar procesamiento
+            const processingDiv = document.getElementById('quickProcessing');
+            const statusText = document.getElementById('quickProcessingStatus');
+            processingDiv.style.display = 'block';
+
+            try {
+                statusText.textContent = '🤖 Generando descripción profesional...';
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                // Crear información breve para la IA
+                const briefInfo = `${name}\n${info || 'Producto de calidad'}\nPrecio proveedor: $${supplierPrice}`;
+
+                // Usar IA para generar producto completo
+                if (!window.AIProductAssistantEnhanced) {
+                    throw new Error('AI Assistant no disponible');
+                }
+
+                const aiAssistant = new AIProductAssistantEnhanced();
+                const productData = aiAssistant.generateProductComplete(briefInfo, sellingPrice, quickImages);
+
+                // Actualizar análisis financiero con el precio real del proveedor
+                productData.financialAnalysis = aiAssistant.calculateFinancialAnalysis(
+                    supplierPrice,
+                    sellingPrice,
+                    productData.category
+                );
+
+                statusText.textContent = '💾 Guardando producto...';
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                // Crear producto final
+                const products = JSON.parse(localStorage.getItem('yunguen_products') || '[]');
+                
+                const newProduct = {
+                    id: Date.now(),
+                    ...productData,
+                    stock: 20,
+                    supplierInfo: {
+                        url: url,
+                        name: productData.supplierInfo?.name || 'Proveedor',
+                        price: supplierPrice,
+                        notes: `Importado desde ${url}`
+                    },
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                };
+
+                products.push(newProduct);
+                localStorage.setItem('yunguen_products', JSON.stringify(products));
+
+                // Ocultar procesamiento
+                processingDiv.style.display = 'none';
+
+                // Mostrar éxito
+                const margin = ((sellingPrice - supplierPrice) / sellingPrice * 100).toFixed(1);
+                alert(`✅ Producto creado exitosamente!\n\n` +
+                      `📦 ${productData.name}\n` +
+                      `💵 Proveedor: $${supplierPrice.toLocaleString('es-CO')}\n` +
+                      `💰 Venta: $${sellingPrice.toLocaleString('es-CO')}\n` +
+                      `📊 Margen: ${margin}%\n` +
+                      `📸 ${quickImages.length} imágenes\n` +
+                      `🔗 URL guardada`);
+
+                // Limpiar formulario
+                document.getElementById('urlProductLink').value = '';
+                document.getElementById('quickProductName').value = '';
+                document.getElementById('quickProductInfo').value = '';
+                document.getElementById('quickSupplierPrice').value = '';
+                document.getElementById('quickSellingPrice').value = '';
+                document.getElementById('quickImagePreviews').innerHTML = '';
+                quickImages = [];
+
+                // Cerrar modal y recargar
+                closeModal('addProductModal');
+                loadProducts();
+
+            } catch (error) {
+                console.error('Error:', error);
+                processingDiv.style.display = 'none';
+                alert(`❌ Error al crear producto:\n\n${error.message}`);
+            }
+        }
+
+        function switchImportTab(tab) {
+            // Actualizar tabs visuales
+            document.querySelectorAll('.import-tab').forEach(btn => {
+                if (btn.dataset.tab === tab) {
+                    btn.style.color = tab === 'manual' ? '#667eea' : '#10b981';
+                    btn.style.borderBottomColor = tab === 'manual' ? '#667eea' : '#10b981';
+                    btn.classList.add('active');
+                } else {
+                    btn.style.color = '#9b9b9b';
+                    btn.style.borderBottomColor = 'transparent';
+                    btn.classList.remove('active');
+                }
+            });
+
+            // Mostrar/ocultar modos
+            document.getElementById('manualImportMode').style.display = tab === 'manual' ? 'block' : 'none';
+            document.getElementById('urlImportMode').style.display = tab === 'url' ? 'block' : 'none';
+        }
+
+        // ============================================
+        // INICIALIZACIÓN GLOBAL
+        // ============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 Inicializando panel admin...');
+
+            // Listeners de precio y ganancia
+            const priceField = document.getElementById('productPrice');
+            const supplierPriceField = document.getElementById('productSupplierPrice');
+            if (priceField) priceField.addEventListener('input', calculateProfit);
+            if (supplierPriceField) supplierPriceField.addEventListener('input', calculateProfit);
+
+            // Quick Add Modal
+            const quickAddBtn = document.getElementById('quickAddBtn');
+            if (quickAddBtn) {
+                quickAddBtn.addEventListener('click', () => {
+                    document.getElementById('quickAddModal').style.display = 'flex';
+                });
+            }
+
+            // Pedidos
+            const ordersNavItem = document.querySelector('[data-section="orders"]');
+            if (ordersNavItem) {
+                ordersNavItem.addEventListener('click', loadAdminOrders);
+            }
+
+            // Margen de importación rápida
+            setTimeout(() => {
+                const supplierInput = document.getElementById('quickSupplierPrice');
+                const sellingInput = document.getElementById('quickSellingPrice');
+                const marginInfo = document.getElementById('quickMarginInfo');
+
+                function updateMargin() {
+                    const supplier = parseFloat(supplierInput?.value || 0);
+                    const selling = parseFloat(sellingInput?.value || 0);
+
+                    if (supplier > 0 && selling > 0) {
+                        const margin = ((selling - supplier) / selling * 100).toFixed(1);
+                        const profit = selling - supplier;
+                        
+                        let color = '#ef4444';
+                        let emoji = '❌';
+                        if (margin >= 40) {
+                            color = '#10b981';
+                            emoji = '✅';
+                        } else if (margin >= 30) {
+                            color = '#f59e0b';
+                            emoji = '⚠️';
+                        }
+                        
+                        if (marginInfo) {
+                            marginInfo.innerHTML = `${emoji} Margen: <span style="color: ${color}; font-weight: 700;">${margin}%</span> | Ganancia: <span style="color: ${color}; font-weight: 700;">$${profit.toLocaleString('es-CO')}</span>`;
+                        }
+                    } else if (marginInfo) {
+                        marginInfo.innerHTML = 'Margen: <span style="color: #666;">-</span>';
+                    }
+                }
+
+                if (supplierInput && sellingInput) {
+                    supplierInput.addEventListener('input', updateMargin);
+                    sellingInput.addEventListener('input', updateMargin);
+                    supplierInput.addEventListener('change', updateMargin);
+                    sellingInput.addEventListener('change', updateMargin);
+                    updateMargin();
+                }
+            }, 500);
+
+            console.log('✅ Panel admin inicializado');
+        });
+    </script>
+    <script src="js/web-scraper-ai.js"></script>
+</body>
+</html>

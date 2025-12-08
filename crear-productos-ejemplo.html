@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Productos de Ejemplo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin: 10px 0;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .product-list {
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .product-item {
+            padding: 10px;
+            margin: 5px 0;
+            background: #f8f9fa;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛍️ Crear Productos de Ejemplo</h1>
+        <p style="text-align: center; color: #666;">
+            Haz clic en el botón para crear productos de ejemplo en todas las categorías
+        </p>
+        
+        <button class="btn" onclick="crearProductosEjemplo()">
+            ✨ Crear 30 Productos de Ejemplo
+        </button>
+        
+        <button class="btn" onclick="verProductos()" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+            👁️ Ver Productos Guardados
+        </button>
+        
+        <button class="btn" onclick="limpiarProductos()" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+            🗑️ Limpiar Todos los Productos
+        </button>
+        
+        <div id="status" class="status"></div>
+        
+        <div id="productList" class="product-list"></div>
+    </div>
+
+    <script src="js/data-sync.js"></script>
+    <script>
+        const productosEjemplo = [
+            // ROPA (5 productos)
+            {
+                name: "Camiseta Premium Algodón",
+                description: "Camiseta de algodón 100% premium, suave y transpirable. Perfecta para uso diario.",
+                category: "ropa",
+                price: 299,
+                stock: 50,
+                image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
+                available: true
+            },
+            {
+                name: "Jeans Clásico Azul",
+                description: "Jeans de mezclilla de alta calidad con ajuste perfecto y durabilidad excepcional.",
+                category: "ropa",
+                price: 599,
+                stock: 30,
+                image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400",
+                available: true
+            },
+            {
+                name: "Sudadera con Capucha",
+                description: "Sudadera cómoda con capucha, ideal para el clima frío. Disponible en varios colores.",
+                category: "ropa",
+                price: 450,
+                stock: 25,
+                image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400",
+                available: true
+            },
+            {
+                name: "Vestido Casual Verano",
+                description: "Vestido ligero y fresco, perfecto para los días de verano. Diseño moderno y elegante.",
+                category: "ropa",
+                price: 550,
+                stock: 15,
+                image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400",
+                available: true
+            },
+            {
+                name: "Chaqueta de Cuero",
+                description: "Chaqueta de cuero sintético de alta calidad. Estilo clásico que nunca pasa de moda.",
+                category: "ropa",
+                price: 1200,
+                stock: 10,
+                image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400",
+                available: true
+            },
+            
+            // ELECTRÓNICA (5 productos)
+            {
+                name: "Audífonos Inalámbricos Pro",
+                description: "Audífonos con cancelación de ruido activa, batería de 30 horas y sonido premium.",
+                category: "electronica",
+                price: 1499,
+                stock: 40,
+                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400",
+                available: true
+            },
+            {
+                name: "Smartwatch Deportivo",
+                description: "Reloj inteligente con monitor de frecuencia cardíaca, GPS y resistencia al agua.",
+                category: "electronica",
+                price: 2499,
+                stock: 20,
+                image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400",
+                available: true
+            },
+            {
+                name: "Teclado Mecánico RGB",
+                description: "Teclado mecánico gaming con switches azules, iluminación RGB personalizable.",
+                category: "electronica",
+                price: 899,
+                stock: 35,
+                image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400",
+                available: true
+            },
+            {
+                name: "Mouse Gaming Ergonómico",
+                description: "Mouse gaming de alta precisión con 16000 DPI, 8 botones programables y RGB.",
+                category: "electronica",
+                price: 599,
+                stock: 45,
+                image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400",
+                available: true
+            },
+            {
+                name: "Cámara Web HD 1080p",
+                description: "Cámara web Full HD con micrófono integrado, ideal para videollamadas y streaming.",
+                category: "electronica",
+                price: 799,
+                stock: 28,
+                image: "https://images.unsplash.com/photo-1585243491707-78a8b1a85a6f?w=400",
+                available: true
+            },
+            
+            // HOGAR (5 productos)
+            {
+                name: "Lámpara LED Inteligente",
+                description: "Lámpara LED con control por app, 16 millones de colores y temporizador.",
+                category: "hogar",
+                price: 399,
+                stock: 50,
+                image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=400",
+                available: true
+            },
+            {
+                name: "Juego de Sábanas Premium",
+                description: "Juego de sábanas de algodón egipcio 600 hilos, suaves y duraderas.",
+                category: "hogar",
+                price: 899,
+                stock: 22,
+                image: "https://images.unsplash.com/photo-1505693314120-0d443867891c?w=400",
+                available: true
+            },
+            {
+                name: "Aspiradora Robot",
+                description: "Aspiradora robot inteligente con mapeo láser y control por voz.",
+                category: "hogar",
+                price: 3999,
+                stock: 12,
+                image: "https://images.unsplash.com/photo-1558317374-067fb5f30001?w=400",
+                available: true
+            },
+            {
+                name: "Set de Ollas Antiadherentes",
+                description: "Juego completo de 10 piezas con recubrimiento antiadherente premium.",
+                category: "hogar",
+                price: 1299,
+                stock: 18,
+                image: "https://images.unsplash.com/photo-1584990347449-39b9dbf291d2?w=400",
+                available: true
+            },
+            {
+                name: "Espejo de Baño LED",
+                description: "Espejo con iluminación LED integrada y función anti-empañamiento.",
+                category: "hogar",
+                price: 1599,
+                stock: 14,
+                image: "https://images.unsplash.com/photo-1604762524889-5d6d5c1b2d86?w=400",
+                available: true
+            },
+            
+            // DEPORTES (3 productos)
+            {
+                name: "Bicicleta de Montaña",
+                description: "Bicicleta MTB con suspensión doble, 21 velocidades y frenos de disco.",
+                category: "deportes",
+                price: 5999,
+                stock: 8,
+                image: "https://images.unsplash.com/photo-1576435728678-68d0fbf94e91?w=400",
+                available: true
+            },
+            {
+                name: "Mancuernas Ajustables",
+                description: "Set de mancuernas ajustables de 5 a 25 kg, perfectas para entrenamiento en casa.",
+                category: "deportes",
+                price: 1999,
+                stock: 15,
+                image: "https://images.unsplash.com/photo-1583454155184-870a1f63afe4?w=400",
+                available: true
+            },
+            {
+                name: "Yoga Mat Premium",
+                description: "Tapete de yoga antideslizante, ecológico y con líneas de alineación.",
+                category: "deportes",
+                price: 449,
+                stock: 30,
+                image: "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=400",
+                available: true
+            },
+            
+            // BELLEZA (3 productos)
+            {
+                name: "Set de Maquillaje Profesional",
+                description: "Kit completo con 32 piezas: sombras, labiales, brochas y estuche.",
+                category: "belleza",
+                price: 899,
+                stock: 25,
+                image: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=400",
+                available: true
+            },
+            {
+                name: "Secadora de Cabello Iónica",
+                description: "Secadora profesional con tecnología iónica para cabello brillante y sin frizz.",
+                category: "belleza",
+                price: 1299,
+                stock: 18,
+                image: "https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=400",
+                available: true
+            },
+            {
+                name: "Kit de Cuidado Facial",
+                description: "Set completo con limpiador, tónico, sérum y crema hidratante.",
+                category: "belleza",
+                price: 749,
+                stock: 32,
+                image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400",
+                available: true
+            },
+            
+            // LIBROS (2 productos)
+            {
+                name: "Colección Harry Potter",
+                description: "Set completo de 7 libros en edición especial con ilustraciones.",
+                category: "libros",
+                price: 1499,
+                stock: 15,
+                image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400",
+                available: true
+            },
+            {
+                name: "El Principito - Edición Lujo",
+                description: "Edición de lujo con tapas duras y páginas ilustradas a color.",
+                category: "libros",
+                price: 449,
+                stock: 40,
+                image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400",
+                available: true
+            },
+            
+            // JUGUETES (2 productos)
+            {
+                name: "LEGO Set Construcción Avanzado",
+                description: "Set de 2000 piezas para construir modelos increíbles. Recomendado +10 años.",
+                category: "juguetes",
+                price: 1999,
+                stock: 12,
+                image: "https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=400",
+                available: true
+            },
+            {
+                name: "Peluche Gigante Oso",
+                description: "Peluche suave y esponjoso de 1.2 metros de altura. Perfecto regalo.",
+                category: "juguetes",
+                price: 799,
+                stock: 20,
+                image: "https://images.unsplash.com/photo-1530325553241-4f6e7690cf36?w=400",
+                available: true
+            },
+            
+            // ALIMENTOS (2 productos)
+            {
+                name: "Caja de Chocolates Gourmet",
+                description: "Selección premium de 24 chocolates artesanales de Bélgica.",
+                category: "alimentos",
+                price: 599,
+                stock: 35,
+                image: "https://images.unsplash.com/photo-1511381939415-e44015466834?w=400",
+                available: true
+            },
+            {
+                name: "Set de Tés Especiales",
+                description: "Colección de 12 tés exóticos de diferentes partes del mundo.",
+                category: "alimentos",
+                price: 449,
+                stock: 28,
+                image: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400",
+                available: true
+            },
+            
+            // TECNOLOGÍA (2 productos)
+            {
+                name: "Tablet 10 Pulgadas",
+                description: "Tablet Android con procesador octa-core, 64GB almacenamiento y 4GB RAM.",
+                category: "tecnologia",
+                price: 3499,
+                stock: 16,
+                image: "https://images.unsplash.com/photo-1561154464-82e9adf32764?w=400",
+                available: true
+            },
+            {
+                name: "Power Bank 20000mAh",
+                description: "Batería portátil de alta capacidad con carga rápida y 3 puertos USB.",
+                category: "tecnologia",
+                price: 599,
+                stock: 42,
+                image: "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400",
+                available: true
+            },
+            
+            // OTROS (1 producto)
+            {
+                name: "Kit de Herramientas 100 Piezas",
+                description: "Set completo de herramientas para el hogar en estuche organizado.",
+                category: "otros",
+                price: 899,
+                stock: 22,
+                image: "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=400",
+                available: true
+            }
+        ];
+
+        function crearProductosEjemplo() {
+            const status = document.getElementById('status');
+            
+            if (!window.dataSync) {
+                mostrarEstado('error', '❌ Error: No se pudo cargar el sistema de sincronización');
+                return;
+            }
+            
+            let productosCreados = 0;
+            
+            productosEjemplo.forEach((producto, index) => {
+                const productoConId = {
+                    ...producto,
+                    id: Date.now() + index,
+                    createdAt: new Date().toISOString(),
+                    sold: Math.floor(Math.random() * 50)
+                };
+                
+                window.dataSync.addProduct(productoConId);
+                productosCreados++;
+            });
+            
+            mostrarEstado('success', `✅ ¡Éxito! Se crearon ${productosCreados} productos de ejemplo.`);
+            
+            setTimeout(() => {
+                verProductos();
+            }, 1000);
+        }
+
+        function verProductos() {
+            const productList = document.getElementById('productList');
+            
+            if (!window.dataSync) {
+                mostrarEstado('error', '❌ Error: No se pudo cargar el sistema de sincronización');
+                return;
+            }
+            
+            const productos = window.dataSync.getProducts();
+            
+            if (productos.length === 0) {
+                productList.innerHTML = '<p style="text-align: center; color: #999;">No hay productos guardados</p>';
+                mostrarEstado('info', 'ℹ️ No hay productos en el sistema');
+                return;
+            }
+            
+            productList.innerHTML = productos.map((p, index) => `
+                <div class="product-item">
+                    <strong>${index + 1}. ${p.name}</strong> - 
+                    <span style="color: #667eea;">$${p.price}</span> - 
+                    <span style="color: #666;">${p.category}</span> - 
+                    <span style="color: ${p.stock > 10 ? '#28a745' : '#dc3545'};">Stock: ${p.stock}</span>
+                </div>
+            `).join('');
+            
+            mostrarEstado('success', `✅ Se encontraron ${productos.length} productos`);
+        }
+
+        function limpiarProductos() {
+            if (!confirm('¿Estás seguro de que quieres eliminar TODOS los productos?')) {
+                return;
+            }
+            
+            localStorage.removeItem('yunguen_products');
+            window.location.reload();
+        }
+
+        function mostrarEstado(tipo, mensaje) {
+            const status = document.getElementById('status');
+            status.className = 'status ' + tipo;
+            status.textContent = mensaje;
+            status.style.display = 'block';
+            
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 5000);
+        }
+
+        // Cargar productos al inicio
+        window.addEventListener('load', () => {
+            if (window.dataSync) {
+                verProductos();
+            }
+        });
+    </script>
+</body>
+</html>

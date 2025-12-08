@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Pedidos - YunGuen</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/tridot-animations.css">
+    <style>
+        .orders-container {
+            max-width: 1200px;
+            margin: 100px auto 60px;
+            padding: 0 24px;
+        }
+
+        .orders-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .orders-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #ffffff 0%, #9b9b9b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .orders-header p {
+            color: #9b9b9b;
+            font-size: 1.1rem;
+        }
+
+        .orders-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .order-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .order-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .order-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .order-date {
+            color: #9b9b9b;
+            font-size: 0.9rem;
+        }
+
+        .order-status {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-processing {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+            border: 1px solid #ffc107;
+        }
+
+        .status-shipped {
+            background: rgba(33, 150, 243, 0.2);
+            color: #2196f3;
+            border: 1px solid #2196f3;
+        }
+
+        .status-delivered {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+            border: 1px solid #4caf50;
+        }
+
+        .status-cancelled {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+            border: 1px solid #f44336;
+        }
+
+        .order-items {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .order-item {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .order-item-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: #0a0a0a;
+        }
+
+        .order-item-info {
+            flex: 1;
+        }
+
+        .order-item-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .order-item-quantity {
+            color: #9b9b9b;
+            font-size: 0.9rem;
+        }
+
+        .order-item-price {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .order-total {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-track {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+            color: #000000;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-track:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+        }
+
+        .empty-orders {
+            text-align: center;
+            padding: 80px 24px;
+        }
+
+        .empty-orders-icon {
+            font-size: 4rem;
+            margin-bottom: 24px;
+            opacity: 0.5;
+        }
+
+        .empty-orders h2 {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        .empty-orders p {
+            color: #9b9b9b;
+            margin-bottom: 24px;
+        }
+
+        .btn-shop {
+            display: inline-block;
+            padding: 12px 32px;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+            color: #000000;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-shop:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+        }
+
+        .tracking-info {
+            margin-top: 12px;
+            padding: 12px;
+            background: rgba(33, 150, 243, 0.1);
+            border-left: 3px solid #2196f3;
+            border-radius: 4px;
+        }
+
+        .tracking-info p {
+            font-size: 0.9rem;
+            color: #2196f3;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .order-header {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .order-footer {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+
+            .order-actions {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .btn-track {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="index.html" class="brand">
+                    <div class="tridot-dots">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                    YUNGUEN
+                </a>
+                <ul class="menu">
+                    <li><a href="index.html#inicio">Inicio</a></li>
+                    <li><a href="index.html#productos">Productos</a></li>
+                    <li><a href="my-orders.html">Mis Pedidos</a></li>
+                    <li><a href="index.html#contacto">Contacto</a></li>
+                </ul>
+                
+                <div id="userMenu" class="user-menu" style="display: none;">
+                    <button class="user-menu-toggle" onclick="toggleUserDropdown()">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        <span id="userNameDisplay"></span>
+                    </button>
+                    <div id="userDropdown" class="user-dropdown">
+                        <a href="my-orders.html">Mis Pedidos</a>
+                        <a href="#" onclick="logout()">Cerrar Sesión</a>
+                    </div>
+                </div>
+
+                <div id="authButtons" class="auth-buttons" style="display: none;">
+                    <a href="login.html" class="btn-login">Iniciar Sesión</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Orders Section -->
+    <div class="orders-container">
+        <div class="orders-header">
+            <h1>📦 Mis Pedidos</h1>
+            <p>Revisa el estado de tus compras</p>
+        </div>
+
+        <div id="ordersContent">
+            <!-- Los pedidos se cargan dinámicamente -->
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/data-sync.js"></script>
+    <script>
+        // Verificar que el usuario esté logueado
+        if (!window.authSystem || !window.authSystem.currentUser) {
+            window.location.href = 'login.html?redirect=my-orders.html';
+        }
+
+        // Cargar pedidos del usuario
+        function loadOrders() {
+            const currentUser = window.authSystem.currentUser;
+            const orders = JSON.parse(localStorage.getItem('yunguen_orders') || '[]');
+            
+            // Filtrar pedidos del usuario actual
+            const userOrders = orders.filter(order => order.userEmail === currentUser.email);
+            
+            const ordersContent = document.getElementById('ordersContent');
+            
+            if (userOrders.length === 0) {
+                ordersContent.innerHTML = `
+                    <div class="empty-orders">
+                        <div class="empty-orders-icon">📦</div>
+                        <h2>No tienes pedidos aún</h2>
+                        <p>Cuando realices tu primera compra, aparecerá aquí</p>
+                        <a href="index.html#productos" class="btn-shop">Ir a Comprar</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Ordenar por fecha (más reciente primero)
+            userOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            ordersContent.innerHTML = `
+                <div class="orders-list">
+                    ${userOrders.map(order => createOrderCard(order)).join('')}
+                </div>
+            `;
+        }
+
+        function createOrderCard(order) {
+            const statusClass = `status-${order.status.toLowerCase()}`;
+            const statusText = {
+                'processing': 'Procesando',
+                'shipped': 'Enviado',
+                'delivered': 'Entregado',
+                'cancelled': 'Cancelado'
+            }[order.status.toLowerCase()] || 'Procesando';
+
+            const trackingInfo = order.trackingNumber ? `
+                <div class="tracking-info">
+                    <p><strong>Número de seguimiento:</strong> ${order.trackingNumber}</p>
+                </div>
+            ` : '';
+
+            return `
+                <div class="order-card">
+                    <div class="order-header">
+                        <div class="order-info">
+                            <h3>Pedido #${order.id}</h3>
+                            <p class="order-date">${formatDate(order.date)}</p>
+                        </div>
+                        <span class="order-status ${statusClass}">${statusText}</span>
+                    </div>
+                    
+                    <div class="order-items">
+                        ${order.items.map(item => `
+                            <div class="order-item">
+                                <img src="${item.image || 'https://via.placeholder.com/60'}" alt="${item.name}" class="order-item-image">
+                                <div class="order-item-info">
+                                    <div class="order-item-name">${item.name}</div>
+                                    <div class="order-item-quantity">Cantidad: ${item.quantity}</div>
+                                </div>
+                                <div class="order-item-price">$${(item.price * item.quantity).toLocaleString('es-CO')}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    ${trackingInfo}
+                    
+                    <div class="order-footer">
+                        <div class="order-total">
+                            Total: $${order.total.toLocaleString('es-CO')}
+                        </div>
+                        <div class="order-actions">
+                            ${order.trackingNumber ? `
+                                <button class="btn-track" onclick="trackOrder('${order.trackingNumber}')">
+                                    🔍 Rastrear Envío
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('es-CO', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function trackOrder(trackingNumber) {
+            alert(`Número de seguimiento: ${trackingNumber}\n\nPróximamente podrás rastrear tu pedido en tiempo real.`);
+        }
+
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function logout() {
+            window.authSystem.logout();
+            window.location.href = 'index.html';
+        }
+
+        // Cargar pedidos al cargar la página
+        document.addEventListener('DOMContentLoaded', loadOrders);
+    </script>
+</body>
+</html>

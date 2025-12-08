@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Pedidos - YunGuen</title>
+    <link rel="stylesheet" href="css/base.css">
+    <style>
+        .orders-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            padding: 80px 20px 40px;
+        }
+
+        .orders-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .orders-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .orders-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #9b9b9b;
+            text-decoration: none;
+            margin-bottom: 30px;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #3b82f6;
+        }
+
+        .order-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 24px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .order-card:hover {
+            border-color: rgba(59, 130, 246, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .order-id {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #3b82f6;
+        }
+
+        .order-date {
+            color: #9b9b9b;
+            font-size: 0.9rem;
+        }
+
+        .order-status {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+        }
+
+        .status-paid {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .status-processing {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .status-shipped {
+            background: rgba(139, 92, 246, 0.2);
+            color: #8b5cf6;
+        }
+
+        .status-delivered {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .order-items {
+            margin: 20px 0;
+        }
+
+        .order-item {
+            display: flex;
+            gap: 16px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .order-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .order-item-info {
+            flex: 1;
+        }
+
+        .order-item-name {
+            color: #e5e5e5;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .order-item-quantity {
+            color: #9b9b9b;
+            font-size: 0.9rem;
+        }
+
+        .order-item-price {
+            color: #3b82f6;
+            font-weight: 700;
+        }
+
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .order-total {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #3b82f6;
+        }
+
+        .no-orders {
+            text-align: center;
+            padding: 60px 20px;
+            color: #9b9b9b;
+        }
+
+        .no-orders-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .payment-method {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            color: #9b9b9b;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="orders-page">
+        <div class="orders-container">
+            <a href="index.html" class="back-link">
+                ← Volver a la tienda
+            </a>
+
+            <div class="orders-header">
+                <h1>Mis Pedidos</h1>
+                <p style="color: #9b9b9b;">Historial completo de tus compras</p>
+            </div>
+
+            <div id="ordersContainer">
+                <!-- Pedidos cargados dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script>
+        // Verificar autenticación
+        if (!window.authSystem.isAuthenticated()) {
+            window.location.href = 'login.html';
+        }
+
+        // Cargar pedidos del usuario
+        const user = window.authSystem.getCurrentUser();
+        const orders = user.orders || [];
+        const ordersContainer = document.getElementById('ordersContainer');
+
+        if (orders.length === 0) {
+            ordersContainer.innerHTML = `
+                <div class="no-orders">
+                    <div class="no-orders-icon">📦</div>
+                    <h3>No tienes pedidos todavía</h3>
+                    <p>Comienza a explorar nuestros productos</p>
+                    <a href="index.html#productos" style="display: inline-block; margin-top: 20px; padding: 12px 24px; background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; text-decoration: none; border-radius: 12px; font-weight: 600;">
+                        Ver Productos
+                    </a>
+                </div>
+            `;
+        } else {
+            // Ordenar por fecha descendente (más reciente primero)
+            orders.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            ordersContainer.innerHTML = orders.map(order => {
+                const statusText = {
+                    pending: 'Pendiente',
+                    paid: 'Pagado',
+                    processing: 'En Proceso',
+                    shipped: 'Enviado',
+                    delivered: 'Entregado'
+                };
+
+                const paymentIcons = {
+                    tarjeta: '💳',
+                    transferencia: '🏦',
+                    nequi: '📱'
+                };
+
+                const itemsHTML = order.items.map(item => `
+                    <div class="order-item">
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="order-item-info">
+                            <div class="order-item-name">${item.name}</div>
+                            <div class="order-item-quantity">Cantidad: ${item.quantity}</div>
+                        </div>
+                        <div class="order-item-price">$${(item.price * item.quantity).toLocaleString()}</div>
+                    </div>
+                `).join('');
+
+                return `
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div>
+                                <div class="order-id">Pedido #${order.id}</div>
+                                <div class="order-date">${new Date(order.date).toLocaleDateString()} - ${new Date(order.date).toLocaleTimeString()}</div>
+                            </div>
+                            <span class="order-status status-${order.status}">${statusText[order.status] || order.status}</span>
+                        </div>
+
+                        <div class="order-items">
+                            ${itemsHTML}
+                        </div>
+
+                        <div class="order-footer">
+                            <div class="payment-method">
+                                ${paymentIcons[order.paymentMethod] || '💰'} ${order.paymentMethod === 'tarjeta' ? 'Tarjeta' : order.paymentMethod === 'transferencia' ? 'Transferencia' : 'Nequi'}
+                            </div>
+                            <div class="order-total">Total: $${order.total.toLocaleString()}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Producto Rápido - YunGuen</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            color: #fff;
+            margin-bottom: 8px;
+            font-size: 2rem;
+        }
+        
+        .subtitle {
+            color: #9b9b9b;
+            margin-bottom: 32px;
+            font-size: 0.95rem;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        label {
+            display: block;
+            color: #fff;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        input[type="url"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: rgba(255, 255, 255, 0.12);
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .image-preview {
+            width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 12px;
+            margin-top: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            display: none;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 32px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+            margin-top: 12px;
+        }
+        
+        .success-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #fff;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+            display: none;
+            animation: slideIn 0.3s ease;
+            z-index: 1000;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .hint {
+            color: #9b9b9b;
+            font-size: 0.85rem;
+            margin-top: 4px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        @media (max-width: 640px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚡ Agregar Producto Rápido</h1>
+        <p class="subtitle">Llena solo lo esencial y agrega productos en segundos</p>
+        
+        <form id="quickAddForm">
+            <div class="form-group">
+                <label for="productName">Nombre del Producto *</label>
+                <input type="text" id="productName" placeholder="Ej: Auriculares Bluetooth Premium" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="productImage">URL de la Imagen *</label>
+                <input type="url" id="productImage" placeholder="https://ejemplo.com/imagen.jpg" required>
+                <p class="hint">Haz clic derecho en la imagen → "Copiar dirección de imagen"</p>
+                <img id="imagePreview" class="image-preview" alt="Vista previa">
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="productPrice">Precio *</label>
+                    <input type="number" id="productPrice" placeholder="109000" min="0" step="1" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="productOriginalPrice">Precio Anterior</label>
+                    <input type="number" id="productOriginalPrice" placeholder="149000" min="0" step="1">
+                    <p class="hint">Para mostrar descuento</p>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="productStock">Stock *</label>
+                    <input type="number" id="productStock" placeholder="50" min="0" value="50" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="productCategory">Categoría *</label>
+                    <select id="productCategory" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="electronica">Electrónica</option>
+                        <option value="ropa">Ropa</option>
+                        <option value="hogar">Hogar</option>
+                        <option value="deportes">Deportes</option>
+                        <option value="belleza">Belleza</option>
+                        <option value="libros">Libros</option>
+                        <option value="juguetes">Juguetes</option>
+                        <option value="alimentos">Alimentos</option>
+                        <option value="otros">Otros</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="productDescription">Descripción Corta</label>
+                <textarea id="productDescription" placeholder="Descripción breve del producto (opcional)"></textarea>
+            </div>
+            
+            <div class="checkbox-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="productAvailable" checked>
+                    <span>✓ Disponible</span>
+                </label>
+                
+                <label class="checkbox-label">
+                    <input type="checkbox" id="productFreeShipping">
+                    <span>🚚 Envío Gratis</span>
+                </label>
+            </div>
+            
+            <button type="submit" class="btn">💾 Agregar Producto</button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='admin-new.html'">← Volver al Admin</button>
+        </form>
+    </div>
+    
+    <div class="success-message" id="successMessage">
+        ✅ Producto agregado exitosamente
+    </div>
+
+    <script>
+        // Vista previa de imagen
+        document.getElementById('productImage').addEventListener('input', function(e) {
+            const preview = document.getElementById('imagePreview');
+            const url = e.target.value.trim();
+            
+            if (url) {
+                preview.src = url;
+                preview.style.display = 'block';
+                
+                preview.onerror = function() {
+                    preview.style.display = 'none';
+                };
+            } else {
+                preview.style.display = 'none';
+            }
+        });
+        
+        // Enviar formulario
+        document.getElementById('quickAddForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('productName').value.trim();
+            const image = document.getElementById('productImage').value.trim();
+            const price = parseFloat(document.getElementById('productPrice').value);
+            const originalPrice = parseFloat(document.getElementById('productOriginalPrice').value) || null;
+            const stock = parseInt(document.getElementById('productStock').value);
+            const category = document.getElementById('productCategory').value;
+            const description = document.getElementById('productDescription').value.trim() || `Producto de calidad superior en categoría ${category}`;
+            const available = document.getElementById('productAvailable').checked;
+            const freeShipping = document.getElementById('productFreeShipping').checked;
+            
+            // Crear producto
+            const product = {
+                id: Date.now(),
+                name: name,
+                category: category,
+                description: description,
+                shortDescription: description.substring(0, 100),
+                price: price,
+                originalPrice: originalPrice,
+                stock: stock,
+                sku: `PRD-${Date.now()}`,
+                available: available,
+                freeShipping: freeShipping,
+                image: image,
+                additionalImages: [],
+                videoUrl: null,
+                sold: 0,
+                variants: {
+                    colors: [],
+                    sizes: []
+                },
+                specifications: {}
+            };
+            
+            // Obtener productos actuales
+            let products = JSON.parse(localStorage.getItem('yunguen_products') || '[]');
+            
+            // Agregar nuevo producto
+            products.push(product);
+            
+            // Guardar en localStorage
+            localStorage.setItem('yunguen_products', JSON.stringify(products));
+            
+            // Mostrar mensaje de éxito
+            const successMsg = document.getElementById('successMessage');
+            successMsg.style.display = 'block';
+            
+            // Limpiar formulario
+            document.getElementById('quickAddForm').reset();
+            document.getElementById('imagePreview').style.display = 'none';
+            
+            // Ocultar mensaje después de 3 segundos
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 3000);
+            
+            // Scroll al inicio
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YunGuen Clipper - Instrucciones</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #fff;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            color: #9b9b9b;
+            font-size: 1.2rem;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+        
+        h2 {
+            color: #3b82f6;
+            margin-bottom: 16px;
+            font-size: 1.5rem;
+        }
+        
+        .step {
+            margin-bottom: 24px;
+            padding-left: 40px;
+            position: relative;
+        }
+        
+        .step-number {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        
+        .step h3 {
+            color: #fff;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .step p {
+            color: #9b9b9b;
+            line-height: 1.6;
+        }
+        
+        .bookmarklet-container {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px dashed #3b82f6;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            margin: 24px 0;
+        }
+        
+        .bookmarklet-btn {
+            display: inline-block;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: move;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+        }
+        
+        .bookmarklet-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(59, 130, 246, 0.5);
+        }
+        
+        .instruction-text {
+            color: #10b981;
+            margin-top: 12px;
+            font-weight: 600;
+        }
+        
+        .warning {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 24px;
+            color: #fca5a5;
+        }
+        
+        .tip {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+            color: #6ee7b7;
+        }
+        
+        code {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #fbbf24;
+        }
+        
+        .example {
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 4px solid #3b82f6;
+            padding: 16px;
+            margin-top: 16px;
+            border-radius: 8px;
+        }
+        
+        .btn-link {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 24px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-link:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📌 YunGuen Clipper</h1>
+            <p class="subtitle">Agrega productos a tu tienda con un solo clic</p>
+        </div>
+        
+        <div class="card">
+            <h2>🎯 ¿Qué es esto?</h2>
+            <p style="color: #9b9b9b; line-height: 1.6;">
+                El YunGuen Clipper es un bookmarklet (marcador inteligente) que te permite agregar productos 
+                a tu tienda mientras navegas por internet. Funciona en Amazon, AliExpress, MercadoLibre, 
+                y cualquier página web.
+            </p>
+        </div>
+        
+        <div class="card">
+            <h2>📥 Instalación (Solo una vez)</h2>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Muestra la barra de marcadores</h3>
+                <p>En tu navegador presiona:</p>
+                <div class="example">
+                    <strong>Chrome/Edge:</strong> <code>Ctrl + Shift + B</code><br>
+                    <strong>Firefox:</strong> <code>Ctrl + Shift + B</code>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Arrastra este botón a la barra de marcadores</h3>
+                <div class="bookmarklet-container">
+                    <a href="javascript:(function(){var url=prompt('URL de la imagen:');if(!url)return;var name=prompt('Nombre del producto:');if(!name)return;var price=prompt('Precio:');if(!price)return;var product={id:Date.now(),name:name,category:'otros',description:'Producto importado',shortDescription:'Producto importado',price:parseFloat(price),originalPrice:null,stock:50,sku:'PRD-'+Date.now(),available:true,freeShipping:false,image:url,additionalImages:[],videoUrl:null,sold:0,variants:{colors:[],sizes:[]},specifications:{}};var products=JSON.parse(localStorage.getItem('yunguen_products')||'[]');products.push(product);localStorage.setItem('yunguen_products',JSON.stringify(products));alert('✅ Producto agregado! Total: '+products.length+' productos');})();" 
+                       class="bookmarklet-btn" 
+                       draggable="true"
+                       id="bookmarkletBtn">
+                        📌 + YunGuen
+                    </a>
+                    <p class="instruction-text">👆 Arrastra este botón a tu barra de marcadores</p>
+                    <p style="color: #fbbf24; margin-top: 12px; font-size: 0.9rem;">
+                        💡 Si no puedes arrastrar, haz clic derecho → "Añadir a marcadores"
+                    </p>
+                </div>
+            </div>
+            
+            <div class="warning">
+                ⚠️ <strong>Importante:</strong> Arrastra el botón, no hagas clic. Si haces clic por error, 
+                no pasará nada.
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>🚀 Cómo Usar</h2>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Encuentra un producto en internet</h3>
+                <p>Navega por Amazon, AliExpress, MercadoLibre, o cualquier tienda online.</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Copia la URL de la imagen</h3>
+                <p>Haz clic derecho en la imagen del producto → "Copiar dirección de imagen"</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Haz clic en el bookmarklet</h3>
+                <p>En tu barra de marcadores, haz clic en "📌 Agregar a YunGuen"</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Llena los datos</h3>
+                <p>El navegador te pedirá: URL de imagen, nombre, precio y categoría</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">5</div>
+                <h3>¡Listo!</h3>
+                <p>El producto se agregó a tu tienda. Abre <code>index.html</code> para verlo.</p>
+            </div>
+            
+            <div class="tip">
+                💡 <strong>Tip Pro:</strong> También puedes usar <a href="quick-add.html" style="color: #6ee7b7; text-decoration: underline;">Quick Add</a> 
+                si prefieres un formulario más visual.
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>🎬 Video Tutorial</h2>
+            <div class="example">
+                <strong>1.</strong> Activa la barra de marcadores (Ctrl+Shift+B)<br><br>
+                <strong>2.</strong> Arrastra el botón azul a la barra<br><br>
+                <strong>3.</strong> Ve a cualquier página web con productos<br><br>
+                <strong>4.</strong> Clic derecho en imagen → Copiar dirección<br><br>
+                <strong>5.</strong> Clic en el bookmarklet y pega la URL<br><br>
+                <strong>6.</strong> Llena nombre, precio y categoría<br><br>
+                <strong>7.</strong> ¡Producto agregado!
+            </div>
+        </div>
+        
+        <div style="text-align: center;">
+            <a href="quick-add.html" class="btn-link">📝 Ir a Formulario Quick Add</a>
+            <a href="admin-new.html" class="btn-link">🏠 Volver al Admin</a>
+        </div>
+    </div>
+</body>
+</html>
