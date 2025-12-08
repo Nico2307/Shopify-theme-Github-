@@ -5,8 +5,8 @@
 
 class MercadoPagoPayment {
     constructor() {
-        this.publicKey = 'APP_USR-9b1bac22-4894-44a6-b2a9-2a732c13d62a';
-        this.accessToken = 'APP_USR-1692958903554197-120815-7f4f213053a2b23cbdf6f52303c80a34-3044196758';
+        this.publicKey = 'APP_USR-d7357d92-6534-48b5-9db1-8dc7f9b0598d';
+        this.accessToken = 'APP_USR-6291427247779348-120815-07e4c93be761986234acf13c814f801b-1516215604';
         this.mp = null;
         this.initMercadoPago();
     }
