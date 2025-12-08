@@ -16,6 +16,8 @@
     <script src="js/data-sync.js"></script>
     <!-- Sistema de Moneda -->
     <script src="js/currency.js" defer></script>
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
     <!-- Header -->
@@ -701,6 +703,54 @@
                 if (currencyBtn && info) {
                     currencyBtn.textContent = `${info.country.flag} ${info.country.name}`;
                 }
+            }
+        });
+
+        // ============================================
+        // SISTEMA DE FORMULARIO DE CONTACTO
+        // ============================================
+        
+        // Inicializar EmailJS
+        (function() {
+            emailjs.init("eWb_T9gj1wcXVA6rH"); // Tu Public Key de EmailJS
+        })();
+
+        // Manejar envío del formulario de contacto
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactForm = document.getElementById('contactForm');
+            
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const submitBtn = contactForm.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.textContent = 'Enviando...';
+                    submitBtn.disabled = true;
+                    
+                    // Parámetros del email
+                    const templateParams = {
+                        from_name: document.getElementById('name').value,
+                        from_email: document.getElementById('email').value,
+                        message: document.getElementById('message').value,
+                        to_email: 'contacto@yunguer.com'
+                    };
+                    
+                    // Enviar email usando EmailJS
+                    emailjs.send('service_yunguer', 'template_contact', templateParams)
+                        .then(function(response) {
+                            console.log('Email enviado!', response.status, response.text);
+                            alert('✅ ¡Mensaje enviado correctamente! Te responderemos pronto.');
+                            contactForm.reset();
+                            submitBtn.textContent = originalText;
+                            submitBtn.disabled = false;
+                        }, function(error) {
+                            console.error('Error al enviar email:', error);
+                            alert('❌ Error al enviar el mensaje. Por favor intenta nuevamente o contáctanos directamente.');
+                            submitBtn.textContent = originalText;
+                            submitBtn.disabled = false;
+                        });
+                });
             }
         });
     </script>
