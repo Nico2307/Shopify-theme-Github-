@@ -1,4 +1,4 @@
-# 🔐 Configuración de Google OAuth para YunGuen
+# 🔐 Configuración de Google OAuth para YunGuer
 
 ## Pasos para activar Google Sign-In REAL
 
@@ -6,7 +6,7 @@
 
 1. Ve a [Google Cloud Console](https://console.cloud.google.com/)
 2. Crea un nuevo proyecto o selecciona uno existente
-3. Nombre del proyecto: "YunGuen Store" (o el que prefieras)
+3. Nombre del proyecto: "YunGuer Store" (o el que prefieras)
 
 ### 2️⃣ Habilitar Google Sign-In API
 
@@ -19,7 +19,7 @@
 1. Ve a **APIs & Services** > **OAuth consent screen**
 2. Selecciona **External** (para cualquier usuario de Google)
 3. Llena la información básica:
-   - **App name**: YunGuen Store
+   - **App name**: YunGuer Store
    - **User support email**: tu email
    - **Developer contact information**: tu email
 4. Click en **Save and Continue**
@@ -33,14 +33,14 @@
 1. Ve a **APIs & Services** > **Credentials**
 2. Click en **+ CREATE CREDENTIALS** > **OAuth client ID**
 3. Tipo de aplicación: **Web application**
-4. Nombre: "YunGuen Web Client"
+4. Nombre: "YunGuer Web Client"
 5. **Authorized JavaScript origins**:
    - `http://localhost`
    - `http://127.0.0.1`
-   - Tu dominio de producción (ej: `https://yunguen.com`)
+   - Tu dominio de producción (ej: `https://YunGuer.com`)
 6. **Authorized redirect URIs** (opcional para Sign-In):
    - `http://localhost/login.html`
-   - Tu dominio (ej: `https://yunguen.com/login.html`)
+   - Tu dominio (ej: `https://YunGuer.com/login.html`)
 7. Click en **CREATE**
 
 ### 5️⃣ Copiar tu Client ID

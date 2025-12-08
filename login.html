@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión - YunGuen</title>
+    <title>Iniciar Sesión - YunGuer</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="css/base.css">
     <!-- Google Sign-In SDK -->
@@ -256,7 +256,7 @@
         <div class="google-modal-content">
             <div class="google-modal-header">
                 <h3>Elegir una cuenta</h3>
-                <p>para continuar en YunGuen</p>
+                <p>para continuar en YunGuer</p>
             </div>
             <div class="google-accounts-list" id="googleAccountsList">
                 <!-- Cuentas cargadas dinámicamente -->
@@ -303,7 +303,7 @@
                 };
                 
                 // Verificar si el usuario ya existe
-                const users = JSON.parse(localStorage.getItem('yunguen_users') || '[]');
+                const users = JSON.parse(localStorage.getItem('YunGuer_users') || '[]');
                 const existingUser = users.find(u => u.email === user.email);
                 
                 if (existingUser) {
@@ -318,7 +318,7 @@
                     };
                     
                     window.authSystem.currentUser = userSession;
-                    localStorage.setItem('yunguen_current_user', JSON.stringify(userSession));
+                    localStorage.setItem('YunGuer_current_user', JSON.stringify(userSession));
                     window.authSystem.updateUIForLoggedInUser();
                     
                     // Mostrar mensaje de éxito
@@ -341,7 +341,7 @@
                         const currentUser = window.authSystem.currentUser;
                         if (currentUser) {
                             currentUser.picture = user.picture;
-                            localStorage.setItem('yunguen_current_user', JSON.stringify(currentUser));
+                            localStorage.setItem('YunGuer_current_user', JSON.stringify(currentUser));
                         }
                         
                         // Mostrar mensaje de éxito
@@ -359,7 +359,7 @@
                         };
                         
                         window.authSystem.currentUser = userSession;
-                        localStorage.setItem('yunguen_current_user', JSON.stringify(userSession));
+                        localStorage.setItem('YunGuer_current_user', JSON.stringify(userSession));
                         window.authSystem.updateUIForLoggedInUser();
                         
                         successMessage.textContent = '✓ Inicio de sesión exitoso con Google. Redirigiendo...';

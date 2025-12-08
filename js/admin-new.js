@@ -170,7 +170,7 @@ function showAdminPanel() {
 
 // Función para migrar datos de comparePrice a originalPrice
 function migrateProductData() {
-    const products = JSON.parse(localStorage.getItem('yunguen_products') || '[]');
+    const products = JSON.parse(localStorage.getItem('YunGuer_products') || '[]');
     let updated = false;
     
     products.forEach(product => {
@@ -183,7 +183,7 @@ function migrateProductData() {
     });
     
     if (updated) {
-        localStorage.setItem('yunguen_products', JSON.stringify(products));
+        localStorage.setItem('YunGuer_products', JSON.stringify(products));
         console.log('✅ Productos migrados de comparePrice a originalPrice');
     }
 }

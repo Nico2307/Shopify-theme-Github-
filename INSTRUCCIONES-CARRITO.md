@@ -32,7 +32,7 @@
   - Banco: Bancolombia
   - Tipo: Ahorros
   - Cuenta: 1234-5678-9012
-  - Titular: YunGuen S.A.S
+  - Titular: YunGuer S.A.S
 - Botón para copiar número de cuenta
 - Instrucciones para enviar comprobante
 
@@ -100,7 +100,7 @@
 9. Guardar códigos de garantía
 
 #### Para Administradores:
-- Los pedidos se almacenan en `localStorage` bajo la clave `yunguen_orders`
+- Los pedidos se almacenan en `localStorage` bajo la clave `YunGuer_orders`
 - Cada pedido incluye:
   - ID único
   - Datos del cliente
@@ -120,7 +120,7 @@
    Banco: Bancolombia
    Tipo: Ahorros
    Cuenta: 1234-5678-9012 (actualizar con cuenta real)
-   Titular: YunGuen S.A.S
+   Titular: YunGuer S.A.S
 
 📱 NEQUI/DAVIPLATA:
    Número: +57 321 479 8399

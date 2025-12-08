@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YunGuen Clipper - Instrucciones</title>
+    <title>YunGuer Clipper - Instrucciones</title>
     <style>
         * {
             margin: 0;
@@ -176,14 +176,14 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>📌 YunGuen Clipper</h1>
+            <h1>📌 YunGuer Clipper</h1>
             <p class="subtitle">Agrega productos a tu tienda con un solo clic</p>
         </div>
         
         <div class="card">
             <h2>🎯 ¿Qué es esto?</h2>
             <p style="color: #9b9b9b; line-height: 1.6;">
-                El YunGuen Clipper es un bookmarklet (marcador inteligente) que te permite agregar productos 
+                El YunGuer Clipper es un bookmarklet (marcador inteligente) que te permite agregar productos 
                 a tu tienda mientras navegas por internet. Funciona en Amazon, AliExpress, MercadoLibre, 
                 y cualquier página web.
             </p>
@@ -206,11 +206,11 @@
                 <div class="step-number">2</div>
                 <h3>Arrastra este botón a la barra de marcadores</h3>
                 <div class="bookmarklet-container">
-                    <a href="javascript:(function(){var url=prompt('URL de la imagen:');if(!url)return;var name=prompt('Nombre del producto:');if(!name)return;var price=prompt('Precio:');if(!price)return;var product={id:Date.now(),name:name,category:'otros',description:'Producto importado',shortDescription:'Producto importado',price:parseFloat(price),originalPrice:null,stock:50,sku:'PRD-'+Date.now(),available:true,freeShipping:false,image:url,additionalImages:[],videoUrl:null,sold:0,variants:{colors:[],sizes:[]},specifications:{}};var products=JSON.parse(localStorage.getItem('yunguen_products')||'[]');products.push(product);localStorage.setItem('yunguen_products',JSON.stringify(products));alert('✅ Producto agregado! Total: '+products.length+' productos');})();" 
+                    <a href="javascript:(function(){var url=prompt('URL de la imagen:');if(!url)return;var name=prompt('Nombre del producto:');if(!name)return;var price=prompt('Precio:');if(!price)return;var product={id:Date.now(),name:name,category:'otros',description:'Producto importado',shortDescription:'Producto importado',price:parseFloat(price),originalPrice:null,stock:50,sku:'PRD-'+Date.now(),available:true,freeShipping:false,image:url,additionalImages:[],videoUrl:null,sold:0,variants:{colors:[],sizes:[]},specifications:{}};var products=JSON.parse(localStorage.getItem('YunGuer_products')||'[]');products.push(product);localStorage.setItem('YunGuer_products',JSON.stringify(products));alert('✅ Producto agregado! Total: '+products.length+' productos');})();" 
                        class="bookmarklet-btn" 
                        draggable="true"
                        id="bookmarkletBtn">
-                        📌 + YunGuen
+                        📌 + YunGuer
                     </a>
                     <p class="instruction-text">👆 Arrastra este botón a tu barra de marcadores</p>
                     <p style="color: #fbbf24; margin-top: 12px; font-size: 0.9rem;">
@@ -243,7 +243,7 @@
             <div class="step">
                 <div class="step-number">3</div>
                 <h3>Haz clic en el bookmarklet</h3>
-                <p>En tu barra de marcadores, haz clic en "📌 Agregar a YunGuen"</p>
+                <p>En tu barra de marcadores, haz clic en "📌 Agregar a YunGuer"</p>
             </div>
             
             <div class="step">

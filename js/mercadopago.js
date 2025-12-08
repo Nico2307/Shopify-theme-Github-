@@ -71,7 +71,7 @@ class MercadoPagoPayment {
                     failure: failureUrl,
                     pending: pendingUrl
                 },
-                statement_descriptor: 'YunGuen Store',
+                statement_descriptor: 'YunGuer Store',
                 external_reference: `ORDER-${Date.now()}`
             };
 
@@ -228,7 +228,7 @@ function saveOrderToHistory(paymentId, status = 'processing') {
         const currentUser = window.authSystem?.currentUser;
         if (!currentUser) return;
 
-        const cart = JSON.parse(localStorage.getItem('yunguen_cart') || '[]');
+        const cart = JSON.parse(localStorage.getItem('YunGuer_cart') || '[]');
         const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
         const order = {
@@ -249,9 +249,9 @@ function saveOrderToHistory(paymentId, status = 'processing') {
         };
 
         // Guardar en historial de pedidos
-        const orders = JSON.parse(localStorage.getItem('yunguen_orders') || '[]');
+        const orders = JSON.parse(localStorage.getItem('YunGuer_orders') || '[]');
         orders.unshift(order); // Agregar al principio
-        localStorage.setItem('yunguen_orders', JSON.stringify(orders));
+        localStorage.setItem('YunGuer_orders', JSON.stringify(orders));
 
         console.log('✅ Pedido guardado:', order.id);
     } catch (error) {
@@ -269,7 +269,7 @@ async function sendOrderConfirmationEmail(paymentId) {
         const currentUser = window.authSystem?.currentUser;
         if (!currentUser) return;
 
-        const orders = JSON.parse(localStorage.getItem('yunguen_orders') || '[]');
+        const orders = JSON.parse(localStorage.getItem('YunGuer_orders') || '[]');
         const order = orders.find(o => o.id === paymentId);
         
         if (!order) return;

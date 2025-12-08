@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar Producto Rápido - YunGuen</title>
+    <title>Agregar Producto Rápido - YunGuer</title>
     <style>
         * {
             margin: 0;
@@ -322,13 +322,13 @@
             };
             
             // Obtener productos actuales
-            let products = JSON.parse(localStorage.getItem('yunguen_products') || '[]');
+            let products = JSON.parse(localStorage.getItem('YunGuer_products') || '[]');
             
             // Agregar nuevo producto
             products.push(product);
             
             // Guardar en localStorage
-            localStorage.setItem('yunguen_products', JSON.stringify(products));
+            localStorage.setItem('YunGuer_products', JSON.stringify(products));
             
             // Mostrar mensaje de éxito
             const successMsg = document.getElementById('successMessage');

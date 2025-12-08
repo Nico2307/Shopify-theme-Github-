@@ -21,7 +21,7 @@
     <script src="js/data-sync.js"></script>
     <script>
         function checkSpecs() {
-            const products = JSON.parse(localStorage.getItem('yunguen_products') || '[]');
+            const products = JSON.parse(localStorage.getItem('YunGuer_products') || '[]');
             const output = document.getElementById('output');
             
             let result = `Total de productos: ${products.length}\n\n`;
@@ -78,7 +78,7 @@
 
         function clearStorage() {
             if (confirm('¿Seguro que quieres eliminar todos los productos?')) {
-                localStorage.removeItem('yunguen_products');
+                localStorage.removeItem('YunGuer_products');
                 document.getElementById('output').innerHTML = '<span class="warning">⚠️ LocalStorage limpiado</span>';
             }
         }

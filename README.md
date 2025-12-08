@@ -1,4 +1,4 @@
-# YunGuen - Tienda Online
+# YunGuer - Tienda Online
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/YOUR-SITE-ID/deploy-status)](https://app.netlify.com/sites/YOUR-SITE-NAME/deploys)
 
@@ -6,7 +6,7 @@
 
 Tienda online moderna con panel de administración inteligente y asistente AI para creación de productos. Sistema completo de e-commerce con carrito de compras, gestión de pedidos y múltiples métodos de pago.
 
-**YunGuen** - Tu tienda de confianza desde 2020.
+**YunGuer** - Tu tienda de confianza desde 2020.
 
 ## 🚀 Características Principales
 

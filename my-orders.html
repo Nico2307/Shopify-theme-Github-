@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mis Pedidos - YunGuen</title>
+    <title>Mis Pedidos - YunGuer</title>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/tridot-animations.css">
     <style>
@@ -261,7 +261,7 @@
                         <span class="dot"></span>
                         <span class="dot"></span>
                     </div>
-                    YUNGUEN
+                    YunGuer
                 </a>
                 <ul class="menu">
                     <li><a href="index.html#inicio">Inicio</a></li>
@@ -314,7 +314,7 @@
         // Cargar pedidos del usuario
         function loadOrders() {
             const currentUser = window.authSystem.currentUser;
-            const orders = JSON.parse(localStorage.getItem('yunguen_orders') || '[]');
+            const orders = JSON.parse(localStorage.getItem('YunGuer_orders') || '[]');
             
             // Filtrar pedidos del usuario actual
             const userOrders = orders.filter(order => order.userEmail === currentUser.email);

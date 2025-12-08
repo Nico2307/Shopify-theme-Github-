@@ -1,4 +1,4 @@
-# 🌎 Sistema de Conversión de Moneda - YunGuen
+# 🌎 Sistema de Conversión de Moneda - YunGuer
 
 ## 📌 Descripción General
 
@@ -43,7 +43,7 @@ Los precios se convierten automáticamente en:
 ### 4. Persistencia de Configuración
 - La selección de país/moneda se guarda en localStorage
 - Al volver a visitar la página, se mantiene la configuración anterior
-- Key de localStorage: `yunguen_currency_config`
+- Key de localStorage: `YunGuer_currency_config`
 
 ## 📂 Archivos Modificados
 

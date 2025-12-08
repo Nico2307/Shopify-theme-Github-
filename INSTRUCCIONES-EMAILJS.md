@@ -1,4 +1,4 @@
-# Configuración de EmailJS para YunGuen
+# Configuración de EmailJS para YunGuer
 
 ## Paso 1: Crear cuenta en EmailJS
 
@@ -23,14 +23,14 @@
 
 **Subject:** 
 ```
-Confirmación de Pedido #{{order_id}} - YunGuen
+Confirmación de Pedido #{{order_id}} - YunGuer
 ```
 
 **Body:**
 ```html
 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9f9f9; padding: 20px;">
     <div style="background: #000; padding: 30px; text-align: center; border-radius: 12px 12px 0 0;">
-        <h1 style="color: #fff; margin: 0;">YunGuen</h1>
+        <h1 style="color: #fff; margin: 0;">YunGuer</h1>
         <p style="color: #9b9b9b; margin: 10px 0 0;">Tu Tienda de Confianza</p>
     </div>
     
@@ -80,14 +80,14 @@ Confirmación de Pedido #{{order_id}} - YunGuen
 
 **Subject:**
 ```
-Actualización de tu Pedido #{{order_id}} - YunGuen
+Actualización de tu Pedido #{{order_id}} - YunGuer
 ```
 
 **Body:**
 ```html
 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9f9f9; padding: 20px;">
     <div style="background: #000; padding: 30px; text-align: center; border-radius: 12px 12px 0 0;">
-        <h1 style="color: #fff; margin: 0;">YunGuen</h1>
+        <h1 style="color: #fff; margin: 0;">YunGuer</h1>
         <p style="color: #9b9b9b; margin: 10px 0 0;">Actualización de tu Pedido</p>
     </div>
     
@@ -114,7 +114,7 @@ Actualización de tu Pedido #{{order_id}} - YunGuen
         </div>
         
         <p style="color: #999; font-size: 14px; margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
-            Gracias por tu compra en YunGuen.<br>
+            Gracias por tu compra en YunGuer.<br>
             Este es un correo automático, por favor no respondas a este mensaje.
         </p>
     </div>
@@ -134,7 +134,7 @@ Actualización de tu Pedido #{{order_id}} - YunGuen
 Abre el archivo `js/email-service.js` y actualiza estas líneas:
 
 ```javascript
-SERVICE_ID: 'service_yunguen', // ← Reemplaza con tu Service ID
+SERVICE_ID: 'service_YunGuer', // ← Reemplaza con tu Service ID
 TEMPLATE_ID: 'template_order_confirmation', // ← Reemplaza con tu Template ID de confirmación
 PUBLIC_KEY: 'YOUR_PUBLIC_KEY', // ← Reemplaza con tu Public Key
 ```

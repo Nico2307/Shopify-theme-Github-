@@ -34,7 +34,7 @@ class CurrencySystem {
 
     init() {
         // Cargar configuración guardada
-        const saved = localStorage.getItem('yunguen_currency_config');
+        const saved = localStorage.getItem('YunGuer_currency_config');
         if (saved) {
             const config = JSON.parse(saved);
             this.currentCountry = config.country;
@@ -74,7 +74,7 @@ class CurrencySystem {
         this.currentCurrency = this.countries[countryCode].currency;
 
         // Guardar configuración
-        localStorage.setItem('yunguen_currency_config', JSON.stringify({
+        localStorage.setItem('YunGuer_currency_config', JSON.stringify({
             country: this.currentCountry,
             currency: this.currentCurrency
         }));

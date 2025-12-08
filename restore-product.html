@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurar Producto - YunGuen</title>
+    <title>Restaurar Producto - YunGuer</title>
     <style>
         * {
             margin: 0;
@@ -122,7 +122,7 @@ Características destacadas:
 
         setTimeout(() => {
             // Obtener productos actuales
-            let products = JSON.parse(localStorage.getItem('yunguen_products') || '[]');
+            let products = JSON.parse(localStorage.getItem('YunGuer_products') || '[]');
             
             // Verificar si ya existe un producto similar
             const existingIndex = products.findIndex(p => p.name.includes('MEIYIXING'));
@@ -140,7 +140,7 @@ Características destacadas:
             }
             
             // Guardar en localStorage
-            localStorage.setItem('yunguen_products', JSON.stringify(products));
+            localStorage.setItem('YunGuer_products', JSON.stringify(products));
             
             document.querySelector('h1').textContent = '¡Listo!';
             

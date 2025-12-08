@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Administración - YunGuen</title>
+    <title>Panel de Administración - YunGuer</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/admin.css">
@@ -29,7 +29,7 @@
                     <div class="tridot-dot"></div>
                 </div>
                 <h1>Panel Administrativo</h1>
-                <p>YunGuen - Iniciar Sesión</p>
+                <p>YunGuer - Iniciar Sesión</p>
             </div>
             <form id="loginForm" class="login-form">
                 <div class="form-group">
@@ -57,7 +57,7 @@
                         <div class="tridot-dot"></div>
                         <div class="tridot-dot"></div>
                     </div>
-                    <h2>YunGuen</h2>
+                    <h2>YunGuer</h2>
                 </div>
                 <p>Panel Admin</p>
                 <a href="index.html" class="btn-visit-store">
@@ -1075,12 +1075,12 @@
                     
                     <div class="settings-group">
                         <label>Nombre de la Tienda</label>
-                        <input type="text" value="YunGuen" class="settings-input">
+                        <input type="text" value="YunGuer" class="settings-input">
                     </div>
                     
                     <div class="settings-group">
                         <label>Email de Contacto</label>
-                        <input type="email" value="contacto@yunguen.com" class="settings-input">
+                        <input type="email" value="contacto@YunGuer.com" class="settings-input">
                     </div>
                     
                     <div class="settings-group">
@@ -1718,7 +1718,7 @@
     <script>
         // Cargar pedidos en el admin panel
         function loadAdminOrders() {
-            const orders = JSON.parse(localStorage.getItem('yunguen_orders') || '[]');
+            const orders = JSON.parse(localStorage.getItem('YunGuer_orders') || '[]');
             const tbody = document.getElementById('ordersTableBody');
             
             if (orders.length === 0) {
@@ -1751,14 +1751,14 @@
         }
 
         function updateOrderStatus(orderId, newStatus) {
-            const orders = JSON.parse(localStorage.getItem('yunguen_orders') || '[]');
+            const orders = JSON.parse(localStorage.getItem('YunGuer_orders') || '[]');
             const orderIndex = orders.findIndex(o => o.id === orderId);
             
             if (orderIndex === -1) return;
             
             const oldStatus = orders[orderIndex].status;
             orders[orderIndex].status = newStatus;
-            localStorage.setItem('yunguen_orders', JSON.stringify(orders));
+            localStorage.setItem('YunGuer_orders', JSON.stringify(orders));
             
             // Enviar email de notificación si cambió el estado
             if (oldStatus !== newStatus) {
@@ -1779,7 +1779,7 @@
         }
 
         function showOrderDetails(orderId) {
-            const orders = JSON.parse(localStorage.getItem('yunguen_orders') || '[]');
+            const orders = JSON.parse(localStorage.getItem('YunGuer_orders') || '[]');
             const order = orders.find(o => o.id === orderId);
             
             if (!order) return;
@@ -1795,13 +1795,13 @@
             const trackingNumber = prompt('Ingrese el número de seguimiento del envío:');
             
             if (trackingNumber && trackingNumber.trim()) {
-                const orders = JSON.parse(localStorage.getItem('yunguen_orders') || '[]');
+                const orders = JSON.parse(localStorage.getItem('YunGuer_orders') || '[]');
                 const orderIndex = orders.findIndex(o => o.id === orderId);
                 
                 if (orderIndex !== -1) {
                     orders[orderIndex].trackingNumber = trackingNumber.trim();
                     orders[orderIndex].status = 'shipped'; // Cambiar a enviado automáticamente
-                    localStorage.setItem('yunguen_orders', JSON.stringify(orders));
+                    localStorage.setItem('YunGuer_orders', JSON.stringify(orders));
                     
                     alert(`Número de seguimiento agregado: ${trackingNumber}\nEstado actualizado a: Enviado`);
                     loadAdminOrders();
@@ -1814,7 +1814,7 @@
 
         function filterOrders() {
             const filter = document.getElementById('orderStatusFilter').value;
-            const orders = JSON.parse(localStorage.getItem('yunguen_orders') || '[]');
+            const orders = JSON.parse(localStorage.getItem('YunGuer_orders') || '[]');
             
             const filteredOrders = filter === 'all' 
                 ? orders 
@@ -2290,7 +2290,7 @@
                 await new Promise(resolve => setTimeout(resolve, 500));
 
                 // Crear producto final
-                const products = JSON.parse(localStorage.getItem('yunguen_products') || '[]');
+                const products = JSON.parse(localStorage.getItem('YunGuer_products') || '[]');
                 
                 const newProduct = {
                     id: Date.now(),
@@ -2307,7 +2307,7 @@
                 };
 
                 products.push(newProduct);
-                localStorage.setItem('yunguen_products', JSON.stringify(products));
+                localStorage.setItem('YunGuer_products', JSON.stringify(products));
 
                 // Ocultar procesamiento
                 processingDiv.style.display = 'none';

@@ -3,7 +3,7 @@
 
 const EmailService = {
     // Configuración de EmailJS (debes crear una cuenta en emailjs.com)
-    SERVICE_ID: 'service_yunguen', // Reemplazar con tu Service ID
+    SERVICE_ID: 'service_YunGuer', // Reemplazar con tu Service ID
     TEMPLATE_ID: 'template_order_confirmation', // Reemplazar con tu Template ID
     PUBLIC_KEY: 'YOUR_PUBLIC_KEY', // Reemplazar con tu Public Key
 

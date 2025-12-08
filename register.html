@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrarse - YunGuen</title>
+    <title>Registrarse - YunGuer</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="css/base.css">
     <!-- Google Sign-In SDK -->
@@ -475,7 +475,7 @@
         <div class="google-modal-content">
             <div class="google-modal-header">
                 <h3>Elegir una cuenta</h3>
-                <p>para continuar en YunGuen</p>
+                <p>para continuar en YunGuer</p>
             </div>
             <div class="google-accounts-list" id="googleAccountsList">
                 <!-- Cuentas cargadas dinámicamente -->
@@ -522,7 +522,7 @@
                 };
                 
                 // Verificar si el usuario ya existe
-                const users = JSON.parse(localStorage.getItem('yunguen_users') || '[]');
+                const users = JSON.parse(localStorage.getItem('YunGuer_users') || '[]');
                 const existingUser = users.find(u => u.email === user.email);
                 
                 if (existingUser) {
@@ -537,7 +537,7 @@
                     };
                     
                     window.authSystem.currentUser = userSession;
-                    localStorage.setItem('yunguen_current_user', JSON.stringify(userSession));
+                    localStorage.setItem('YunGuer_current_user', JSON.stringify(userSession));
                     window.authSystem.updateUIForLoggedInUser();
                     
                     // Mostrar mensaje
@@ -560,7 +560,7 @@
                         const currentUser = window.authSystem.currentUser;
                         if (currentUser) {
                             currentUser.picture = user.picture;
-                            localStorage.setItem('yunguen_current_user', JSON.stringify(currentUser));
+                            localStorage.setItem('YunGuer_current_user', JSON.stringify(currentUser));
                         }
                         
                         // Mostrar mensaje de éxito
@@ -658,7 +658,7 @@
 
         function getGoogleAccounts() {
             // Obtener cuentas guardadas en localStorage
-            const saved = localStorage.getItem('yunguen_google_accounts');
+            const saved = localStorage.getItem('YunGuer_google_accounts');
             if (saved) {
                 return JSON.parse(saved);
             }
@@ -679,7 +679,7 @@
             
             if (!exists) {
                 accounts.push(accountData);
-                localStorage.setItem('yunguen_google_accounts', JSON.stringify(accounts));
+                localStorage.setItem('YunGuer_google_accounts', JSON.stringify(accounts));
             }
         }
 
@@ -703,7 +703,7 @@
                         phone: existingUser.phone,
                         address: existingUser.address
                     };
-                    localStorage.setItem('yunguen_current_user', JSON.stringify(window.authSystem.currentUser));
+                    localStorage.setItem('YunGuer_current_user', JSON.stringify(window.authSystem.currentUser));
                     window.authSystem.updateUIForLoggedInUser();
                     
                     closeGoogleModal();

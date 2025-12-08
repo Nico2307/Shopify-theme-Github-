@@ -10,7 +10,7 @@ class AuthSystem {
 
     init() {
         // Verificar si hay una sesión activa
-        const savedUser = localStorage.getItem('yunguen_current_user');
+        const savedUser = localStorage.getItem('YunGuer_current_user');
         if (savedUser) {
             this.currentUser = JSON.parse(savedUser);
             this.updateUIForLoggedInUser();
@@ -19,12 +19,12 @@ class AuthSystem {
 
     // Obtener todos los usuarios
     getUsers() {
-        return JSON.parse(localStorage.getItem('yunguen_users') || '[]');
+        return JSON.parse(localStorage.getItem('YunGuer_users') || '[]');
     }
 
     // Guardar usuarios
     saveUsers(users) {
-        localStorage.setItem('yunguen_users', JSON.stringify(users));
+        localStorage.setItem('YunGuer_users', JSON.stringify(users));
     }
 
     // Registrar nuevo usuario
@@ -81,7 +81,7 @@ class AuthSystem {
         };
 
         this.currentUser = userSession;
-        localStorage.setItem('yunguen_current_user', JSON.stringify(userSession));
+        localStorage.setItem('YunGuer_current_user', JSON.stringify(userSession));
 
         // Actualizar última conexión
         user.lastLogin = new Date().toISOString();
@@ -95,7 +95,7 @@ class AuthSystem {
     // Cerrar sesión
     logout() {
         this.currentUser = null;
-        localStorage.removeItem('yunguen_current_user');
+        localStorage.removeItem('YunGuer_current_user');
         this.updateUIForLoggedOutUser();
         
         // Redirigir a home
@@ -140,7 +140,7 @@ class AuthSystem {
             address: users[userIndex].address
         };
 
-        localStorage.setItem('yunguen_current_user', JSON.stringify(this.currentUser));
+        localStorage.setItem('YunGuer_current_user', JSON.stringify(this.currentUser));
         this.updateUIForLoggedInUser();
 
         return this.currentUser;

@@ -10,7 +10,7 @@ class DataSync {
 
     // Inicializar datos si no existen
     initializeData() {
-        if (!localStorage.getItem('yunguen_products')) {
+        if (!localStorage.getItem('YunGuer_products')) {
             const defaultProducts = [
                 {
                     id: 1733706001000,
@@ -85,47 +85,47 @@ class DataSync {
                     sold: 0
                 }
             ];
-            localStorage.setItem('yunguen_products', JSON.stringify(defaultProducts));
+            localStorage.setItem('YunGuer_products', JSON.stringify(defaultProducts));
         }
 
-        if (!localStorage.getItem('yunguen_orders')) {
-            localStorage.setItem('yunguen_orders', JSON.stringify([]));
+        if (!localStorage.getItem('YunGuer_orders')) {
+            localStorage.setItem('YunGuer_orders', JSON.stringify([]));
         }
 
-        if (!localStorage.getItem('yunguen_stats')) {
+        if (!localStorage.getItem('YunGuer_stats')) {
             const stats = {
                 totalSales: 0,
                 salesHistory: [],
                 visitorsToday: 0,
                 visitorsHistory: []
             };
-            localStorage.setItem('yunguen_stats', JSON.stringify(stats));
+            localStorage.setItem('YunGuer_stats', JSON.stringify(stats));
         }
 
-        if (!localStorage.getItem('yunguen_visitors')) {
-            localStorage.setItem('yunguen_visitors', JSON.stringify([]));
+        if (!localStorage.getItem('YunGuer_visitors')) {
+            localStorage.setItem('YunGuer_visitors', JSON.stringify([]));
         }
 
-        if (!localStorage.getItem('yunguen_product_codes')) {
-            localStorage.setItem('yunguen_product_codes', JSON.stringify([]));
+        if (!localStorage.getItem('YunGuer_product_codes')) {
+            localStorage.setItem('YunGuer_product_codes', JSON.stringify([]));
         }
 
-        if (!localStorage.getItem('yunguen_warranties')) {
-            localStorage.setItem('yunguen_warranties', JSON.stringify([]));
+        if (!localStorage.getItem('YunGuer_warranties')) {
+            localStorage.setItem('YunGuer_warranties', JSON.stringify([]));
         }
 
-        if (!localStorage.getItem('yunguen_cart')) {
-            localStorage.setItem('yunguen_cart', JSON.stringify([]));
+        if (!localStorage.getItem('YunGuer_cart')) {
+            localStorage.setItem('YunGuer_cart', JSON.stringify([]));
         }
     }
 
     // PRODUCTOS
     getProducts() {
-        return JSON.parse(localStorage.getItem('yunguen_products') || '[]');
+        return JSON.parse(localStorage.getItem('YunGuer_products') || '[]');
     }
 
     saveProducts(products) {
-        localStorage.setItem('yunguen_products', JSON.stringify(products));
+        localStorage.setItem('YunGuer_products', JSON.stringify(products));
         this.triggerSync('products');
     }
 
@@ -160,11 +160,11 @@ class DataSync {
 
     // ÓRDENES
     getOrders() {
-        return JSON.parse(localStorage.getItem('yunguen_orders') || '[]');
+        return JSON.parse(localStorage.getItem('YunGuer_orders') || '[]');
     }
 
     saveOrders(orders) {
-        localStorage.setItem('yunguen_orders', JSON.stringify(orders));
+        localStorage.setItem('YunGuer_orders', JSON.stringify(orders));
         this.triggerSync('orders');
     }
 
@@ -204,11 +204,11 @@ class DataSync {
 
     // ESTADÍSTICAS
     getStats() {
-        return JSON.parse(localStorage.getItem('yunguen_stats') || '{}');
+        return JSON.parse(localStorage.getItem('YunGuer_stats') || '{}');
     }
 
     saveStats(stats) {
-        localStorage.setItem('yunguen_stats', JSON.stringify(stats));
+        localStorage.setItem('YunGuer_stats', JSON.stringify(stats));
         this.triggerSync('stats');
     }
 
@@ -244,7 +244,7 @@ class DataSync {
 
     // VISITANTES
     getVisitors() {
-        return JSON.parse(localStorage.getItem('yunguen_visitors') || '[]');
+        return JSON.parse(localStorage.getItem('YunGuer_visitors') || '[]');
     }
 
     addVisitor(visitor) {
@@ -261,7 +261,7 @@ class DataSync {
             return visitorTime > fiveMinutesAgo;
         });
         
-        localStorage.setItem('yunguen_visitors', JSON.stringify(activeVisitors));
+        localStorage.setItem('YunGuer_visitors', JSON.stringify(activeVisitors));
         this.updateVisitorStats();
         this.triggerSync('visitors');
     }
@@ -271,13 +271,13 @@ class DataSync {
         const visitor = visitors.find(v => v.id === id);
         if (visitor) {
             visitor.timestamp = new Date().toISOString();
-            localStorage.setItem('yunguen_visitors', JSON.stringify(visitors));
+            localStorage.setItem('YunGuer_visitors', JSON.stringify(visitors));
         }
     }
 
     removeVisitor(id) {
         const visitors = this.getVisitors().filter(v => v.id !== id);
-        localStorage.setItem('yunguen_visitors', JSON.stringify(visitors));
+        localStorage.setItem('YunGuer_visitors', JSON.stringify(visitors));
         this.triggerSync('visitors');
     }
 
@@ -356,14 +356,14 @@ class DataSync {
 
         const codes = this.getProductCodes();
         codes.push(productCode);
-        localStorage.setItem('yunguen_product_codes', JSON.stringify(codes));
+        localStorage.setItem('YunGuer_product_codes', JSON.stringify(codes));
         
         return productCode;
     }
 
     // Obtener todos los códigos de productos
     getProductCodes() {
-        return JSON.parse(localStorage.getItem('yunguen_product_codes') || '[]');
+        return JSON.parse(localStorage.getItem('YunGuer_product_codes') || '[]');
     }
 
     // Buscar producto por código
@@ -378,7 +378,7 @@ class DataSync {
         const index = codes.findIndex(c => c.code === code);
         if (index !== -1) {
             codes[index] = { ...codes[index], ...updates };
-            localStorage.setItem('yunguen_product_codes', JSON.stringify(codes));
+            localStorage.setItem('YunGuer_product_codes', JSON.stringify(codes));
             return codes[index];
         }
         return null;
@@ -402,7 +402,7 @@ class DataSync {
 
         const warranties = this.getWarranties();
         warranties.push(warranty);
-        localStorage.setItem('yunguen_warranties', JSON.stringify(warranties));
+        localStorage.setItem('YunGuer_warranties', JSON.stringify(warranties));
 
         // Actualizar estado del código de producto
         this.updateProductCode(warrantyData.productCode, {
@@ -414,7 +414,7 @@ class DataSync {
 
     // Obtener todas las garantías
     getWarranties() {
-        return JSON.parse(localStorage.getItem('yunguen_warranties') || '[]');
+        return JSON.parse(localStorage.getItem('YunGuer_warranties') || '[]');
     }
 
     // Obtener garantías por código de producto
@@ -431,7 +431,7 @@ class DataSync {
             warranties[index].status = status;
             warranties[index].response = response;
             warranties[index].updateDate = new Date().toISOString();
-            localStorage.setItem('yunguen_warranties', JSON.stringify(warranties));
+            localStorage.setItem('YunGuer_warranties', JSON.stringify(warranties));
             
             // Si la garantía se completa, actualizar el código del producto
             if (status === 'completada') {
@@ -450,11 +450,11 @@ class DataSync {
     // ============================================
 
     getCart() {
-        return JSON.parse(localStorage.getItem('yunguen_cart') || '[]');
+        return JSON.parse(localStorage.getItem('YunGuer_cart') || '[]');
     }
 
     saveCart(cart) {
-        localStorage.setItem('yunguen_cart', JSON.stringify(cart));
+        localStorage.setItem('YunGuer_cart', JSON.stringify(cart));
         this.triggerSync('cart');
     }
 
