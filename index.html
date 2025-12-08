@@ -712,7 +712,7 @@
         
         // Inicializar EmailJS
         (function() {
-            emailjs.init("eWb_T9gj1wcXVA6rH"); // Tu Public Key de EmailJS
+            emailjs.init("6oNRoffjTiIUwXmm7"); // Tu Public Key de EmailJS
         })();
 
         // Manejar envío del formulario de contacto
@@ -730,14 +730,14 @@
                     
                     // Parámetros del email
                     const templateParams = {
-                        from_name: document.getElementById('name').value,
-                        from_email: document.getElementById('email').value,
+                        name: document.getElementById('name').value,
+                        email: document.getElementById('email').value,
                         message: document.getElementById('message').value,
-                        to_email: 'contacto@yunguer.com'
+                        title: 'Contact Us'
                     };
                     
                     // Enviar email usando EmailJS
-                    emailjs.send('service_yunguer', 'template_contact', templateParams)
+                    emailjs.send('service_37zhbqk', 'template_4lkbgzd', templateParams)
                         .then(function(response) {
                             console.log('Email enviado!', response.status, response.text);
                             alert('✅ ¡Mensaje enviado correctamente! Te responderemos pronto.');
