@@ -212,6 +212,38 @@
         </div>
     </section>
 
+        <!-- Diagnostic floating button (mobile only) -->
+        <div id="mobileDiagnostic" style="display:none; position:fixed; right:16px; bottom:16px; z-index:9999;">
+                <button id="diagBtn" style="background:#22c55e; color:#fff; border:none; padding:10px 14px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.25); font-weight:700;">Debug Móvil</button>
+                <div id="diagPanel" style="display:none; background:rgba(0,0,0,0.85); color:#fff; padding:12px; margin-top:8px; border-radius:8px; width:280px; max-height:60vh; overflow:auto; font-size:13px;"></div>
+        </div>
+
+        <script>
+            // Mostrar botón sólo en pantallas móviles
+            if (window.matchMedia && window.matchMedia('(max-width: 768px)').matches) {
+                document.getElementById('mobileDiagnostic').style.display = 'block';
+            }
+
+            document.getElementById('diagBtn').addEventListener('click', async function() {
+                const panel = document.getElementById('diagPanel');
+                panel.style.display = 'block';
+                panel.innerHTML = 'Cargando productos...';
+                try {
+                    if (!window.dataSync) {
+                        panel.innerHTML = '<strong>Error:</strong> dataSync no disponible';
+                        console.warn('dataSync no disponible');
+                        return;
+                    }
+                    const products = await window.dataSync.getProducts();
+                    console.log('Diagnóstico móvil - productos:', products);
+                    panel.innerHTML = `<strong>Productos cargados:</strong> ${products.length}<br><ul style="padding-left:16px;margin:8px 0;">` + products.map(p=>`<li>${p.name} — $${p.price} — disponible: ${p.available}</li>`).join('') + '</ul>';
+                } catch (err) {
+                    console.error('Error diagnóstico móvil:', err);
+                    panel.innerHTML = '<strong>Error al obtener productos</strong>';
+                }
+            });
+        </script>
+
     <!-- About Section -->
     <section id="nosotros" class="about-section">
         <div class="container">
