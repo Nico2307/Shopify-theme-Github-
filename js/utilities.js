@@ -172,10 +172,10 @@ function registerVisitor() {
 }
 
 // Cargar productos desde el sistema de sync
-function loadProductsFromSync() {
+async function loadProductsFromSync() {
   if (!window.dataSync) return;
   
-  allProducts = window.dataSync.getProducts().filter(p => p.available);
+  allProducts = (await window.dataSync.getProducts()).filter(p => p.available);
   renderProducts(allProducts);
   updateProductsCount(allProducts.length, currentCategory);
 }
@@ -336,8 +336,9 @@ function updateProductsCount(count, category) {
 }
 
 // Mostrar detalles del producto en modal
-function showProductDetail(productId) {
-  const product = window.dataSync.getProducts().find(p => p.id === productId);
+async function showProductDetail(productId) {
+  const products = await window.dataSync.getProducts();
+  const product = products.find(p => p.id === productId);
   
   if (!product) return;
   
@@ -1054,8 +1055,9 @@ function showNotification(message, type = 'info') {
 }
 
 // Función global para agregar al carrito (llamada desde los botones)
-function addToCart(productId, productName, productPrice) {
-  const product = window.dataSync.getProducts().find(p => p.id === productId);
+async function addToCart(productId, productName, productPrice) {
+  const products = await window.dataSync.getProducts();
+  const product = products.find(p => p.id === productId);
   
   if (!product || product.stock === 0) {
     showNotification('Producto sin stock disponible', 'error');

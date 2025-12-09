@@ -5,89 +5,28 @@
 
 class DataSync {
     constructor() {
-        this.initializeData();
+        this.products = [];
+        this.initPromise = this.initializeData();
     }
 
-    // Inicializar datos si no existen
-    initializeData() {
-        if (!localStorage.getItem('YunGuer_products')) {
-            const defaultProducts = [
-                {
-                    id: 1733706001000,
-                    name: 'Pantalón Cargo para Hombre - Cintura Elástica',
-                    category: 'ropa',
-                    price: 100000,
-                    originalPrice: 150000,
-                    stock: 25,
-                    available: true,
-                    freeShipping: true,
-                    image: 'https://img.ltwebstatic.com/images3_pi/2024/10/09/1f/1728447867aa0738f8bff42b9f6ad4d056f654d6f3_thumbnail_720x.jpg',
-                    additionalImages: [
-                        'https://img.ltwebstatic.com/images3_pi/2024/10/09/b8/1728447868f69dccb0aeeb1f22c8ab3dd0ccbc06d8_thumbnail_720x.jpg',
-                        'https://img.ltwebstatic.com/images3_pi/2024/10/09/f1/172844786824d3f84e4dfe84b3f30f5a69d5e6baa0_thumbnail_720x.jpg',
-                        'https://img.ltwebstatic.com/images3_pi/2024/10/09/e5/1728447868e05878f3a9f64b97e3aef7a2fe39f7e6_thumbnail_720x.jpg'
-                    ],
-                    description: 'Pantalones cargo de moda para hombre con pierna recta y cintura elástica. Diseño de ajuste holgado en color sólido con logo bordado en un solo lado. Perfectos para el otoño y el uso casual diario.\n\nCaracterísticas:\n• Cintura elástica para máxima comodidad\n• Diseño de pierna recta\n• Múltiples bolsillos tipo cargo\n• Logo bordado de alta calidad\n• Material resistente y duradero\n• Ajuste holgado y cómodo\n• Ideal para uso casual y urbano\n\nEstilo versátil que combina con cualquier outfit casual. Material de alta calidad que garantiza durabilidad y comodidad durante todo el día.',
-                    shortDescription: 'Pantalón cargo masculino con cintura elástica, diseño holgado y logo bordado. Perfecto para estilo casual urbano.',
-                    variants: {
-                        colors: ['negro', 'verde', 'gris', 'azul'],
-                        sizes: ['s', 'm', 'l', 'xl', 'xxl']
-                    },
-                    tags: ['nuevo', 'popular'],
-                    features: [
-                        'Cintura elástica ajustable',
-                        'Pierna recta para look moderno',
-                        'Múltiples bolsillos cargo funcionales',
-                        'Logo bordado de calidad premium',
-                        'Tela resistente y duradera',
-                        'Ajuste holgado cómodo',
-                        'Perfecto para otoño e invierno'
-                    ],
-                    categoryData: {
-                        material: 'Algodón mezcla premium',
-                        genero: 'Hombre',
-                        temporada: 'Otoño/Invierno',
-                        tipoRopa: 'Pantalón Cargo',
-                        cuidado: 'Lavado a máquina agua fría'
-                    },
-                    supplierInfo: {
-                        url: 'https://www.shein.com.co/Men-s-Fashion-Cargo-Pants-Straight-Leg-Elastic-Waist-Loose-Fit-Solid-Color-Single-Side-Embroidered-Logo-Long-Pants-Fall-p-153524474.html',
-                        name: 'SHEIN',
-                        price: 45000,
-                        notes: 'Producto de SHEIN. Verificar tallas disponibles antes de ordenar. Tiempo de envío estimado: 15-25 días.'
-                    },
-                    sold: 0,
-                    rating: 5,
-                    reviews: 0
-                },
-                { 
-                    id: 2, 
-                    name: 'Producto Premium 2', 
-                    price: 399,
-                    originalPrice: 599,
-                    stock: 8, 
-                    available: true,
-                    freeShipping: false,
-                    image: 'https://via.placeholder.com/300x300/ef4444/ffffff?text=Producto+2', 
-                    description: 'Descripción del producto premium 2',
-                    sold: 0
-                },
-                { 
-                    id: 3, 
-                    name: 'Producto Premium 3', 
-                    price: 499,
-                    originalPrice: 699,
-                    stock: 3, 
-                    available: true,
-                    freeShipping: true,
-                    image: 'https://via.placeholder.com/300x300/22c55e/ffffff?text=Producto+3', 
-                    description: 'Descripción del producto premium 3',
-                    sold: 0
-                }
-            ];
-            localStorage.setItem('YunGuer_products', JSON.stringify(defaultProducts));
+    // Inicializar datos
+    async initializeData() {
+        try {
+            // Cargar productos desde products.json
+            const response = await fetch('products.json');
+            if (response.ok) {
+                this.products = await response.json();
+                console.log('Productos cargados desde products.json:', this.products.length);
+            } else {
+                console.error('Error cargando products.json, usando productos por defecto');
+                this.products = this.getDefaultProducts();
+            }
+        } catch (error) {
+            console.error('Error fetching products.json:', error);
+            this.products = this.getDefaultProducts();
         }
 
+        // Inicializar otros datos en localStorage
         if (!localStorage.getItem('YunGuer_orders')) {
             localStorage.setItem('YunGuer_orders', JSON.stringify([]));
         }
@@ -119,9 +58,87 @@ class DataSync {
         }
     }
 
+    getDefaultProducts() {
+        return [
+            {
+                id: 1733706001000,
+                name: 'Pantalón Cargo para Hombre - Cintura Elástica',
+                category: 'ropa',
+                price: 100000,
+                originalPrice: 150000,
+                stock: 25,
+                available: true,
+                freeShipping: true,
+                image: 'https://img.ltwebstatic.com/images3_pi/2024/10/09/1f/1728447867aa0738f8bff42b9f6ad4d056f654d6f3_thumbnail_720x.jpg',
+                additionalImages: [
+                    'https://img.ltwebstatic.com/images3_pi/2024/10/09/b8/1728447868f69dccb0aeeb1f22c8ab3dd0ccbc06d8_thumbnail_720x.jpg',
+                    'https://img.ltwebstatic.com/images3_pi/2024/10/09/f1/172844786824d3f84e4dfe84b3f30f5a69d5e6baa0_thumbnail_720x.jpg',
+                    'https://img.ltwebstatic.com/images3_pi/2024/10/09/e5/1728447868e05878f3a9f64b97e3aef7a2fe39f7e6_thumbnail_720x.jpg'
+                ],
+                description: 'Pantalones cargo de moda para hombre con pierna recta y cintura elástica. Diseño de ajuste holgado en color sólido con logo bordado en un solo lado. Perfectos para el otoño y el uso casual diario.\n\nCaracterísticas:\n• Cintura elástica para máxima comodidad\n• Diseño de pierna recta\n• Múltiples bolsillos tipo cargo\n• Logo bordado de alta calidad\n• Material resistente y duradero\n• Ajuste holgado y cómodo\n• Ideal para uso casual y urbano\n\nEstilo versátil que combina con cualquier outfit casual. Material de alta calidad que garantiza durabilidad y comodidad durante todo el día.',
+                shortDescription: 'Pantalón cargo masculino con cintura elástica, diseño holgado y logo bordado. Perfecto para estilo casual urbano.',
+                variants: {
+                    colors: ['negro', 'verde', 'gris', 'azul'],
+                    sizes: ['s', 'm', 'l', 'xl', 'xxl']
+                },
+                tags: ['nuevo', 'popular'],
+                features: [
+                    'Cintura elástica ajustable',
+                    'Pierna recta para look moderno',
+                    'Múltiples bolsillos cargo funcionales',
+                    'Logo bordado de calidad premium',
+                    'Tela resistente y duradera',
+                    'Ajuste holgado cómodo',
+                    'Perfecto para otoño e invierno'
+                ],
+                categoryData: {
+                    material: 'Algodón mezcla premium',
+                    genero: 'Hombre',
+                    temporada: 'Otoño/Invierno',
+                    tipoRopa: 'Pantalón Cargo',
+                    cuidado: 'Lavado a máquina agua fría'
+                },
+                supplierInfo: {
+                    url: 'https://www.shein.com.co/Men-s-Fashion-Cargo-Pants-Straight-Leg-Elastic-Waist-Loose-Fit-Solid-Color-Single-Side-Embroidered-Logo-Long-Pants-Fall-p-153524474.html',
+                    name: 'SHEIN',
+                    price: 45000,
+                    notes: 'Producto de SHEIN. Verificar tallas disponibles antes de ordenar. Tiempo de envío estimado: 15-25 días.'
+                },
+                sold: 0,
+                rating: 5,
+                reviews: 0
+            },
+            { 
+                id: 2, 
+                name: 'Producto Premium 2', 
+                price: 399,
+                originalPrice: 599,
+                stock: 8, 
+                available: true,
+                freeShipping: false,
+                image: 'https://via.placeholder.com/300x300/ef4444/ffffff?text=Producto+2', 
+                description: 'Descripción del producto premium 2',
+                sold: 0
+            },
+            { 
+                id: 3, 
+                name: 'Producto Premium 3', 
+                price: 499,
+                originalPrice: 699,
+                stock: 3, 
+                available: true,
+                freeShipping: true,
+                image: 'https://via.placeholder.com/300x300/22c55e/ffffff?text=Producto+3', 
+                description: 'Descripción del producto premium 3',
+                sold: 0
+            }
+        ];
+    }
+
     // PRODUCTOS
-    getProducts() {
-        return JSON.parse(localStorage.getItem('YunGuer_products') || '[]');
+    async getProducts() {
+        await this.initPromise;
+        return this.products;
     }
 
     saveProducts(products) {
@@ -129,8 +146,8 @@ class DataSync {
         this.triggerSync('products');
     }
 
-    addProduct(product) {
-        const products = this.getProducts();
+    async addProduct(product) {
+        const products = await this.getProducts();
         product.id = Date.now();
         product.sold = 0;
         
@@ -138,24 +155,27 @@ class DataSync {
         console.log('💾 data-sync.js - Specifications:', product.specifications);
         
         products.push(product);
+        this.products = products; // Update the instance
         this.saveProducts(products);
         return product;
     }
 
-    updateProduct(id, updates) {
-        const products = this.getProducts();
+    async updateProduct(id, updates) {
+        const products = await this.getProducts();
         const index = products.findIndex(p => p.id === id);
         if (index !== -1) {
             products[index] = { ...products[index], ...updates };
+            this.products = products;
             this.saveProducts(products);
             return products[index];
         }
         return null;
     }
 
-    deleteProduct(id) {
-        const products = this.getProducts().filter(p => p.id !== id);
-        this.saveProducts(products);
+    async deleteProduct(id) {
+        const products = await this.getProducts();
+        this.products = products.filter(p => p.id !== id);
+        this.saveProducts(this.products);
     }
 
     // ÓRDENES
@@ -527,6 +547,13 @@ class DataSync {
     getCartItemCount() {
         const cart = this.getCart();
         return cart.reduce((total, item) => total + item.quantity, 0);
+    }
+
+    // Exportar productos para actualizar products.json
+    async exportProducts() {
+        await this.initPromise;
+        console.log('Productos actuales (copia esto a products.json):', JSON.stringify(this.products, null, 2));
+        return this.products;
     }
 }
 

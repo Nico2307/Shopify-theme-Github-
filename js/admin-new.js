@@ -410,7 +410,7 @@ function createSalesChart() {
     });
 }
 
-function createProductsChart() {
+async function createProductsChart() {
     const ctx = document.getElementById('productsChart');
     if (!ctx) return;
     
@@ -427,7 +427,7 @@ function createProductsChart() {
     }
     
     // Obtener productos más vendidos
-    const products = window.dataSync.getProducts();
+    const products = await window.dataSync.getProducts();
     const topProducts = products
         .filter(p => p.sold > 0)
         .sort((a, b) => b.sold - a.sold)
@@ -512,8 +512,8 @@ function startRealTimeUpdates() {
 // PRODUCTS SECTION
 // ============================================
 
-function loadProducts() {
-    const products = getProducts();
+async function loadProducts() {
+    const products = await getProducts();
     const grid = document.getElementById('productsGrid');
     
     grid.innerHTML = products.map(product => {
@@ -589,8 +589,8 @@ function loadProducts() {
     }).join('');
 }
 
-function getProducts() {
-    return window.dataSync.getProducts();
+async function getProducts() {
+    return await window.dataSync.getProducts();
 }
 
 // Helper functions for video embeds
@@ -609,8 +609,9 @@ function getVimeoEmbedUrl(url) {
     return `https://player.vimeo.com/video/${videoId}`;
 }
 
-function viewProductDetail(id) {
-    const product = getProducts().find(p => p.id === id);
+async function viewProductDetail(id) {
+    const products = await getProducts();
+    const product = products.find(p => p.id === id);
     if (!product) return;
 
     const modal = document.createElement('div');
@@ -914,17 +915,18 @@ function viewProductDetail(id) {
     document.body.appendChild(modal);
 }
 
-function deleteProduct(id) {
+async function deleteProduct(id) {
     if (confirm('¿Estás seguro de eliminar este producto?')) {
-        window.dataSync.deleteProduct(id);
+        await window.dataSync.deleteProduct(id);
         loadProducts();
         showNotification('Producto eliminado correctamente', 'success');
     }
 }
 
 // Editar Producto
-function editProduct(id) {
-    const product = getProducts().find(p => p.id === id);
+async function editProduct(id) {
+    const products = await getProducts();
+    const product = products.find(p => p.id === id);
     if (!product) {
         showNotification('Producto no encontrado', 'error');
         return;
@@ -1111,7 +1113,7 @@ function editProduct(id) {
     addProductForm.removeEventListener('submit', handleAddProductSubmit);
     
     // Modificar el evento de submit para actualizar en lugar de crear
-    const handleEditSubmit = (e) => {
+    const handleEditSubmit = async (e) => {
         e.preventDefault();
         
         try {
@@ -1258,7 +1260,7 @@ function editProduct(id) {
             console.log('📝 Actualizando producto:', updatedProduct);
             
             // Actualizar producto
-            const result = window.dataSync.updateProduct(id, updatedProduct);
+            const result = await window.dataSync.updateProduct(id, updatedProduct);
             console.log('✅ Producto actualizado exitosamente:', result);
             
             // Restaurar modal y formulario
@@ -1724,7 +1726,7 @@ function setupVideoDropZone(element) {
 }
 
 // Función para manejar el submit de agregar producto
-function handleAddProductSubmit(e) {
+async function handleAddProductSubmit(e) {
     e.preventDefault();
     
     try {
@@ -1887,7 +1889,7 @@ function handleAddProductSubmit(e) {
         console.log('🔒 Información del proveedor:', newProduct.supplierInfo);
         
         // Agregar producto
-        const addedProduct = window.dataSync.addProduct(newProduct);
+        const addedProduct = await window.dataSync.addProduct(newProduct);
         console.log('✅ Producto agregado exitosamente:', addedProduct);
         
         // Cerrar modal y limpiar formulario
@@ -2577,7 +2579,9 @@ console.log('🔧 Admin Panel JS cargado');
 console.log('📊 DataSync disponible:', typeof window.dataSync !== 'undefined');
 if (window.dataSync) {
     console.log('✅ DataSync está listo');
-    console.log('📦 Productos actuales:', window.dataSync.getProducts().length);
+    window.dataSync.getProducts().then(products => {
+        console.log('📦 Productos actuales:', products.length);
+    });
 } else {
     console.warn('⚠️ DataSync NO está disponible todavía');
 }
