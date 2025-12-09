@@ -4703,8 +4703,19 @@ button {
     display: none !important;
   }
 
+  /* Ocultar sección Hero/Inicio en móviles para mostrar productos directamente */
+  #inicio,
+  .hero-section {
+    display: none !important;
+  }
+
   /* Ocultar enlace "Nosotros" en menú móvil */
   .menu a[href="#nosotros"] {
+    display: none !important;
+  }
+
+  /* Ocultar enlace "Inicio" en menú móvil */
+  .menu a[href="#inicio"] {
     display: none !important;
   }
 
