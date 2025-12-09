@@ -4704,10 +4704,12 @@ button {
   }
 
   /* Ocultar sección Hero/Inicio en móviles para mostrar productos directamente */
+  /* TEMPORALMENTE DESACTIVADO PARA QUE APAREZCAN PRODUCTOS EN MÓVIL
   #inicio,
   .hero-section {
     display: none !important;
   }
+  */
 
   /* Ocultar enlace "Nosotros" en menú móvil */
   .menu a[href="#nosotros"] {
