@@ -6,7 +6,61 @@
         "price": 100000,
         "originalPrice": 150000,
         "stock": 25,
-        []
+        [
+            {
+                "id": 1765258816346,
+                "name": "【US Plug】UGREEN 65W 30W GaN Charger Robot Design PD3.0 Fast Charger QC4.0 3.0 PPS for iPhone 17 16 15 Pro Macbook Laptop Table",
+                "description": "Descripción: 【US Plug】UGREEN 65W 30W GaN Charger Robot Design PD3.0 Fast Charger QC4.0 3.0 PPS for iPhone 17 16 15 Pro Macbook Laptop Table. El cargador UGREEN GaN con diseño de robot combina potencia, tecnología avanzada y un estilo único en un accesorio compacto e inteligente. Gracias a su tecnología GaN (nitruro de galio), ofrece una carga más eficiente, rápida y con menor generación de calor, permitiéndote obtener más potencia en un tamaño reducido.\n\nEste cargador está disponible en versiones de 30W y 65W, compatibles con PD 3.0 y PPS, lo que garantiza una carga rápida y segura para una gran variedad de dispositivos, incluidos iPhone 16 / 17, teléfonos Samsung, Xiaomi, iPads, tablets, MacBooks y otros portátiles compatibles con carga USB-C.\n\nSu diseño en forma de robot decorativo no solo lo hace más atractivo, sino también práctico, ya que permite visualizar claramente el estado del cargador y mantener un estilo moderno y tecnológico en tu espacio. Además, incluye un enchufe US Plug, ideal para uso en América.\n\nPerfecto para quienes buscan un cargador rápido, estable, seguro y con un toque diferente.. Detalles y especificaciones a continuación.",
+                "shortDescription": "Descripción: 【US Plug】UGREEN 65W 30W GaN Charger Robot Design PD3.0 Fast Charger QC4.0 3.0 PPS for iPhone 17 16 15 Pro Macbook Laptop Table. El cargador UGREEN ",
+                "price": 110000,
+                "originalPrice": 143000,
+                "stock": 30,
+                "category": "electronica",
+                "available": true,
+                "freeShipping": true,
+                "shippingCost": 0,
+                "tags": [],
+                "features": [
+                    "El cargador UGREEN GaN con diseño de robot combina potencia",
+                    "tecnología avanzada y un estilo único en un accesorio compacto e inteligente",
+                    "Gracias a su tecnología GaN (nitruro de galio)",
+                    "ofrece una carga más eficiente",
+                    "rápida y con menor generación de calor",
+                    "permitiéndote obtener más potencia en un tamaño reducido",
+                    "Este cargador está disponible en versiones de 30W y 65W",
+                    "compatibles con PD 3"
+                ],
+                "supplierInfo": {
+                    "name": "",
+                    "url": "",
+                    "price": null,
+                    "notes": ""
+                },
+                "image": "A73c8efcf7251437683630c2a013a5c3b8.png_480x480.png_.avif",
+                "additionalImages": [
+                    "S3ac3c4a36f3144d0bf4a0cb0fe87397ft.jpg_220x220q75.jpg_.avif",
+                    "S3b723fafc4e542ca8e89cb1cf9ab7441V.jpg_220x220q75.jpg_.avif",
+                    "S4d89829de5f84143831ceb3a3f2c6420O.jpg_220x220q75.jpg_.avif",
+                    "S5db9bc959e25413f8b94d4373940771cl.jpg_220x220q75.jpg_.avif",
+                    "S7d911fe7f75f4f32843b4534c4c2291cR.jpg_220x220q75.jpg_.avif",
+                    "S8dca62fca8044371bc990b7d87e4c60ch.jpg_220x220q75.jpg_.avif",
+                    "S38ff6a9152524992af64a74d88d60d92a.jpg_220x220q75.jpg_.avif",
+                    "S197ffd184f964f8988c5de5114635b12y.jpg_220x220q75.jpg_.avif",
+                    "S210c16610fc247aaa2f0df6d3a10bd41y.jpg_220x220q75.jpg_.avif",
+                    "S567e59b03d8b4ec695f087ed3037a2b5M.jpg_220x220q75.jpg_.avif",
+                    "S663ee6322ce04961a63da3ce12b85eabQ.jpg_220x220q75.jpg_.avif",
+                    "S847cd6242f69498996e829f6f62ac15cC.jpg_220x220q75.jpg_.avif",
+                    "S5157d9daa5b849b6af0fd7a23e81ebc4W.jpg_220x220q75.jpg_.avif",
+                    "S50828da6c77d465a9402d905495e6ee6l.jpg_220x220q75.jpg_.avif",
+                    "S146136a6fa7c4f39a9518a514381a87a5.jpg_220x220q75.jpg_.avif",
+                    "Se322b39916cd4e63aebf47667e9f50ce8.jpg_220x220q75.jpg_.avif"
+                ],
+                "videoUrl": "cc83a10e-75e1-4a28-95c4-2dda008f1022.mp4",
+                "sold": 0,
+                "rating": 5,
+                "reviews": 0
+            }
+        ]
         "category": "electronica",
         "available": true,
         "freeShipping": true,
