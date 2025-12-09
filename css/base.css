@@ -4697,6 +4697,17 @@ button {
     padding: 0 15px !important;
   }
 
+  /* Ocultar sección "Nosotros" en móviles para mostrar productos directamente */
+  #nosotros,
+  .about-section {
+    display: none !important;
+  }
+
+  /* Ocultar enlace "Nosotros" en menú móvil */
+  .menu a[href="#nosotros"] {
+    display: none !important;
+  }
+
   /* Títulos de sección móvil */
   .section-title {
     font-size: clamp(2rem, 6vw, 3.5rem) !important;
