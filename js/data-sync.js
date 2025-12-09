@@ -11,19 +11,26 @@ class DataSync {
 
     // Inicializar datos
     async initializeData() {
-        try {
-            // Cargar productos desde products.json
-            const response = await fetch('products.json');
-            if (response.ok) {
-                this.products = await response.json();
-                console.log('Productos cargados desde products.json:', this.products.length);
-            } else {
-                console.error('Error cargando products.json, usando productos por defecto');
+        // Primero intentar cargar desde localStorage (productos agregados/modificados)
+        const localProducts = localStorage.getItem('YunGuer_products');
+        if (localProducts) {
+            this.products = JSON.parse(localProducts);
+            console.log('Productos cargados desde localStorage:', this.products.length);
+        } else {
+            // Si no hay en localStorage, cargar desde products.json
+            try {
+                const response = await fetch('products.json');
+                if (response.ok) {
+                    this.products = await response.json();
+                    console.log('Productos cargados desde products.json:', this.products.length);
+                } else {
+                    console.error('Error cargando products.json, usando productos por defecto');
+                    this.products = this.getDefaultProducts();
+                }
+            } catch (error) {
+                console.error('Error fetching products.json:', error);
                 this.products = this.getDefaultProducts();
             }
-        } catch (error) {
-            console.error('Error fetching products.json:', error);
-            this.products = this.getDefaultProducts();
         }
 
         // Inicializar otros datos en localStorage
@@ -142,6 +149,7 @@ class DataSync {
     }
 
     saveProducts(products) {
+        this.products = products;
         localStorage.setItem('YunGuer_products', JSON.stringify(products));
         this.triggerSync('products');
     }
@@ -155,7 +163,6 @@ class DataSync {
         console.log('💾 data-sync.js - Specifications:', product.specifications);
         
         products.push(product);
-        this.products = products; // Update the instance
         this.saveProducts(products);
         return product;
     }
@@ -165,7 +172,6 @@ class DataSync {
         const index = products.findIndex(p => p.id === id);
         if (index !== -1) {
             products[index] = { ...products[index], ...updates };
-            this.products = products;
             this.saveProducts(products);
             return products[index];
         }
@@ -174,8 +180,7 @@ class DataSync {
 
     async deleteProduct(id) {
         const products = await this.getProducts();
-        this.products = products.filter(p => p.id !== id);
-        this.saveProducts(this.products);
+        this.saveProducts(products.filter(p => p.id !== id));
     }
 
     // ÓRDENES
