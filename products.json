@@ -70,5 +70,47 @@
         "image": "https://via.placeholder.com/300x300/22c55e/ffffff?text=Producto+3",
         "description": "Descripción del producto premium 3",
         "sold": 0
+    },
+    {
+        "id": 1735680000000,
+        "name": "Cargador UGREEN GaN con diseño de robot",
+        "category": "tecnologia",
+        "price": 110000,
+        "originalPrice": null,
+        "stock": 10,
+        "available": true,
+        "freeShipping": true,
+        "image": "https://via.placeholder.com/300x300/8b5cf6/ffffff?text=Cargador+UGREEN+GaN",
+        "additionalImages": [],
+        "description": "El cargador UGREEN GaN con diseño de robot combina potencia, tecnología avanzada y un estilo único en un accesorio compacto e inteligente. Gracias a su tecnología GaN (nitruro de galio), ofrece una carga más eficiente, rápida y con menor generación de calor, permitiéndote obtener más potencia en un tamaño reducido.\n\nEste cargador está disponible en versiones de 30W y 65W, compatibles con PD 3.0 y PPS, lo que garantiza una carga rápida y segura para una gran variedad de dispositivos, incluidos iPhone 16 / 17, teléfonos Samsung, Xiaomi, iPads, tablets, MacBooks y otros portátiles compatibles con carga USB-C.\n\nSu diseño en forma de robot decorativo no solo lo hace más atractivo, sino también práctico, ya que permite visualizar claramente el estado del cargador y mantener un estilo moderno y tecnológico en tu espacio. Además, incluye un enchufe US Plug, ideal para uso en América.\n\nPerfecto para quienes buscan un cargador rápido, estable, seguro y con un toque diferente.",
+        "shortDescription": "Cargador UGREEN GaN con diseño de robot, carga rápida PD 3.0, compatible con iPhone, Samsung, iPad y más.",
+        "variants": {
+            "colors": ["blanco"],
+            "sizes": ["30W", "65W"]
+        },
+        "tags": ["nuevo", "tecnologia", "cargador"],
+        "features": [
+            "Tecnología GaN para carga eficiente",
+            "Compatible con PD 3.0 y PPS",
+            "Diseño de robot decorativo",
+            "Carga rápida para múltiples dispositivos",
+            "Enchufe US Plug",
+            "Compacto y moderno"
+        ],
+        "categoryData": {
+            "tipo": "Cargador",
+            "compatibilidad": "USB-C PD",
+            "potencia": "30W/65W",
+            "marca": "UGREEN"
+        },
+        "supplierInfo": {
+            "url": "https://es.aliexpress.com/item/1005006031310121.html?gps-id=pcDetailTopMoreOtherSeller&scm=1007.40050.354490.0&scm_id=1007.40050.354490.0&scm-url=1007.40050.354490.0&pvid=93c16a38-a840-4627-bd21-8104b8ad3561&_t=gps-id:pcDetailTopMoreOtherSeller,scm-url=1007.40050.354490.0,pvid=93c16a38-a840-4627-bd21-8104b8ad3561,tpp_buckets:668%232846%238107%231934&pdp_ext_f=%7B%22order%22%3A%223439%22%2C%22eval%22%3A%221%22%2C%22sceneId%22%3A%2230050%22%2C%22fromPage%22%3A%22recommend%22%7D&pdp_npi=6%40dis%21COP%21156754.56%2167718.00%21%21%2139.98%2117.27%21%40210328df17652534769213170e0330%2112000045752235002%21rec%21CO%212726194688%21ABX%211%210%21n_tag%3A-29910%3Bd%3A353be575%3Bm03_new_user%3A-29895%3BpisId%3A5000000195832335&utparam-url=scene%3ApcDetailTopMoreOtherSeller%7Cquery_from%3A%7Cx_object_id%3A1005006031310121%7C_p_origin_prod%3A",
+            "name": "AliExpress",
+            "price": 67718,
+            "notes": "Producto de AliExpress. Tiempo de envío estimado: 15-30 días."
+        },
+        "sold": 0,
+        "rating": 5,
+        "reviews": 0
     }
 ]

@@ -22,7 +22,9 @@ class DataSync {
                 const response = await fetch('products.json');
                 if (response.ok) {
                     this.products = await response.json();
-                    console.log('Productos cargados desde products.json:', this.products.length);
+                    // Guardar en localStorage para futuras cargas
+                    localStorage.setItem('YunGuer_products', JSON.stringify(this.products));
+                    console.log('Productos cargados desde products.json y guardados en localStorage:', this.products.length);
                 } else {
                     console.error('Error cargando products.json, usando productos por defecto');
                     this.products = this.getDefaultProducts();
