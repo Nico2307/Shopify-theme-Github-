@@ -1322,8 +1322,29 @@ const addProductModal = document.getElementById('addProductModal');
 const closeModal = document.querySelector('.close-modal');
 const addProductForm = document.getElementById('addProductForm');
 
+const exportProductsBtn = document.getElementById('exportProductsBtn');
+
 addProductBtn.addEventListener('click', () => {
     addProductModal.style.display = 'flex';
+});
+
+exportProductsBtn.addEventListener('click', async () => {
+    try {
+        const products = await window.dataSync.exportProducts();
+        const blob = new Blob([JSON.stringify(products, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'products.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showNotification('Productos exportados correctamente', 'success');
+    } catch (error) {
+        console.error('Error exportando productos:', error);
+        showNotification('Error al exportar productos', 'error');
+    }
 });
 
 closeModal.addEventListener('click', () => {
