@@ -6,122 +6,61 @@
         "price": 100000,
         "originalPrice": 150000,
         "stock": 25,
-        "available": true,
-        "freeShipping": true,
-        "image": "https://img.ltwebstatic.com/images3_pi/2024/10/09/1f/1728447867aa0738f8bff42b9f6ad4d056f654d6f3_thumbnail_720x.jpg",
-        "additionalImages": [
-            "https://img.ltwebstatic.com/images3_pi/2024/10/09/b8/1728447868f69dccb0aeeb1f22c8ab3dd0ccbc06d8_thumbnail_720x.jpg",
-            "https://img.ltwebstatic.com/images3_pi/2024/10/09/f1/172844786824d3f84e4dfe84b3f30f5a69d5e6baa0_thumbnail_720x.jpg",
-            "https://img.ltwebstatic.com/images3_pi/2024/10/09/e5/1728447868e05878f3a9f64b97e3aef7a2fe39f7e6_thumbnail_720x.jpg"
-        ],
-        "description": "Pantalones cargo de moda para hombre con pierna recta y cintura elástica. Diseño de ajuste holgado en color sólido con logo bordado en un solo lado. Perfectos para el otoño y el uso casual diario.\n\nCaracterísticas:\n• Cintura elástica para máxima comodidad\n• Diseño de pierna recta\n• Múltiples bolsillos tipo cargo\n• Logo bordado de alta calidad\n• Material resistente y duradero\n• Ajuste holgado y cómodo\n• Ideal para uso casual y urbano\n\nEstilo versátil que combina con cualquier outfit casual. Material de alta calidad que garantiza durabilidad y comodidad durante todo el día.",
-        "shortDescription": "Pantalón cargo masculino con cintura elástica, diseño holgado y logo bordado. Perfecto para estilo casual urbano.",
-        "variants": {
-            "colors": ["negro", "verde", "gris", "azul"],
-            "sizes": ["s", "m", "l", "xl", "xxl"]
-        },
-        "tags": ["nuevo", "popular"],
-        "features": [
-            "Cintura elástica ajustable",
-            "Pierna recta para look moderno",
-            "Múltiples bolsillos cargo funcionales",
-            "Logo bordado de calidad premium",
-            "Tela resistente y duradera",
-            "Ajuste holgado cómodo",
-            "Perfecto para otoño e invierno"
-        ],
-        "categoryData": {
-            "material": "Algodón mezcla premium",
-            "genero": "Hombre",
-            "temporada": "Otoño/Invierno",
-            "tipoRopa": "Pantalón Cargo",
-            "cuidado": "Lavado a máquina agua fría"
-        },
-        "supplierInfo": {
-            "url": "https://www.shein.com.co/Men-s-Fashion-Cargo-Pants-Straight-Leg-Elastic-Waist-Loose-Fit-Solid-Color-Single-Side-Embroidered-Logo-Long-Pants-Fall-p-153524474.html",
-            "name": "SHEIN",
-            "price": 45000,
-            "notes": "Producto de SHEIN. Verificar tallas disponibles antes de ordenar. Tiempo de envío estimado: 15-25 días."
-        },
-        "sold": 0,
-        "rating": 5,
-        "reviews": 0
-    },
-    {
-        "id": 2,
-        "name": "Producto Premium 2",
-        "price": 399,
-        "originalPrice": 599,
-        "stock": 8,
-        "available": true,
-        "freeShipping": false,
-        "image": "https://via.placeholder.com/300x300/ef4444/ffffff?text=Producto+2",
-        "description": "Descripción del producto premium 2",
-        "sold": 0
-    },
-    {
-        "id": 3,
-        "name": "Producto Premium 3",
-        "price": 499,
-        "originalPrice": 699,
-        "stock": 3,
-        "available": true,
-        "freeShipping": true,
-        "image": "https://via.placeholder.com/300x300/22c55e/ffffff?text=Producto+3",
-        "description": "Descripción del producto premium 3",
-        "sold": 0
-    },
-    {
-        "id": 1735680000000,
-        "name": "Cargador UGREEN GaN con diseño de robot",
-        "category": "tecnologia",
-        "price": 110000,
-        "originalPrice": null,
-        "stock": 10,
-        "available": true,
-        "freeShipping": true,
-        "image": "https://via.placeholder.com/300x300/8b5cf6/ffffff?text=Cargador+UGREEN+GaN",
-        "additionalImages": [],
-        "description": "El cargador UGREEN GaN con diseño de robot combina potencia, tecnología avanzada y un estilo único en un accesorio compacto e inteligente. Gracias a su tecnología GaN (nitruro de galio), ofrece una carga más eficiente, rápida y con menor generación de calor, permitiéndote obtener más potencia en un tamaño reducido.\n\nEste cargador está disponible en versiones de 30W y 65W, compatibles con PD 3.0 y PPS, lo que garantiza una carga rápida y segura para una gran variedad de dispositivos, incluidos iPhone 16 / 17, teléfonos Samsung, Xiaomi, iPads, tablets, MacBooks y otros portátiles compatibles con carga USB-C.\n\nSu diseño en forma de robot decorativo no solo lo hace más atractivo, sino también práctico, ya que permite visualizar claramente el estado del cargador y mantener un estilo moderno y tecnológico en tu espacio. Además, incluye un enchufe US Plug, ideal para uso en América.\n\nPerfecto para quienes buscan un cargador rápido, estable, seguro y con un toque diferente.",
-        "shortDescription": "Cargador UGREEN GaN con diseño de robot, carga rápida PD 3.0, compatible con iPhone, Samsung, iPad y más.",
-        "variants": {
-            "colors": ["blanco"],
-            "sizes": ["30W", "65W"]
-        },
-        "tags": ["nuevo", "tecnologia", "cargador"],
-        "features": [
-            "Tecnología GaN para carga eficiente",
-            "Compatible con PD 3.0 y PPS",
-            "Diseño de robot decorativo",
-            "Carga rápida para múltiples dispositivos",
-            "Enchufe US Plug",
-            "Compacto y moderno"
-        ],
-        "categoryData": {
-            "tipo": "Cargador",
-            "compatibilidad": "USB-C PD",
-            "potencia": "30W/65W",
-            "marca": "UGREEN"
-        },
-        "supplierInfo": {
-            "url": "https://es.aliexpress.com/item/1005006031310121.html?gps-id=pcDetailTopMoreOtherSeller&scm=1007.40050.354490.0&scm_id=1007.40050.354490.0&scm-url=1007.40050.354490.0&pvid=93c16a38-a840-4627-bd21-8104b8ad3561&_t=gps-id:pcDetailTopMoreOtherSeller,scm-url=1007.40050.354490.0,pvid=93c16a38-a840-4627-bd21-8104b8ad3561,tpp_buckets:668%232846%238107%231934&pdp_ext_f=%7B%22order%22%3A%223439%22%2C%22eval%22%3A%221%22%2C%22sceneId%22%3A%2230050%22%2C%22fromPage%22%3A%22recommend%22%7D&pdp_npi=6%40dis%21COP%21156754.56%2167718.00%21%21%2139.98%2117.27%21%40210328df17652534769213170e0330%2112000045752235002%21rec%21CO%212726194688%21ABX%211%210%21n_tag%3A-29910%3Bd%3A353be575%3Bm03_new_user%3A-29895%3BpisId%3A5000000195832335&utparam-url=scene%3ApcDetailTopMoreOtherSeller%7Cquery_from%3A%7Cx_object_id%3A1005006031310121%7C_p_origin_prod%3A",
-            "name": "AliExpress",
-            "price": 67718,
-            "notes": "Producto de AliExpress. Tiempo de envío estimado: 15-30 días."
-        },
-        "sold": 0,
-        "rating": 5,
-        "reviews": 0
-    }
-    ,
-    {
-        "id": 1765258816346,
-        "name": "【US Plug】UGREEN 65W 30W GaN Charger Robot Design PD3.0 Fast Charger QC4.0 3.0 PPS for iPhone 17 16 15 Pro Macbook Laptop Table",
-        "description": "Descripción: 【US Plug】UGREEN 65W 30W GaN Charger Robot Design PD3.0 Fast Charger QC4.0 3.0 PPS for iPhone 17 16 15 Pro Macbook Laptop Table. El cargador UGREEN GaN con diseño de robot combina potencia, tecnología avanzada y un estilo único en un accesorio compacto e inteligente. Gracias a su tecnología GaN (nitruro de galio), ofrece una carga más eficiente, rápida y con menor generación de calor, permitiéndote obtener más potencia en un tamaño reducido.\n\nEste cargador está disponible en versiones de 30W y 65W, compatibles con PD 3.0 y PPS, lo que garantiza una carga rápida y segura para una gran variedad de dispositivos, incluidos iPhone 16 / 17, teléfonos Samsung, Xiaomi, iPads, tablets, MacBooks y otros portátiles compatibles con carga USB-C.\n\nSu diseño en forma de robot decorativo no solo lo hace más atractivo, sino también práctico, ya que permite visualizar claramente el estado del cargador y mantener un estilo moderno y tecnológico en tu espacio. Además, incluye un enchufe US Plug, ideal para uso en América.\n\nPerfecto para quienes buscan un cargador rápido, estable, seguro y con un toque diferente.. Detalles y especificaciones a continuación.",
-        "shortDescription": "Descripción: 【US Plug】UGREEN 65W 30W GaN Charger Robot Design PD3.0 Fast Charger QC4.0 3.0 PPS for iPhone 17 16 15 Pro Macbook Laptop Table. El cargador UGREEN ",
-        "price": 110000,
-        "originalPrice": 143000,
-        "stock": 30,
+        [
+            {
+                "id": 1765258816346,
+                "name": "【US Plug】UGREEN 65W 30W GaN Charger Robot Design PD3.0 Fast Charger QC4.0 3.0 PPS for iPhone 17 16 15 Pro Macbook Laptop Table",
+                "description": "Descripción: 【US Plug】UGREEN 65W 30W GaN Charger Robot Design PD3.0 Fast Charger QC4.0 3.0 PPS for iPhone 17 16 15 Pro Macbook Laptop Table. El cargador UGREEN GaN con diseño de robot combina potencia, tecnología avanzada y un estilo único en un accesorio compacto e inteligente. Gracias a su tecnología GaN (nitruro de galio), ofrece una carga más eficiente, rápida y con menor generación de calor, permitiéndote obtener más potencia en un tamaño reducido.\n\nEste cargador está disponible en versiones de 30W y 65W, compatibles con PD 3.0 y PPS, lo que garantiza una carga rápida y segura para una gran variedad de dispositivos, incluidos iPhone 16 / 17, teléfonos Samsung, Xiaomi, iPads, tablets, MacBooks y otros portátiles compatibles con carga USB-C.\n\nSu diseño en forma de robot decorativo no solo lo hace más atractivo, sino también práctico, ya que permite visualizar claramente el estado del cargador y mantener un estilo moderno y tecnológico en tu espacio. Además, incluye un enchufe US Plug, ideal para uso en América.\n\nPerfecto para quienes buscan un cargador rápido, estable, seguro y con un toque diferente.. Detalles y especificaciones a continuación.",
+                "shortDescription": "Descripción: 【US Plug】UGREEN 65W 30W GaN Charger Robot Design PD3.0 Fast Charger QC4.0 3.0 PPS for iPhone 17 16 15 Pro Macbook Laptop Table. El cargador UGREEN ",
+                "price": 110000,
+                "originalPrice": 143000,
+                "stock": 30,
+                "category": "electronica",
+                "available": true,
+                "freeShipping": true,
+                "shippingCost": 0,
+                "tags": [],
+                "features": [
+                    "El cargador UGREEN GaN con diseño de robot combina potencia",
+                    "tecnología avanzada y un estilo único en un accesorio compacto e inteligente",
+                    "Gracias a su tecnología GaN (nitruro de galio)",
+                    "ofrece una carga más eficiente",
+                    "rápida y con menor generación de calor",
+                    "permitiéndote obtener más potencia en un tamaño reducido",
+                    "Este cargador está disponible en versiones de 30W y 65W",
+                    "compatibles con PD 3"
+                ],
+                "supplierInfo": {
+                    "name": "",
+                    "url": "",
+                    "price": null,
+                    "notes": ""
+                },
+                "image": "A73c8efcf7251437683630c2a013a5c3b8.png_480x480.png_.avif",
+                "additionalImages": [
+                    "S3ac3c4a36f3144d0bf4a0cb0fe87397ft.jpg_220x220q75.jpg_.avif",
+                    "S3b723fafc4e542ca8e89cb1cf9ab7441V.jpg_220x220q75.jpg_.avif",
+                    "S4d89829de5f84143831ceb3a3f2c6420O.jpg_220x220q75.jpg_.avif",
+                    "S5db9bc959e25413f8b94d4373940771cl.jpg_220x220q75.jpg_.avif",
+                    "S7d911fe7f75f4f32843b4534c4c2291cR.jpg_220x220q75.jpg_.avif",
+                    "S8dca62fca8044371bc990b7d87e4c60ch.jpg_220x220q75.jpg_.avif",
+                    "S38ff6a9152524992af64a74d88d60d92a.jpg_220x220q75.jpg_.avif",
+                    "S197ffd184f964f8988c5de5114635b12y.jpg_220x220q75.jpg_.avif",
+                    "S210c16610fc247aaa2f0df6d3a10bd41y.jpg_220x220q75.jpg_.avif",
+                    "S567e59b03d8b4ec695f087ed3037a2b5M.jpg_220x220q75.jpg_.avif",
+                    "S663ee6322ce04961a63da3ce12b85eabQ.jpg_220x220q75.jpg_.avif",
+                    "S847cd6242f69498996e829f6f62ac15cC.jpg_220x220q75.jpg_.avif",
+                    "S5157d9daa5b849b6af0fd7a23e81ebc4W.jpg_220x220q75.jpg_.avif",
+                    "S50828da6c77d465a9402d905495e6ee6l.jpg_220x220q75.jpg_.avif",
+                    "S146136a6fa7c4f39a9518a514381a87a5.jpg_220x220q75.jpg_.avif",
+                    "Se322b39916cd4e63aebf47667e9f50ce8.jpg_220x220q75.jpg_.avif"
+                ],
+                "videoUrl": "cc83a10e-75e1-4a28-95c4-2dda008f1022.mp4",
+                "sold": 0,
+                "rating": 5,
+                "reviews": 0
+            }
+        ]
         "category": "electronica",
         "available": true,
         "freeShipping": true,
