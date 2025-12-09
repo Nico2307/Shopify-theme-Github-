@@ -210,11 +210,11 @@ function renderProducts(products) {
     
     return `
     <div class="product-card compact-card" data-product-id="${product.id}" onclick="showProductDetail(${product.id})">
-      <div class="product-image-wrapper">
+        <div class="product-image-wrapper">
         <img src="${product.image}" alt="${product.name}" class="product-image">
         <div class="badges-container">
           ${discountPercent > 0 ? `<span class="discount-badge-card">${discountPercent}% OFF</span>` : ''}
-          ${product.freeShipping ? '<span class="free-shipping-badge-card">🚚 ENVÍO GRATIS</span>' : ''}
+          ${product.freeShipping ? '<span class="free-shipping-badge-card">🚚 ENVÍO GRATIS</span>' : (product.shippingCost ? `<span class="shipping-cost-badge-card">🚚 Envío $${(product.shippingCost).toLocaleString()}</span>` : '')}
         </div>
         ${product.stock <= 5 && product.stock > 0 ? '<span class="stock-badge low-stock">¡Pocas!</span>' : ''}
         ${product.stock === 0 ? '<span class="stock-badge out-of-stock">Agotado</span>' : ''}

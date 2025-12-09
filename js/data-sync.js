@@ -6,39 +6,53 @@
 class DataSync {
     constructor() {
         this.products = [];
+        // Configure API usage: set USE_API=true to fetch from /api/products
+        this.USE_API = true;
+        this.API_BASE = window.__API_BASE__ || 'http://localhost:3000';
         this.initPromise = this.initializeData();
     }
 
     // Inicializar datos
     async initializeData() {
         // Siempre cargar desde products.json para mantener sincronizado
-        try {
-            const response = await fetch('products.json');
-            if (response.ok) {
-                this.products = await response.json();
-                // Guardar en localStorage para acceso rápido
-                localStorage.setItem('YunGuer_products', JSON.stringify(this.products));
-                console.log('Productos cargados desde products.json:', this.products.length);
-            } else {
-                console.error('Error cargando products.json, intentando localStorage');
-                const localProducts = localStorage.getItem('YunGuer_products');
-                if (localProducts) {
-                    this.products = JSON.parse(localProducts);
-                    console.log('Productos cargados desde localStorage:', this.products.length);
+        // If API mode enabled, try API first
+        if (this.USE_API) {
+            try {
+                const res = await fetch(this.API_BASE + '/api/products');
+                if (res.ok) {
+                    const items = await res.json();
+                    this.products = items || [];
+                    try { localStorage.setItem('YunGuer_products', JSON.stringify(this.products)); } catch(e){}
+                    return this.products;
                 } else {
-                    this.products = this.getDefaultProducts();
+                    console.warn('API /api/products returned', res.status);
                 }
-            }
-        } catch (error) {
-            console.error('Error fetching products.json:', error);
-            const localProducts = localStorage.getItem('YunGuer_products');
-            if (localProducts) {
-                this.products = JSON.parse(localProducts);
-                console.log('Productos cargados desde localStorage:', this.products.length);
-            } else {
-                this.products = this.getDefaultProducts();
+            } catch (e) {
+                console.warn('Failed to reach API at', this.API_BASE, e);
             }
         }
+        // Fallback to products.json (older flow)
+        try {
+            const res = await fetch('/products.json');
+            if (res.ok) {
+                const items = await res.json();
+                this.products = items || [];
+                try { localStorage.setItem('YunGuer_products', JSON.stringify(this.products)); } catch(e){}
+                return this.products;
+            }
+        } catch (e) {
+            console.warn('Failed to load products.json', e);
+        }
+        // fallback to localStorage
+        try {
+            const raw = localStorage.getItem('YunGuer_products');
+            if (raw) {
+                this.products = JSON.parse(raw);
+            }
+        } catch (e) {
+            this.products = [];
+        }
+        return this.products;
 
         // Inicializar otros datos en localStorage
         if (!localStorage.getItem('YunGuer_orders')) {
@@ -162,19 +176,74 @@ class DataSync {
     }
 
     async addProduct(product) {
+        // If API mode enabled, POST to the API
+        if (this.USE_API) {
+            try {
+                const token = window.__ADMIN_TOKEN__ || '';
+                const res = await fetch(this.API_BASE + '/api/products', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Admin-Token': token
+                    },
+                    body: JSON.stringify(product)
+                });
+                if (res.ok) {
+                    const body = await res.json();
+                    product.id = body.id || Date.now();
+                    product.sold = product.sold || 0;
+                    // keep local cache
+                    const products = await this.getProducts();
+                    products.unshift(product);
+                    try { localStorage.setItem('YunGuer_products', JSON.stringify(products)); } catch(e){}
+                    this.triggerSync('products');
+                    return product;
+                } else {
+                    console.warn('API addProduct failed', res.status);
+                }
+            } catch (e) {
+                console.warn('addProduct API error', e);
+            }
+        }
+        // Fallback local behavior
         const products = await this.getProducts();
         product.id = Date.now();
         product.sold = 0;
-        
-        console.log('💾 data-sync.js - Guardando producto:', product);
-        console.log('💾 data-sync.js - Specifications:', product.specifications);
-        
+        console.log('💾 data-sync.js - Guardando producto (local):', product);
         products.push(product);
         this.saveProducts(products);
         return product;
     }
 
     async updateProduct(id, updates) {
+        if (this.USE_API) {
+            try {
+                const token = window.__ADMIN_TOKEN__ || '';
+                const res = await fetch(this.API_BASE + '/api/products/' + id, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Admin-Token': token
+                    },
+                    body: JSON.stringify(updates)
+                });
+                if (res.ok) {
+                    const updated = await res.json();
+                    // update local cache
+                    const products = await this.getProducts();
+                    const index = products.findIndex(p => p.id === id);
+                    if (index !== -1) {
+                        products[index] = { ...products[index], ...updated };
+                        try { localStorage.setItem('YunGuer_products', JSON.stringify(products)); } catch(e){}
+                        this.triggerSync('products');
+                        return products[index];
+                    }
+                    return updated;
+                }
+            } catch (e) {
+                console.warn('updateProduct API error', e);
+            }
+        }
         const products = await this.getProducts();
         const index = products.findIndex(p => p.id === id);
         if (index !== -1) {
@@ -186,6 +255,24 @@ class DataSync {
     }
 
     async deleteProduct(id) {
+        if (this.USE_API) {
+            try {
+                const token = window.__ADMIN_TOKEN__ || '';
+                const res = await fetch(this.API_BASE + '/api/products/' + id, {
+                    method: 'DELETE',
+                    headers: { 'X-Admin-Token': token }
+                });
+                if (res.ok) {
+                    const products = await this.getProducts();
+                    const filtered = products.filter(p => p.id !== id);
+                    try { localStorage.setItem('YunGuer_products', JSON.stringify(filtered)); } catch(e){}
+                    this.triggerSync('products');
+                    return;
+                }
+            } catch (e) {
+                console.warn('deleteProduct API error', e);
+            }
+        }
         const products = await this.getProducts();
         this.saveProducts(products.filter(p => p.id !== id));
     }

@@ -7,6 +7,26 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/admin.css">
+    <!-- Admin token placeholder: replace value if you want to hard-code (NOT recommended) -->
+    <meta name="admin-token" content="REPLACE_WITH_TOKEN">
+    <script>
+        // Load admin token from meta or sessionStorage and expose to window.__ADMIN_TOKEN__
+        (function(){
+            try {
+                const meta = document.querySelector('meta[name="admin-token"]');
+                const metaVal = meta && meta.content && meta.content !== 'REPLACE_WITH_TOKEN' ? meta.content.trim() : null;
+                const sessionVal = sessionStorage.getItem('YUNGUER_ADMIN_TOKEN');
+                const token = sessionVal || metaVal || '';
+                if (token) {
+                    window.__ADMIN_TOKEN__ = token;
+                    sessionStorage.setItem('YUNGUER_ADMIN_TOKEN', token);
+                    console.log('Admin token loaded (from meta/session)');
+                }
+            } catch (e) {
+                console.warn('Could not load admin token:', e);
+            }
+        })();
+    </script>
 </head>
 <body class="admin-body">
     <!-- Login Screen -->
@@ -2433,5 +2453,60 @@
         });
     </script>
     <script src="js/web-scraper-ai.js"></script>
+    <!-- Admin token helper UI (prompt, sessionStorage) -->
+    <div id="adminTokenHelper" style="position: fixed; right: 14px; bottom: 14px; z-index: 12000;">
+        <button id="setAdminTokenBtn" class="btn-small" style="padding:8px 10px; border-radius:8px;">🔐 Token Admin</button>
+        <div id="adminTokenInfo" style="display:none; margin-top:8px; text-align:right; background: rgba(0,0,0,0.6); color:#fff; padding:8px; border-radius:8px; font-size:12px;">Token: <span id="adminTokenMasked">(none)</span> <button id="clearAdminTokenBtn" style="margin-left:8px;">✖</button></div>
+    </div>
+    <script>
+        (function(){
+            const btn = document.getElementById('setAdminTokenBtn');
+            const info = document.getElementById('adminTokenInfo');
+            const masked = document.getElementById('adminTokenMasked');
+            const clearBtn = document.getElementById('clearAdminTokenBtn');
+
+            function maskToken(t){
+                if (!t) return '(none)';
+                if (t.length <= 6) return '••••••';
+                return t.slice(0,3) + '••••' + t.slice(-3);
+            }
+
+            function refreshInfo(){
+                const tok = sessionStorage.getItem('YUNGUER_ADMIN_TOKEN') || '';
+                if (tok) {
+                    masked.textContent = maskToken(tok);
+                    info.style.display = 'block';
+                } else {
+                    masked.textContent = '(none)';
+                    info.style.display = 'none';
+                }
+                window.__ADMIN_TOKEN__ = sessionStorage.getItem('YUNGUER_ADMIN_TOKEN') || '';
+            }
+
+            btn.addEventListener('click', ()=>{
+                const current = sessionStorage.getItem('YUNGUER_ADMIN_TOKEN') || '';
+                const entry = prompt('Introduce el token admin (no se guardará en el repo).', current);
+                if (entry === null) return; // cancel
+                const trimmed = (entry||'').trim();
+                if (trimmed) {
+                    sessionStorage.setItem('YUNGUER_ADMIN_TOKEN', trimmed);
+                    window.__ADMIN_TOKEN__ = trimmed;
+                } else {
+                    sessionStorage.removeItem('YUNGUER_ADMIN_TOKEN');
+                    window.__ADMIN_TOKEN__ = '';
+                }
+                refreshInfo();
+            });
+
+            clearBtn.addEventListener('click', ()=>{
+                sessionStorage.removeItem('YUNGUER_ADMIN_TOKEN');
+                window.__ADMIN_TOKEN__ = '';
+                refreshInfo();
+            });
+
+            // init
+            refreshInfo();
+        })();
+    </script>
 </body>
 </html>

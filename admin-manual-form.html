@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin — Crear Producto Manual</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;margin:20px;background:#0f172a;color:#e6eef8}
+    .card{background:#0b1220;padding:18px;border-radius:10px;max-width:900px;margin:0 auto}
+    label{display:block;margin-top:10px;font-weight:600}
+    input,textarea,select{width:100%;padding:8px;border-radius:6px;border:1px solid #274056;background:#071426;color:#e6eef8}
+    .row{display:flex;gap:12px}
+    .col{flex:1}
+    button{background:#06b6d4;border:none;color:#022;padding:10px 14px;border-radius:8px;font-weight:700;cursor:pointer;margin-top:12px}
+    .muted{color:#94a3b8;font-size:13px}
+    .preview{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .preview img{height:90px;border-radius:8px;object-fit:cover}
+    .notice{margin-top:12px;color:#f1f5f9}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Crear Producto</h1>
+    <p class="muted">Rellena los campos y presiona Crear. Si existe la API y el token, el formulario intentará subir imágenes y crear el producto; si no, descargará un JSON con el producto.</p>
+
+    <form id="form">
+      <label>Nombre</label>
+      <input type="text" id="name" required>
+
+      <label>Prompt / Instrucción breve</label>
+      <textarea id="prompt" rows="3"></textarea>
+
+      <div class="row">
+        <div class="col">
+          <label>Precio</label>
+          <input type="number" id="price" required>
+        </div>
+        <div class="col">
+          <label>Stock</label>
+          <input type="number" id="stock" value="10">
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;align-items:center;margin-top:10px;">
+        <label style="display:flex;align-items:center;gap:8px;margin:0;"><input type="checkbox" id="freeShipping"> Envío gratis</label>
+        <div style="flex:1">
+          <label style="margin:0 0 6px 0">Costo de envío (si no es gratis)</label>
+          <input type="number" id="shippingCost" placeholder="0" value="0">
+        </div>
+      </div>
+
+      <label>Categoría</label>
+      <select id="category">
+        <option value="">-- Seleccionar categoría --</option>
+        <option value="tecnologia">Tecnología</option>
+        <option value="ropa">Ropa</option>
+        <option value="accesorios">Accesorios</option>
+        <option value="hogar">Hogar</option>
+        <option value="belleza">Belleza</option>
+        <option value="deportes">Deportes</option>
+        <option value="juguetes">Juguetes</option>
+        <option value="salud">Salud</option>
+        <option value="electronica">Electrónica</option>
+        <option value="telefonia">Telefonía</option>
+        <option value="sin-categoria">Sin categoría</option>
+      </select>
+
+      <label>Video URL</label>
+      <input type="text" id="video">
+
+      <label>Seleccionar video (archivo)</label>
+      <input type="file" id="videoFile" accept="video/*">
+      <div id="videoPreviewContainer" style="margin-top:8px;"></div>
+
+      <label>Imágenes (múltiples)</label>
+      <input type="file" id="images" accept="image/*" multiple>
+      <div id="previews" class="preview"></div>
+
+      <label>Tags (coma-separados)</label>
+      <input type="text" id="tags">
+
+      <label>Features (separar por | )</label>
+      <input type="text" id="features">
+
+      <label>Supplier name</label>
+      <input type="text" id="supplier_name">
+
+      <label>Supplier URL</label>
+      <input type="text" id="supplier_url">
+
+      <label>Supplier price</label>
+      <input type="number" id="supplier_price">
+
+      <label>Supplier notes</label>
+      <input type="text" id="supplier_notes">
+
+      <div style="display:flex;gap:10px;align-items:center">
+        <button type="button" id="generateAiBtn">Generar descripción y características</button>
+        <button type="submit" id="createBtn">Crear Producto</button>
+      </div>
+    </form>
+
+    <div id="result" class="notice" aria-live="polite"></div>
+  </div>
+
+  <script>
+    const API_BASE = window.__API_BASE__ || 'http://localhost:3000';
+    const token = window.__ADMIN_TOKEN__ || sessionStorage.getItem('YUNGUER_ADMIN_TOKEN') || '';
+
+    const imagesInput = document.getElementById('images');
+    const previews = document.getElementById('previews');
+    const videoFileInput = document.getElementById('videoFile');
+    const videoPreviewContainer = document.getElementById('videoPreviewContainer');
+    imagesInput.addEventListener('change', ()=>{
+      previews.innerHTML='';
+      Array.from(imagesInput.files).forEach(f=>{
+        const url = URL.createObjectURL(f);
+        const img = document.createElement('img'); img.src=url; previews.appendChild(img);
+      });
+    });
+
+    // Show/hide shipping cost based on freeShipping checkbox
+    const freeShippingCheckbox = document.getElementById('freeShipping');
+    const shippingCostInput = document.getElementById('shippingCost');
+    function refreshShippingUI(){
+      if(freeShippingCheckbox.checked){
+        shippingCostInput.disabled = true;
+        shippingCostInput.value = '0';
+      } else {
+        shippingCostInput.disabled = false;
+      }
+    }
+    freeShippingCheckbox.addEventListener('change', refreshShippingUI);
+    refreshShippingUI();
+
+    videoFileInput.addEventListener('change', ()=>{
+      videoPreviewContainer.innerHTML = '';
+      const f = videoFileInput.files && videoFileInput.files[0];
+      if (!f) return;
+      const url = URL.createObjectURL(f);
+      const v = document.createElement('video');
+      v.src = url; v.controls = true; v.style.maxWidth = '320px'; v.style.borderRadius = '8px';
+      videoPreviewContainer.appendChild(v);
+    });
+
+    async function uploadFile(file){
+      if(!token) return null;
+      try{
+        const fd = new FormData(); fd.append('file', file);
+        const res = await fetch(API_BASE + '/api/uploads', { method:'POST', body: fd, headers: { 'X-Admin-Token': token } });
+        if(res.ok){ const j = await res.json(); return j.url; }
+      }catch(e){ console.warn('upload error',e); }
+      return null;
+    }
+
+    function downloadJSON(obj){
+      const blob = new Blob([JSON.stringify(obj, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download = `product-${Date.now()}.json`; a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Simple client-side AI generator (heurística) - fills only description and features
+    function generateDescriptionAndFeatures(){
+      const name = document.getElementById('name').value.trim();
+      const prompt = document.getElementById('prompt').value.trim();
+
+      const source = prompt || name || '';
+      if(!source){ document.getElementById('result').innerHTML = 'Introduce nombre o descripción breve para que la IA genere contenido.'; return; }
+
+      // derive features from prompt/name
+      const features = source.split(/[\.,;\n]/).map(s=>s.trim()).filter(Boolean).slice(0,8);
+      const description = `Descripción: ${name || features[0] || 'Producto'}. ${source}. Detalles y especificaciones a continuación.`;
+
+      document.getElementById('features').value = features.join('|');
+      // place generated description in prompt textarea (used as description field)
+      document.getElementById('prompt').value = description;
+      document.getElementById('result').innerHTML = 'IA: descripción y características generadas.';
+    }
+
+    document.getElementById('generateAiBtn').addEventListener('click', ()=>{
+      document.getElementById('result').innerHTML = 'Generando descripción y características...';
+      setTimeout(()=>{
+        try{ generateDescriptionAndFeatures(); }catch(e){ console.error(e); document.getElementById('result').innerHTML = 'Error generando.'; }
+      }, 150);
+    });
+
+    document.getElementById('form').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      document.getElementById('createBtn').disabled = true;
+      const name = document.getElementById('name').value.trim();
+      const prompt = document.getElementById('prompt').value.trim();
+      const price = Number(document.getElementById('price').value || 0);
+      const stock = Number(document.getElementById('stock').value || 0);
+      const category = document.getElementById('category').value.trim();
+      const video = document.getElementById('video').value.trim();
+      const videoFile = videoFileInput.files && videoFileInput.files[0];
+      const tagsField = document.getElementById('tags').value.trim();
+      const featuresField = document.getElementById('features').value.trim();
+      const supplier_name = document.getElementById('supplier_name').value.trim();
+      const supplier_url = document.getElementById('supplier_url').value.trim();
+      const supplier_price = document.getElementById('supplier_price').value ? Number(document.getElementById('supplier_price').value) : null;
+      const supplier_notes = document.getElementById('supplier_notes').value.trim();
+
+      const product = {
+        name: name || (prompt ? prompt.split(/[\.\,\n]/)[0].trim() : ''),
+        description: prompt || '',
+        shortDescription: prompt ? prompt.slice(0,160) : '',
+        price: price,
+        originalPrice: Math.round(price * 1.3),
+        stock: stock,
+        category: category || '',
+        available: true,
+        freeShipping: !!document.getElementById('freeShipping').checked,
+        shippingCost: document.getElementById('freeShipping').checked ? 0 : Number(document.getElementById('shippingCost').value || 0),
+        tags: tagsField ? tagsField.split(',').map(s=>s.trim()).filter(Boolean) : [],
+        features: featuresField ? featuresField.split('|').map(s=>s.trim()).filter(Boolean) : [],
+        supplierInfo: { name: supplier_name, url: supplier_url, price: supplier_price, notes: supplier_notes }
+      };
+
+      const files = Array.from(imagesInput.files || []);
+      const urls = [];
+      if(files.length>0 && token){
+        for(const f of files){
+          const u = await uploadFile(f);
+          if(u) urls.push(u);
+        }
+      }
+      if(files.length>0 && urls.length===0){ files.forEach(f=> urls.push(f.name)); }
+      if(urls.length>0){ product.image = urls[0]; product.additionalImages = urls.slice(1); }
+
+      // Handle video file upload if provided; otherwise use video URL text input
+      if(videoFile){
+        let videoUrl = null;
+        if(token){
+          try{ videoUrl = await uploadFile(videoFile); }catch(e){ console.warn('video upload failed', e); }
+        }
+        // fallback to filename if upload failed
+        product.videoUrl = videoUrl || videoFile.name;
+      } else if(video){
+        product.videoUrl = video;
+      }
+
+      // Use DataSync if available to add product (will call API when configured, or fallback to localStorage)
+      try{
+        if(window.dataSync && typeof window.dataSync.addProduct === 'function'){
+          const added = await window.dataSync.addProduct(product);
+          document.getElementById('result').innerHTML = added && added.id ? 'Producto creado con id: ' + added.id : 'Producto agregado localmente.';
+          // refresh UI in-place: navigate back to home or reload simple
+          setTimeout(()=>{ window.location.href = '/'; }, 800);
+        } else if(token){
+          // fallback to direct API call if DataSync is not present
+          const res = await fetch(API_BASE + '/api/products', { method: 'POST', headers: { 'Content-Type':'application/json', 'X-Admin-Token': token }, body: JSON.stringify(product) });
+          if(res.ok){ const created = await res.json(); document.getElementById('result').innerHTML = 'Producto creado con id: ' + (created.id || 'n/a'); setTimeout(()=>{ window.location.href = '/'; }, 800); }
+          else { const txt = await res.text(); document.getElementById('result').innerHTML = 'API error: '+res.status+' '+txt; }
+        } else {
+          downloadJSON(product);
+          document.getElementById('result').innerHTML = 'API no disponible: se descargó el JSON del producto.';
+        }
+      }catch(e){
+        console.error('Error creating product', e);
+        document.getElementById('result').innerHTML = 'Error al crear el producto: '+e.message;
+      }
+      document.getElementById('createBtn').disabled = false;
+    });
+  </script>
+</body>
+</html>

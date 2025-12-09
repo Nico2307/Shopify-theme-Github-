@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin AI — Crear Producto</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;margin:20px;background:#0f172a;color:#e6eef8}
+    .card{background:linear-gradient(180deg,#111827 0%, #0b1220 100%);padding:18px;border-radius:12px;max-width:980px;margin:0 auto;box-shadow:0 10px 30px rgba(2,6,23,0.6)}
+    label{display:block;margin-top:10px;font-weight:600}
+    input[type=text],input[type=number],textarea,select{width:100%;padding:8px;border-radius:8px;border:1px solid #263147;background:#071426;color:#e6eef8}
+    .row{display:flex;gap:12px}
+    .col{flex:1}
+    button{background:#06b6d4;border:none;color:#022;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;margin-top:12px}
+    .muted{color:#94a3b8;font-size:13px}
+    .preview{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .preview img{height:90px;border-radius:8px;object-fit:cover}
+    .notice{margin-top:12px;color:#f1f5f9}
+    .success{color:#86efac}
+    .error{color:#ffb4b4}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Crear Producto (AI-asistido)</h1>
+    <p class="muted">Rellena los campos mínimos y la «IA» generará descripción, etiquetas y características. El formulario intentará subir imágenes y crear el producto en tu API local (`/api`). Si la API no está disponible generará un archivo JSON descargable.</p>
+
+    <form id="aiForm">
+      <label>Nombre (opcional)</label>
+      <input type="text" id="name" placeholder="Ej: Cargador UGREEN GaN con diseño de robot">
+
+      <label>Breve instrucción / prompt (describe el producto en 1-2 frases)</label>
+      <textarea id="prompt" rows="3" placeholder="P. ej.: cargador GaN 65W, compacto, diseño tipo robot, carga rápida para móviles y laptops"></textarea>
+
+      <div class="row">
+        <div class="col">
+          <label>Precio (numero)</label>
+          <input type="number" id="price" required>
+        </div>
+        <div class="col">
+          <label>Stock</label>
+          <input type="number" id="stock" value="10">
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;align-items:center;margin-top:10px;">
+        <label style="display:flex;align-items:center;gap:8px;margin:0;"><input type="checkbox" id="freeShipping"> Envío gratis</label>
+        <div style="flex:1">
+          <label style="margin:0 0 6px 0">Costo de envío (si no es gratis)</label>
+          <input type="number" id="shippingCost" placeholder="0" value="0">
+        </div>
+      </div>
+
+      <label>Categoría</label>
+      <select id="category">
+        <option value="">-- Seleccionar categoría --</option>
+        <option value="tecnologia">Tecnología</option>
+        <option value="ropa">Ropa</option>
+        <option value="accesorios">Accesorios</option>
+        <option value="hogar">Hogar</option>
+        <option value="belleza">Belleza</option>
+        <option value="deportes">Deportes</option>
+        <option value="juguetes">Juguetes</option>
+        <option value="salud">Salud</option>
+        <option value="electronica">Electrónica</option>
+        <option value="telefonia">Telefonía</option>
+        <option value="sin-categoria">Sin categoría</option>
+      </select>
+
+      <label>Video URL (opcional)</label>
+      <input type="text" id="video" placeholder="https://youtu.be/…">
+
+      <label>Imágenes (múltiples, opcional)</label>
+      <input type="file" id="images" accept="image/*" multiple>
+      <div id="previews" class="preview"></div>
+
+      <label>Tags (coma-separados, opcional)</label>
+      <input type="text" id="tags" placeholder="nuevo,ventas,oferta">
+
+      <label>Features (separar por | opcional)</label>
+      <input type="text" id="features" placeholder="Compacto|Carga rápida|Protección contra sobrecarga">
+
+      <div style="display:flex;gap:10px;align-items:center">
+        <button type="button" id="generateDescBtn">Generar descripción y características</button>
+        <button type="submit" id="generateBtn">Generar y Crear Producto</button>
+      </div>
+    </form>
+
+    <div id="result" class="notice" aria-live="polite"></div>
+  </div>
+
+  <script>
+    const API_BASE = window.__API_BASE__ || 'http://localhost:3000';
+    const token = window.__ADMIN_TOKEN__ || sessionStorage.getItem('YUNGUER_ADMIN_TOKEN') || '';
+
+    const imagesInput = document.getElementById('images');
+    const previews = document.getElementById('previews');
+    imagesInput.addEventListener('change', ()=>{
+      previews.innerHTML='';
+      Array.from(imagesInput.files).forEach(f=>{
+        const url = URL.createObjectURL(f);
+        const img = document.createElement('img'); img.src=url; previews.appendChild(img);
+      });
+    });
+
+    // Shipping UI logic
+    const freeShippingCheckboxAI = document.getElementById('freeShipping');
+    const shippingCostInputAI = document.getElementById('shippingCost');
+    function refreshShippingUI_AI(){
+      if(freeShippingCheckboxAI.checked){ shippingCostInputAI.disabled = true; shippingCostInputAI.value = '0'; }
+      else { shippingCostInputAI.disabled = false; }
+    }
+    freeShippingCheckboxAI.addEventListener('change', refreshShippingUI_AI);
+    refreshShippingUI_AI();
+
+    // Simple AI simulation: generate description and features only
+    function generateDescriptionAndFeaturesFromPrompt(name, prompt){
+      const source = (prompt || name || '').trim();
+      const features = source.split(/[\.,;\n]/).map(s=>s.trim()).filter(Boolean).slice(0,8);
+      const title = name && name.trim().length>0 ? name.trim() : (features[0] || 'Producto');
+      const description = `Presentamos ${title}. ${source}. Detalles y especificaciones a continuación.`;
+      return { description, features };
+    }
+
+    async function uploadFile(file){
+      // try API uploads if token present
+      if(!token) return null;
+      try{
+        const fd = new FormData(); fd.append('file', file);
+        const res = await fetch(API_BASE + '/api/uploads', { method:'POST', body: fd, headers: { 'X-Admin-Token': token } });
+        if(res.ok){ const j = await res.json(); return j.url; }
+      }catch(e){ console.warn('upload error',e); }
+      return null;
+    }
+
+    function downloadJSON(obj){
+      const blob = new Blob([JSON.stringify(obj, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download = `product-${Date.now()}.json`; a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    document.getElementById('aiForm').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      document.getElementById('generateBtn').disabled = true;
+      const name = document.getElementById('name').value.trim();
+      const prompt = document.getElementById('prompt').value.trim();
+      const price = document.getElementById('price').value;
+      const category = document.getElementById('category').value.trim();
+      const video = document.getElementById('video').value.trim();
+      const tagsField = document.getElementById('tags').value.trim();
+      const featuresField = document.getElementById('features').value.trim();
+
+      if(!prompt){ alert('Por favor describe el producto en el campo "Breve instrucción"'); document.getElementById('generateBtn').disabled=false; return; }
+      if(!price){ alert('Ingresa un precio'); document.getElementById('generateBtn').disabled=false; return; }
+
+      const genBase = generateFromPrompt ? generateFromPrompt(name, prompt, price, category) : null;
+      // Backwards compatibility: if generateFromPrompt exists, use it for full-gen path
+      const gen = genBase || {};
+      if(tagsField) gen.tags = tagsField.split(',').map(s=>s.trim()).filter(Boolean);
+      if(featuresField) gen.features = featuresField.split('|').map(s=>s.trim()).filter(Boolean);
+
+      // handle images
+      const files = Array.from(imagesInput.files || []);
+      const urls = [];
+      if(files.length>0 && token){
+        for(const f of files){
+          const u = await uploadFile(f);
+          if(u) urls.push(u);
+        }
+      }
+      // if files but no token or upload failed, include local names (they won't be usable by site until moved)
+      if(files.length>0 && urls.length===0){
+        files.forEach(f=> urls.push(f.name));
+      }
+
+      if(urls.length>0){ gen.image = urls[0]; gen.additionalImages = urls.slice(1); }
+      if(video) gen.videoUrl = video;
+
+      // Use DataSync if available (adds via API or local fallback)
+      try{
+        if(window.dataSync && typeof window.dataSync.addProduct === 'function'){
+          const added = await window.dataSync.addProduct(gen);
+          document.getElementById('result').innerHTML = '<div class="success">Producto creado con id: '+(added.id||'n/a')+'</div>';
+          setTimeout(()=>{ window.location.href = '/'; }, 800);
+        } else if(token){
+          const res = await fetch(API_BASE + '/api/products', { method: 'POST', headers: { 'Content-Type':'application/json', 'X-Admin-Token': token }, body: JSON.stringify(gen) });
+          if(res.ok){ const created = await res.json(); document.getElementById('result').innerHTML = '<div class="success">Producto creado con id: '+(created.id||'n/a')+'</div>'; setTimeout(()=>{ window.location.href = '/'; }, 800); }
+          else { const txt = await res.text(); document.getElementById('result').innerHTML = '<div class="error">API error: '+res.status+' '+txt+'</div>'; }
+        } else {
+          downloadJSON(gen);
+          document.getElementById('result').innerHTML = '<div class="muted">API no disponible: se descargó un JSON con el producto para importarlo localmente mediante `admin_cli.py`.</div>';
+        }
+      }catch(e){
+        console.error('Error creating product (AI form)', e);
+        document.getElementById('result').innerHTML = '<div class="error">Error creando producto: '+e.message+'</div>';
+      }
+
+      document.getElementById('generateBtn').disabled = false;
+    });
+
+    // Button: generate description and features only
+    document.getElementById('generateDescBtn').addEventListener('click', ()=>{
+      document.getElementById('result').innerHTML = 'Generando descripción y características...';
+      setTimeout(()=>{
+        try{
+          const name = document.getElementById('name').value.trim();
+          const prompt = document.getElementById('prompt').value.trim();
+          const out = generateDescriptionAndFeaturesFromPrompt(name, prompt);
+          if(out.description) document.getElementById('prompt').value = out.description;
+          if(out.features) document.getElementById('features').value = out.features.join('|');
+          document.getElementById('result').innerHTML = '<div class="success">IA: descripción y características generadas.</div>';
+        }catch(e){ console.error(e); document.getElementById('result').innerHTML = '<div class="error">Error al generar.</div>'; }
+      }, 150);
+    });
+  </script>
+</body>
+</html>

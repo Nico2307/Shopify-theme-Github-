@@ -44,3 +44,7 @@ env/
 *.tmp
 *.temp
 .cache/
+
+# Local DB and uploads
+data.db
+uploads/
